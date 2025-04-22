@@ -10,10 +10,6 @@ const quizSchema = new mongoose.Schema({
     default:1
   },
   description: String,
-  timeLimit: {
-    type: Number, // in minutes
-    default: 10,
-  },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
