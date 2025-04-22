@@ -7,6 +7,7 @@ const app=express();
 const AdminRouter=require("./routers/Admin");
 const QuizRouter=require("./routers/Quiz");
 const UserAuthRouter=require("./routers/Authentication");
+const ResetPassword =require("./routers/resetPassword")
 const connectDB = require("./configure/database");
 // const path=require("path");
 // const ejsMate=require("ejs-mate");
@@ -31,6 +32,7 @@ app.use(cookieParser()); // turns raw string of the request to javascript ob
 app.use("/Admin",AdminRouter);
 app.use("/Quiz",QuizRouter);
 app.use("/UserAuth",UserAuthRouter);
+app.use("/resetPassword", ResetPassword);
 
 
 // Connect to database and start server

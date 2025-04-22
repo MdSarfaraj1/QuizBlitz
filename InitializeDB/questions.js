@@ -10,7 +10,7 @@ const questions = [
      
     hint: 'It starts with console.',
     level: 'easy',
-  },
+  marks:1 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'Which of the following is a JavaScript data type?',
@@ -19,7 +19,7 @@ const questions = [
      
     hint: 'JavaScript supports multiple data types.',
     level: 'easy',
-  },
+  marks:1 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'How do you declare a variable in JavaScript?',
@@ -28,7 +28,7 @@ const questions = [
      
     hint: 'JavaScript has multiple ways to declare variables.',
     level: 'easy',
-  },
+  marks:1 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'Which company developed JavaScript?',
@@ -37,7 +37,7 @@ const questions = [
      
     hint: 'It was developed for web browsers.',
     level: 'easy',
-  },
+  marks:1 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'What is the correct way to write a JavaScript array?',
@@ -46,7 +46,7 @@ const questions = [
      
     hint: 'Arrays use square brackets.',
     level: 'easy',
-  },
+  marks:1 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'How do you call a function named myFunction in JavaScript?',
@@ -55,7 +55,7 @@ const questions = [
      
     hint: 'Functions are called using parentheses.',
     level: 'easy',
-  },
+  marks:1 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'Which event occurs when the user clicks on an HTML element?',
@@ -64,7 +64,7 @@ const questions = [
      
     hint: 'It starts with "on".',
     level: 'easy',
-  },
+  marks:1 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'How do you add a comment in JavaScript?',
@@ -73,7 +73,7 @@ const questions = [
      
     hint: 'It starts with two slashes.',
     level: 'easy',
-  },
+  marks:1 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'What is the correct way to write a JavaScript object?',
@@ -82,7 +82,7 @@ const questions = [
      
     hint: 'Objects use curly braces.',
     level: 'easy',
-  },
+  marks:1 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'What is the output of the following code: console.log(1 + "1")?',
@@ -91,7 +91,7 @@ const questions = [
      
     hint: 'It performs string concatenation.',
     level: 'easy',
-  },
+  marks:1 },
 
   // Medium Questions
   {
@@ -102,7 +102,7 @@ const questions = [
      
     hint: 'It is a known bug in JavaScript.',
     level: 'medium',
-  },
+  marks:2 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'Which method is used to add an element to the end of an array in JavaScript?',
@@ -111,7 +111,7 @@ const questions = [
      
     hint: 'It is a common array method.',
     level: 'medium',
-  },
+  marks:2 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'What is the purpose of the JavaScript isNaN() function?',
@@ -120,7 +120,7 @@ const questions = [
      
     hint: 'It checks for Not-a-Number.',
     level: 'medium',
-  },
+  marks:2 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'What is the output of the following code: console.log([] + []);',
@@ -129,7 +129,7 @@ const questions = [
      
     hint: 'It concatenates two empty arrays.',
     level: 'medium',
-  },
+  marks:2 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'Which keyword is used to define a constant in JavaScript?',
@@ -138,7 +138,7 @@ const questions = [
      
     hint: 'It is a reserved keyword.',
     level: 'medium',
-  },
+  marks:2 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'What is the purpose of the JavaScript map() function?',
@@ -147,7 +147,7 @@ const questions = [
      
     hint: 'It creates a new array.',
     level: 'medium',
-  },
+  marks:2 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'What is the output of the following code: console.log(typeof NaN);',
@@ -156,7 +156,7 @@ const questions = [
      
     hint: 'NaN is a special value in JavaScript.',
     level: 'medium',
-  },
+  marks:2 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'Which method is used to remove the last element of an array in JavaScript?',
@@ -165,7 +165,7 @@ const questions = [
      
     hint: 'It modifies the original array.',
     level: 'medium',
-  },
+  marks:2 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'What is the output of the following code: console.log(1 == "1");',
@@ -174,7 +174,7 @@ const questions = [
      
     hint: 'It performs type coercion.',
     level: 'medium',
-  },
+  marks:2 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'What is the purpose of the JavaScript reduce() function?',
@@ -183,7 +183,7 @@ const questions = [
      
     hint: 'It reduces an array to a single value.',
     level: 'medium',
-  },
+  marks:2 },
 
   // Hard Questions
   {
@@ -194,7 +194,7 @@ const questions = [
      
     hint: 'One checks type as well.',
     level: 'hard',
-  },
+  marks:3 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'What is a closure in JavaScript?',
@@ -203,7 +203,7 @@ const questions = [
      
     hint: 'It is related to scope.',
     level: 'hard',
-  },
+  marks:3 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'What is the output of the following code: console.log(0.1 + 0.2 === 0.3)?',
@@ -212,7 +212,7 @@ const questions = [
      
     hint: 'It is due to floating-point precision.',
     level: 'hard',
-  },
+  marks:3 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'What is the output of the following code: console.log([] == ![]);',
@@ -221,7 +221,7 @@ const questions = [
      
     hint: 'It involves type coercion and logical negation.',
     level: 'hard',
-  },
+  marks:3 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'What is the purpose of the JavaScript bind() method?',
@@ -230,7 +230,7 @@ const questions = [
      
     hint: 'It is used to set the this context.',
     level: 'hard',
-  },
+  marks:3 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'What is the output of the following code: console.log(typeof function(){});',
@@ -239,7 +239,7 @@ const questions = [
      
     hint: 'Functions are first-class objects in JavaScript.',
     level: 'hard',
-  },
+  marks:3 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'What is the purpose of the JavaScript Object.freeze() method?',
@@ -248,7 +248,7 @@ const questions = [
      
     hint: 'It prevents modification of an object.',
     level: 'hard',
-  },
+  marks:3 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'What is the output of the following code: console.log(0.1 + 0.2);',
@@ -257,7 +257,7 @@ const questions = [
      
     hint: 'It is due to floating-point precision.',
     level: 'hard',
-  },
+  marks:3 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'What is the purpose of the JavaScript async/await syntax?',
@@ -266,7 +266,7 @@ const questions = [
      
     hint: 'It is used with promises.',
     level: 'hard',
-  },
+  marks:3 },
   {
     quizId: 'PLACEHOLDER_QUIZ_ID',
     questionText: 'What is the output of the following code: console.log(typeof Symbol());',
@@ -275,7 +275,7 @@ const questions = [
      
     hint: 'It is a unique primitive type.',
     level: 'hard',
-  },
+  marks:3 },
 ];
 
 module.exports = questions;

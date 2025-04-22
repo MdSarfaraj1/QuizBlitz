@@ -31,6 +31,7 @@ const questionSchema = new mongoose.Schema({
     enum: ['easy', 'medium', 'hard'],
     default: 'easy',
   },
+  marks:Number
 
 });
 

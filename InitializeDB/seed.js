@@ -23,8 +23,8 @@ async function seedDatabase() {
     const questions = await Question.insertMany(initialQuestions);
      const newAdmin = await User.create({
     username: 'BeTheHE',
-    email: 'mahammadsarfaraj6@gmail.com',
-    password: 'hashedPassword',
+    email: process.env.admin_email,
+    password: process.env.admin_password,
     role: 'admin',
   });
     console.log(" Seeded database successfully");

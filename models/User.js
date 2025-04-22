@@ -11,7 +11,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true, // Ensures emails are unique
-    match: [/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/, 'Please provide a valid email address'], // Email format validation
   },
   password: {
     type: String,
@@ -31,6 +30,12 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, // References to quizzes taken by the user
     ref: 'Quiz', 
   }],
+  totalScore: {
+    type: Number,
+    default: 0, 
+  },
+  resetPasswordToken: String,
+  resetPasswordExpires: Date
 });
 
 module.exports = mongoose.model('User', userSchema);
