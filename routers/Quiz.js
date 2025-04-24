@@ -4,9 +4,9 @@ const router = express.Router();
 const quizController = require('../controllers/quizController');
 
 // Public quiz endpoints
-router.get('/', quizController.getAllPublishedQuizzes);
-router.get('/categories', quizController.getCategories);
-router.get('/:id', quizController.getQuizById);
+router.get('/allCategories', quizController.getCategories);
+router.get('/category/allQuizzes',quizController.getAllQuizzesOfACategory)
+router.get('start-quiz/:id', quizController.startQuiz);
 
 //endpoints , used by user to deal with quiz
 router.get('/userCreatedQuiz', quizController.getMyCreatedQuizzes);

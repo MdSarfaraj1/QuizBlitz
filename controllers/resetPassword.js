@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
-const { mailTransporter } = require("../Utils/mailTransporter");
-const generateOTP=require("../utils/otpGenerator")
+const { mailTransporter } = require("../utills/mailTransporter");
+const generateOTP=require("../utills/otpGenerator")
 const User = require("../models/User");
 exports.SendOTP=async (req, res) => {
   try {

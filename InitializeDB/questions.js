@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const questions = [
   // Easy Questions
   {
-    quizId: 'javascript',
     questionText: 'What is the correct syntax to print a message in the console in JavaScript?',
     options: ['console.log("message")', 'print("message")', 'echo("message")', 'System.out.println("message")'],
     correctAnswer: 'console.log("message")',
@@ -12,7 +11,6 @@ const questions = [
     level: 'easy',
   marks:1 },
   {
-    quizId: 'javascript',
     questionText: 'Which of the following is a JavaScript data type?',
     options: ['String', 'Number', 'Boolean', 'All of the above'],
     correctAnswer: 'All of the above',
@@ -21,7 +19,6 @@ const questions = [
     level: 'easy',
   marks:1 },
   {
-    quizId: 'javascript',
     questionText: 'How do you declare a variable in JavaScript?',
     options: ['var', 'let', 'const', 'All of the above'],
     correctAnswer: 'All of the above',
@@ -30,7 +27,6 @@ const questions = [
     level: 'easy',
   marks:1 },
   {
-    quizId: 'javascript',
     questionText: 'Which company developed JavaScript?',
     options: ['Microsoft', 'Netscape', 'Google', 'Sun Microsystems'],
     correctAnswer: 'Netscape',
@@ -39,7 +35,6 @@ const questions = [
     level: 'easy',
   marks:1 },
   {
-    quizId: 'javascript',
     questionText: 'What is the correct way to write a JavaScript array?',
     options: ['var colors = (1:"red", 2:"green", 3:"blue")', 'var colors = ["red", "green", "blue"]', 'var colors = "red", "green", "blue"', 'var colors = {"red", "green", "blue"}'],
     correctAnswer: 'var colors = ["red", "green", "blue"]',
@@ -48,7 +43,6 @@ const questions = [
     level: 'easy',
   marks:1 },
   {
-    quizId: 'javascript',
     questionText: 'How do you call a function named myFunction in JavaScript?',
     options: ['call myFunction()', 'myFunction()', 'call function myFunction()', 'Call.myFunction()'],
     correctAnswer: 'myFunction()',
@@ -57,7 +51,6 @@ const questions = [
     level: 'easy',
   marks:1 },
   {
-    quizId: 'javascript',
     questionText: 'Which event occurs when the user clicks on an HTML element?',
     options: ['onchange', 'onclick', 'onmouseover', 'onmouseclick'],
     correctAnswer: 'onclick',
@@ -66,7 +59,6 @@ const questions = [
     level: 'easy',
   marks:1 },
   {
-    quizId: 'javascript',
     questionText: 'How do you add a comment in JavaScript?',
     options: ['<!-- This is a comment -->', '// This is a comment', '/* This is a comment */', '** This is a comment **'],
     correctAnswer: '// This is a comment',
@@ -75,7 +67,6 @@ const questions = [
     level: 'easy',
   marks:1 },
   {
-    quizId: 'javascript',
     questionText: 'What is the correct way to write a JavaScript object?',
     options: ['var obj = {name: "John", age: 30}', 'var obj = (name: "John", age: 30)', 'var obj = [name: "John", age: 30]', 'var obj = "name: John, age: 30"'],
     correctAnswer: 'var obj = {name: "John", age: 30}',
@@ -84,7 +75,6 @@ const questions = [
     level: 'easy',
   marks:1 },
   {
-    quizId: 'javascript',
     questionText: 'What is the output of the following code: console.log(1 + "1")?',
     options: ['2', '11', 'undefined', 'NaN'],
     correctAnswer: '11',
@@ -95,7 +85,6 @@ const questions = [
 
   // Medium Questions
   {
-    quizId: 'javascript',
     questionText: 'What is the output of the following code: console.log(typeof null)?',
     options: ['object', 'null', 'undefined', 'string'],
     correctAnswer: 'object',
@@ -104,7 +93,6 @@ const questions = [
     level: 'medium',
   marks:2 },
   {
-    quizId: 'javascript',
     questionText: 'Which method is used to add an element to the end of an array in JavaScript?',
     options: ['push()', 'pop()', 'shift()', 'unshift()'],
     correctAnswer: 'push()',
@@ -113,7 +101,6 @@ const questions = [
     level: 'medium',
   marks:2 },
   {
-    quizId: 'javascript',
     questionText: 'What is the purpose of the JavaScript isNaN() function?',
     options: ['To check if a value is NaN', 'To check if a value is a number', 'To convert a value to NaN', 'None of the above'],
     correctAnswer: 'To check if a value is NaN',
@@ -122,7 +109,6 @@ const questions = [
     level: 'medium',
   marks:2 },
   {
-    quizId: 'javascript',
     questionText: 'What is the output of the following code: console.log([] + []);',
     options: ['""', '[]', 'undefined', 'NaN'],
     correctAnswer: '""',
@@ -131,7 +117,6 @@ const questions = [
     level: 'medium',
   marks:2 },
   {
-    quizId: 'javascript',
     questionText: 'Which keyword is used to define a constant in JavaScript?',
     options: ['let', 'var', 'const', 'constant'],
     correctAnswer: 'const',
@@ -140,7 +125,6 @@ const questions = [
     level: 'medium',
   marks:2 },
   {
-    quizId: 'javascript',
     questionText: 'What is the purpose of the JavaScript map() function?',
     options: ['To iterate over an array', 'To transform each element of an array', 'To filter elements of an array', 'To find an element in an array'],
     correctAnswer: 'To transform each element of an array',
@@ -149,7 +133,6 @@ const questions = [
     level: 'medium',
   marks:2 },
   {
-    quizId: 'javascript',
     questionText: 'What is the output of the following code: console.log(typeof NaN);',
     options: ['number', 'NaN', 'undefined', 'string'],
     correctAnswer: 'number',
@@ -158,7 +141,6 @@ const questions = [
     level: 'medium',
   marks:2 },
   {
-    quizId: 'javascript',
     questionText: 'Which method is used to remove the last element of an array in JavaScript?',
     options: ['pop()', 'push()', 'shift()', 'unshift()'],
     correctAnswer: 'pop()',
@@ -167,7 +149,6 @@ const questions = [
     level: 'medium',
   marks:2 },
   {
-    quizId: 'javascript',
     questionText: 'What is the output of the following code: console.log(1 == "1");',
     options: ['true', 'false', 'undefined', 'NaN'],
     correctAnswer: 'true',
@@ -176,7 +157,6 @@ const questions = [
     level: 'medium',
   marks:2 },
   {
-    quizId: 'javascript',
     questionText: 'What is the purpose of the JavaScript reduce() function?',
     options: ['To reduce the size of an array', 'To apply a function to each element and accumulate a result', 'To filter elements of an array', 'To find the maximum value in an array'],
     correctAnswer: 'To apply a function to each element and accumulate a result',
@@ -187,7 +167,6 @@ const questions = [
 
   // Hard Questions
   {
-    quizId: 'javascript',
     questionText: 'What is the difference between == and === in JavaScript?',
     options: ['== checks value only, === checks value and type', 'Both are the same', '== checks type only, === checks value and type', 'None of the above'],
     correctAnswer: '== checks value only, === checks value and type',
@@ -196,7 +175,6 @@ const questions = [
     level: 'hard',
   marks:3 },
   {
-    quizId: 'javascript',
     questionText: 'What is a closure in JavaScript?',
     options: ['A function having access to its outer scope', 'A function without parameters', 'A function that returns another function', 'None of the above'],
     correctAnswer: 'A function having access to its outer scope',
@@ -205,7 +183,6 @@ const questions = [
     level: 'hard',
   marks:3 },
   {
-    quizId: 'javascript',
     questionText: 'What is the output of the following code: console.log(0.1 + 0.2 === 0.3)?',
     options: ['true', 'false', 'undefined', 'NaN'],
     correctAnswer: 'false',
@@ -214,7 +191,6 @@ const questions = [
     level: 'hard',
   marks:3 },
   {
-    quizId: 'javascript',
     questionText: 'What is the output of the following code: console.log([] == ![]);',
     options: ['true', 'false', 'undefined', 'NaN'],
     correctAnswer: 'true',
@@ -223,7 +199,6 @@ const questions = [
     level: 'hard',
   marks:3 },
   {
-    quizId: 'javascript',
     questionText: 'What is the purpose of the JavaScript bind() method?',
     options: ['To bind an event to an element', 'To create a new function with a specific this value', 'To call a function immediately', 'To apply a function to an array'],
     correctAnswer: 'To create a new function with a specific this value',
@@ -232,7 +207,6 @@ const questions = [
     level: 'hard',
   marks:3 },
   {
-    quizId: 'javascript',
     questionText: 'What is the output of the following code: console.log(typeof function(){});',
     options: ['function', 'object', 'undefined', 'string'],
     correctAnswer: 'function',
@@ -241,7 +215,6 @@ const questions = [
     level: 'hard',
   marks:3 },
   {
-    quizId: 'javascript',
     questionText: 'What is the purpose of the JavaScript Object.freeze() method?',
     options: ['To prevent adding new properties to an object', 'To make an object immutable', 'To delete all properties of an object', 'To clone an object'],
     correctAnswer: 'To make an object immutable',
@@ -250,7 +223,6 @@ const questions = [
     level: 'hard',
   marks:3 },
   {
-    quizId: 'javascript',
     questionText: 'What is the output of the following code: console.log(0.1 + 0.2);',
     options: ['0.3', '0.30000000000000004', 'undefined', 'NaN'],
     correctAnswer: '0.30000000000000004',
@@ -259,7 +231,6 @@ const questions = [
     level: 'hard',
   marks:3 },
   {
-    quizId: 'javascript',
     questionText: 'What is the purpose of the JavaScript async/await syntax?',
     options: ['To handle asynchronous operations', 'To create promises', 'To define a function', 'To loop through an array'],
     correctAnswer: 'To handle asynchronous operations',
@@ -268,7 +239,6 @@ const questions = [
     level: 'hard',
   marks:3 },
   {
-    quizId: 'javascript',
     questionText: 'What is the output of the following code: console.log(typeof Symbol());',
     options: ['symbol', 'object', 'undefined', 'string'],
     correctAnswer: 'symbol',
@@ -282,7 +252,6 @@ const questions = [
 const pythonQuestions = [
   // Easy Questions
   {
-    quizId: 'python',
     questionText: 'What is the correct file extension for Python files?',
     options: ['.py', '.python', '.pt', '.pyt'],
     correctAnswer: '.py',
@@ -291,7 +260,6 @@ const pythonQuestions = [
     marks: 1
   },
   {
-    quizId: 'python',
     questionText: 'Which keyword is used to define a function in Python?',
     options: ['function', 'def', 'func', 'define'],
     correctAnswer: 'def',
@@ -300,7 +268,6 @@ const pythonQuestions = [
     marks: 1
   },
   {
-    quizId: 'python',
     questionText: 'How do you print a message in Python?',
     options: ['print("message")', 'echo("message")', 'console.log("message")', 'System.out.println("message")'],
     correctAnswer: 'print("message")',
@@ -309,7 +276,6 @@ const pythonQuestions = [
     marks: 1
   },
   {
-    quizId: 'python',
     questionText: 'Which of the following is a Python data type?',
     options: ['List', 'Dictionary', 'Tuple', 'All of the above'],
     correctAnswer: 'All of the above',
@@ -318,7 +284,6 @@ const pythonQuestions = [
     marks: 1
   },
   {
-    quizId: 'python',
     questionText: 'How do you start a comment in Python?',
     options: ['# This is a comment', '// This is a comment', '/* This is a comment */', '<!-- This is a comment -->'],
     correctAnswer: '# This is a comment',
@@ -327,7 +292,6 @@ const pythonQuestions = [
     marks: 1
   },
   {
-    quizId: 'python',
     questionText: 'What is the output of the following code: print(2 + 3)?',
     options: ['5', '23', 'undefined', 'NaN'],
     correctAnswer: '5',
@@ -336,7 +300,6 @@ const pythonQuestions = [
     marks: 1
   },
   {
-    quizId: 'python',
     questionText: 'Which keyword is used to create a loop in Python?',
     options: ['for', 'loop', 'iterate', 'while'],
     correctAnswer: 'for',
@@ -345,7 +308,6 @@ const pythonQuestions = [
     marks: 1
   },
   {
-    quizId: 'python',
     questionText: 'What is the correct way to create a list in Python?',
     options: ['list = [1, 2, 3]', 'list = (1, 2, 3)', 'list = {1, 2, 3}', 'list = "1, 2, 3"'],
     correctAnswer: 'list = [1, 2, 3]',
@@ -354,7 +316,6 @@ const pythonQuestions = [
     marks: 1
   },
   {
-    quizId: 'python',
     questionText: 'Which function is used to get the length of a list in Python?',
     options: ['length()', 'len()', 'size()', 'count()'],
     correctAnswer: 'len()',
@@ -363,7 +324,6 @@ const pythonQuestions = [
     marks: 1
   },
   {
-    quizId: 'python',
     questionText: 'What is the output of the following code: print("Hello" + " World")?',
     options: ['Hello World', 'HelloWorld', 'undefined', 'NaN'],
     correctAnswer: 'Hello World',
@@ -374,7 +334,6 @@ const pythonQuestions = [
 
   // Medium Questions
   {
-    quizId: 'python',
     questionText: 'What is the output of the following code: print(type(5))?',
     options: ['int', 'float', 'str', 'None'],
     correctAnswer: 'int',
@@ -383,7 +342,6 @@ const pythonQuestions = [
     marks: 2
   },
   {
-    quizId: 'python',
     questionText: 'Which method is used to add an element to the end of a list in Python?',
     options: ['append()', 'add()', 'insert()', 'push()'],
     correctAnswer: 'append()',
@@ -392,7 +350,6 @@ const pythonQuestions = [
     marks: 2
   },
   {
-    quizId: 'python',
     questionText: 'What is the purpose of the Python range() function?',
     options: ['To create a sequence of numbers', 'To iterate over a list', 'To filter elements of a list', 'To find an element in a list'],
     correctAnswer: 'To create a sequence of numbers',
@@ -401,7 +358,6 @@ const pythonQuestions = [
     marks: 2
   },
   {
-    quizId: 'python',
     questionText: 'What is the output of the following code: print(10 // 3)?',
     options: ['3', '3.33', '4', 'None'],
     correctAnswer: '3',
@@ -410,7 +366,6 @@ const pythonQuestions = [
     marks: 2
   },
   {
-    quizId: 'python',
     questionText: 'Which keyword is used to handle exceptions in Python?',
     options: ['try', 'catch', 'except', 'finally'],
     correctAnswer: 'except',
@@ -419,7 +374,6 @@ const pythonQuestions = [
     marks: 2
   },
   {
-    quizId: 'python',
     questionText: 'What is the output of the following code: print("5" * 3)?',
     options: ['555', '15', 'undefined', 'NaN'],
     correctAnswer: '555',
@@ -428,7 +382,6 @@ const pythonQuestions = [
     marks: 2
   },
   {
-    quizId: 'python',
     questionText: 'Which method is used to remove an element from a list in Python?',
     options: ['remove()', 'delete()', 'pop()', 'discard()'],
     correctAnswer: 'remove()',
@@ -437,7 +390,6 @@ const pythonQuestions = [
     marks: 2
   },
   {
-    quizId: 'python',
     questionText: 'What is the output of the following code: print(2 ** 3)?',
     options: ['8', '6', '9', 'None'],
     correctAnswer: '8',
@@ -446,7 +398,6 @@ const pythonQuestions = [
     marks: 2
   },
   {
-    quizId: 'python',
     questionText: 'What is the purpose of the Python zip() function?',
     options: ['To combine two lists into tuples', 'To iterate over a list', 'To filter elements of a list', 'To find an element in a list'],
     correctAnswer: 'To combine two lists into tuples',
@@ -455,7 +406,6 @@ const pythonQuestions = [
     marks: 2
   },
   {
-    quizId: 'python',
     questionText: 'What is the output of the following code: print(len("Hello"))?',
     options: ['5', '6', '4', 'None'],
     correctAnswer: '5',
@@ -466,7 +416,6 @@ const pythonQuestions = [
 
   // Hard Questions
   {
-    quizId: 'python',
     questionText: 'What is a Python decorator?',
     options: ['A function that modifies another function', 'A function without parameters', 'A function that returns another function', 'None of the above'],
     correctAnswer: 'A function that modifies another function',
@@ -475,7 +424,6 @@ const pythonQuestions = [
     marks: 3
   },
   {
-    quizId: 'python',
     questionText: 'What is the output of the following code: print(0.1 + 0.2 == 0.3)?',
     options: ['True', 'False', 'undefined', 'NaN'],
     correctAnswer: 'False',
@@ -484,7 +432,6 @@ const pythonQuestions = [
     marks: 3
   },
   {
-    quizId: 'python',
     questionText: 'What is the purpose of the Python @staticmethod decorator?',
     options: ['To define a static method', 'To define a class method', 'To define an instance method', 'None of the above'],
     correctAnswer: 'To define a static method',
@@ -493,7 +440,6 @@ const pythonQuestions = [
     marks: 3
   },
   {
-    quizId: 'python',
     questionText: 'What is the output of the following code: print(type(lambda x: x))?',
     options: ['function', 'lambda', 'None', 'str'],
     correctAnswer: 'function',
@@ -502,7 +448,6 @@ const pythonQuestions = [
     marks: 3
   },
   {
-    quizId: 'python',
     questionText: 'What is the purpose of the Python with statement?',
     options: ['To manage resources', 'To handle exceptions', 'To define a function', 'To loop through an array'],
     correctAnswer: 'To manage resources',
@@ -511,7 +456,6 @@ const pythonQuestions = [
     marks: 3
   },
   {
-    quizId: 'python',
     questionText: 'What is the output of the following code: print({1, 2, 3} & {2, 3, 4})?',
     options: ['{2, 3}', '{1, 2, 3, 4}', '{1}', 'None'],
     correctAnswer: '{2, 3}',
@@ -520,7 +464,6 @@ const pythonQuestions = [
     marks: 3
   },
   {
-    quizId: 'python',
     questionText: 'What is the purpose of the Python super() function?',
     options: ['To call a parent class method', 'To define a static method', 'To define a class method', 'None of the above'],
     correctAnswer: 'To call a parent class method',
@@ -529,7 +472,6 @@ const pythonQuestions = [
     marks: 3
   },
   {
-    quizId: 'python',
     questionText: 'What is the output of the following code: print(sorted([3, 1, 2]))?',
     options: ['[1, 2, 3]', '[3, 2, 1]', '[2, 1, 3]', 'None'],
     correctAnswer: '[1, 2, 3]',
@@ -538,7 +480,6 @@ const pythonQuestions = [
     marks: 3
   },
   {
-    quizId: 'python',
     questionText: 'What is the purpose of the Python __init__ method?',
     options: ['To initialize an object', 'To define a static method', 'To define a class method', 'None of the above'],
     correctAnswer: 'To initialize an object',
@@ -547,7 +488,6 @@ const pythonQuestions = [
     marks: 3
   },
   {
-    quizId: 'python',
     questionText: 'What is the output of the following code: print({x: x**2 for x in range(3)})?',
     options: ['{0: 0, 1: 1, 2: 4}', '{1: 1, 2: 4}', '{0: 0, 1: 1}', 'None'],
     correctAnswer: '{0: 0, 1: 1, 2: 4}',
@@ -561,7 +501,6 @@ const pythonQuestions = [
 const mysqlQuestions = [
   // Easy Questions
   {
-    quizId: 'mysql',
     questionText: 'What does SQL stand for?',
     options: ['Structured Query Language', 'Simple Query Language', 'Structured Question Language', 'Simple Question Language'],
     correctAnswer: 'Structured Query Language',
@@ -570,7 +509,6 @@ const mysqlQuestions = [
     marks: 1
   },
   {
-    quizId: 'mysql',
     questionText: 'Which command is used to retrieve data from a database?',
     options: ['SELECT', 'INSERT', 'UPDATE', 'DELETE'],
     correctAnswer: 'SELECT',
@@ -579,7 +517,6 @@ const mysqlQuestions = [
     marks: 1
   },
   {
-    quizId: 'mysql',
     questionText: 'Which keyword is used to sort the result-set in SQL?',
     options: ['ORDER BY', 'SORT BY', 'GROUP BY', 'FILTER BY'],
     correctAnswer: 'ORDER BY',
@@ -588,7 +525,6 @@ const mysqlQuestions = [
     marks: 1
   },
   {
-    quizId: 'mysql',
     questionText: 'Which SQL statement is used to insert new data in a database?',
     options: ['INSERT INTO', 'ADD NEW', 'INSERT NEW', 'ADD INTO'],
     correctAnswer: 'INSERT INTO',
@@ -597,7 +533,6 @@ const mysqlQuestions = [
     marks: 1
   },
   {
-    quizId: 'mysql',
     questionText: 'Which SQL statement is used to update data in a database?',
     options: ['UPDATE', 'MODIFY', 'CHANGE', 'ALTER'],
     correctAnswer: 'UPDATE',
@@ -606,7 +541,6 @@ const mysqlQuestions = [
     marks: 1
   },
   {
-    quizId: 'mysql',
     questionText: 'Which SQL statement is used to delete data from a database?',
     options: ['DELETE', 'REMOVE', 'DROP', 'CLEAR'],
     correctAnswer: 'DELETE',
@@ -615,7 +549,6 @@ const mysqlQuestions = [
     marks: 1
   },
   {
-    quizId: 'mysql',
     questionText: 'Which SQL function is used to count the number of rows in a table?',
     options: ['COUNT()', 'SUM()', 'TOTAL()', 'ROWS()'],
     correctAnswer: 'COUNT()',
@@ -624,7 +557,6 @@ const mysqlQuestions = [
     marks: 1
   },
   {
-    quizId: 'mysql',
     questionText: 'Which SQL clause is used to filter records?',
     options: ['WHERE', 'FILTER', 'HAVING', 'GROUP BY'],
     correctAnswer: 'WHERE',
@@ -633,7 +565,6 @@ const mysqlQuestions = [
     marks: 1
   },
   {
-    quizId: 'mysql',
     questionText: 'Which SQL statement is used to create a new table?',
     options: ['CREATE TABLE', 'NEW TABLE', 'ADD TABLE', 'MAKE TABLE'],
     correctAnswer: 'CREATE TABLE',
@@ -642,7 +573,6 @@ const mysqlQuestions = [
     marks: 1
   },
   {
-    quizId: 'mysql',
     questionText: 'Which SQL keyword is used to retrieve unique values?',
     options: ['DISTINCT', 'UNIQUE', 'FILTER', 'SEPARATE'],
     correctAnswer: 'DISTINCT',
@@ -653,7 +583,6 @@ const mysqlQuestions = [
 
   // Medium Questions
   {
-    quizId: 'mysql',
     questionText: 'What is the default port for MySQL?',
     options: ['3306', '1433', '1521', '5432'],
     correctAnswer: '3306',
@@ -662,7 +591,6 @@ const mysqlQuestions = [
     marks: 2
   },
   {
-    quizId: 'mysql',
     questionText: 'Which SQL clause is used to group rows that have the same values?',
     options: ['GROUP BY', 'ORDER BY', 'HAVING', 'FILTER'],
     correctAnswer: 'GROUP BY',
@@ -671,7 +599,6 @@ const mysqlQuestions = [
     marks: 2
   },
   {
-    quizId: 'mysql',
     questionText: 'Which SQL statement is used to create a database?',
     options: ['CREATE DATABASE', 'NEW DATABASE', 'ADD DATABASE', 'MAKE DATABASE'],
     correctAnswer: 'CREATE DATABASE',
@@ -680,7 +607,6 @@ const mysqlQuestions = [
     marks: 2
   },
   {
-    quizId: 'mysql',
     questionText: 'Which SQL function is used to calculate the sum of a column?',
     options: ['SUM()', 'COUNT()', 'TOTAL()', 'ADD()'],
     correctAnswer: 'SUM()',
@@ -689,7 +615,6 @@ const mysqlQuestions = [
     marks: 2
   },
   {
-    quizId: 'mysql',
     questionText: 'Which SQL keyword is used to specify a condition for aggregate functions?',
     options: ['HAVING', 'WHERE', 'FILTER', 'GROUP BY'],
     correctAnswer: 'HAVING',
@@ -698,7 +623,6 @@ const mysqlQuestions = [
     marks: 2
   },
   {
-    quizId: 'mysql',
     questionText: 'Which SQL command is used to remove a table from a database?',
     options: ['DROP TABLE', 'DELETE TABLE', 'REMOVE TABLE', 'CLEAR TABLE'],
     correctAnswer: 'DROP TABLE',
@@ -707,7 +631,6 @@ const mysqlQuestions = [
     marks: 2
   },
   {
-    quizId: 'mysql',
     questionText: 'Which SQL statement is used to modify the structure of a table?',
     options: ['ALTER TABLE', 'MODIFY TABLE', 'CHANGE TABLE', 'UPDATE TABLE'],
     correctAnswer: 'ALTER TABLE',
@@ -716,7 +639,6 @@ const mysqlQuestions = [
     marks: 2
   },
   {
-    quizId: 'mysql',
     questionText: 'Which SQL keyword is used to combine rows from two or more tables?',
     options: ['JOIN', 'MERGE', 'UNION', 'COMBINE'],
     correctAnswer: 'JOIN',
@@ -725,7 +647,6 @@ const mysqlQuestions = [
     marks: 2
   },
   {
-    quizId: 'mysql',
     questionText: 'Which SQL function is used to find the maximum value in a column?',
     options: ['MAX()', 'MIN()', 'GREATEST()', 'HIGHEST()'],
     correctAnswer: 'MAX()',
@@ -734,7 +655,6 @@ const mysqlQuestions = [
     marks: 2
   },
   {
-    quizId: 'mysql',
     questionText: 'Which SQL function is used to find the minimum value in a column?',
     options: ['MIN()', 'MAX()', 'LEAST()', 'LOWEST()'],
     correctAnswer: 'MIN()',
@@ -745,7 +665,6 @@ const mysqlQuestions = [
 
   // Hard Questions
   {
-    quizId: 'mysql',
     questionText: 'What is a foreign key in MySQL?',
     options: ['A key that links two tables', 'A key that uniquely identifies a row', 'A key that is used for indexing', 'None of the above'],
     correctAnswer: 'A key that links two tables',
@@ -754,7 +673,6 @@ const mysqlQuestions = [
     marks: 3
   },
   {
-    quizId: 'mysql',
     questionText: 'What is the purpose of the MySQL AUTO_INCREMENT attribute?',
     options: ['To automatically generate unique values', 'To increment a column by 1', 'To create a primary key', 'None of the above'],
     correctAnswer: 'To automatically generate unique values',
@@ -763,7 +681,6 @@ const mysqlQuestions = [
     marks: 3
   },
   {
-    quizId: 'mysql',
     questionText: 'What is the purpose of the MySQL PRIMARY KEY constraint?',
     options: ['To uniquely identify each row', 'To link two tables', 'To create an index', 'None of the above'],
     correctAnswer: 'To uniquely identify each row',
@@ -772,7 +689,6 @@ const mysqlQuestions = [
     marks: 3
   },
   {
-    quizId: 'mysql',
     questionText: 'What is the purpose of the MySQL UNIQUE constraint?',
     options: ['To ensure all values in a column are unique', 'To create a primary key', 'To link two tables', 'None of the above'],
     correctAnswer: 'To ensure all values in a column are unique',
@@ -781,7 +697,6 @@ const mysqlQuestions = [
     marks: 3
   },
   {
-    quizId: 'mysql',
     questionText: 'What is the purpose of the MySQL INDEX?',
     options: ['To speed up queries', 'To create a primary key', 'To link two tables', 'None of the above'],
     correctAnswer: 'To speed up queries',
@@ -790,7 +705,6 @@ const mysqlQuestions = [
     marks: 3
   },
   {
-    quizId: 'mysql',
     questionText: 'What is the purpose of the MySQL TRIGGER?',
     options: ['To automatically execute a statement', 'To create a primary key', 'To link two tables', 'None of the above'],
     correctAnswer: 'To automatically execute a statement',
@@ -799,7 +713,6 @@ const mysqlQuestions = [
     marks: 3
   },
   {
-    quizId: 'mysql',
     questionText: 'What is the purpose of the MySQL VIEW?',
     options: ['To create a virtual table', 'To create a primary key', 'To link two tables', 'None of the above'],
     correctAnswer: 'To create a virtual table',
@@ -808,7 +721,6 @@ const mysqlQuestions = [
     marks: 3
   },
   {
-    quizId: 'mysql',
     questionText: 'What is the purpose of the MySQL TRANSACTION?',
     options: ['To ensure data integrity', 'To create a primary key', 'To link two tables', 'None of the above'],
     correctAnswer: 'To ensure data integrity',
@@ -817,7 +729,6 @@ const mysqlQuestions = [
     marks: 3
   },
   {
-    quizId: 'mysql',
     questionText: 'What is the purpose of the MySQL FOREIGN KEY constraint?',
     options: ['To link two tables', 'To create a primary key', 'To ensure uniqueness', 'None of the above'],
     correctAnswer: 'To link two tables',
@@ -826,7 +737,6 @@ const mysqlQuestions = [
     marks: 3
   },
   {
-    quizId: 'mysql',
     questionText: 'What is the purpose of the MySQL CASCADE option?',
     options: ['To automatically update or delete related rows', 'To create a primary key', 'To link two tables', 'None of the above'],
     correctAnswer: 'To automatically update or delete related rows',
@@ -840,7 +750,6 @@ const mysqlQuestions = [
 const mongoDBQuestions = [
   // Easy Questions
   {
-    quizId: 'mongodb',
     questionText: 'What is MongoDB?',
     options: ['A NoSQL database', 'A relational database', 'A programming language', 'A web server'],
     correctAnswer: 'A NoSQL database',
@@ -849,7 +758,6 @@ const mongoDBQuestions = [
     marks: 1
   },
   {
-    quizId: 'mongodb',
     questionText: 'Which command is used to show all databases in MongoDB?',
     options: ['show dbs', 'list databases', 'show databases', 'list dbs'],
     correctAnswer: 'show dbs',
@@ -858,7 +766,6 @@ const mongoDBQuestions = [
     marks: 1
   },
   {
-    quizId: 'mongodb',
     questionText: 'What is the default port for MongoDB?',
     options: ['27017', '3306', '5432', '8080'],
     correctAnswer: '27017',
@@ -867,7 +774,6 @@ const mongoDBQuestions = [
     marks: 1
   },
   {
-    quizId: 'mongodb',
     questionText: 'Which data format does MongoDB use to store data?',
     options: ['JSON', 'XML', 'CSV', 'YAML'],
     correctAnswer: 'JSON',
@@ -876,7 +782,6 @@ const mongoDBQuestions = [
     marks: 1
   },
   {
-    quizId: 'mongodb',
     questionText: 'Which command is used to insert a document into a collection?',
     options: ['insert()', 'add()', 'push()', 'append()'],
     correctAnswer: 'insert()',
@@ -885,7 +790,6 @@ const mongoDBQuestions = [
     marks: 1
   },
   {
-    quizId: 'mongodb',
     questionText: 'Which command is used to delete a document in MongoDB?',
     options: ['deleteOne()', 'remove()', 'delete()', 'drop()'],
     correctAnswer: 'deleteOne()',
@@ -894,7 +798,6 @@ const mongoDBQuestions = [
     marks: 1
   },
   {
-    quizId: 'mongodb',
     questionText: 'Which command is used to update a document in MongoDB?',
     options: ['updateOne()', 'modify()', 'change()', 'edit()'],
     correctAnswer: 'updateOne()',
@@ -903,7 +806,6 @@ const mongoDBQuestions = [
     marks: 1
   },
   {
-    quizId: 'mongodb',
     questionText: 'What is a collection in MongoDB?',
     options: ['A group of documents', 'A single document', 'A database', 'A table'],
     correctAnswer: 'A group of documents',
@@ -912,7 +814,6 @@ const mongoDBQuestions = [
     marks: 1
   },
   {
-    quizId: 'mongodb',
     questionText: 'Which command is used to drop a collection in MongoDB?',
     options: ['drop()', 'delete()', 'remove()', 'clear()'],
     correctAnswer: 'drop()',
@@ -921,7 +822,6 @@ const mongoDBQuestions = [
     marks: 1
   },
   {
-    quizId: 'mongodb',
     questionText: 'What is the shell command to connect to a MongoDB instance?',
     options: ['mongo', 'connect', 'mongodb', 'start'],
     correctAnswer: 'mongo',
@@ -932,7 +832,6 @@ const mongoDBQuestions = [
 
   // Medium Questions
   {
-    quizId: 'mongodb',
     questionText: 'What is the purpose of the MongoDB find() method?',
     options: ['To retrieve documents', 'To insert documents', 'To update documents', 'To delete documents'],
     correctAnswer: 'To retrieve documents',
@@ -941,7 +840,6 @@ const mongoDBQuestions = [
     marks: 2
   },
   {
-    quizId: 'mongodb',
     questionText: 'What is the purpose of the MongoDB aggregate() method?',
     options: ['To perform aggregation operations', 'To retrieve documents', 'To update documents', 'To delete documents'],
     correctAnswer: 'To perform aggregation operations',
@@ -950,7 +848,6 @@ const mongoDBQuestions = [
     marks: 2
   },
   {
-    quizId: 'mongodb',
     questionText: 'What is the purpose of the MongoDB $match stage in aggregation?',
     options: ['To filter documents', 'To group documents', 'To sort documents', 'To project fields'],
     correctAnswer: 'To filter documents',
@@ -959,7 +856,6 @@ const mongoDBQuestions = [
     marks: 2
   },
   {
-    quizId: 'mongodb',
     questionText: 'What is the purpose of the MongoDB $group stage in aggregation?',
     options: ['To group documents', 'To filter documents', 'To sort documents', 'To project fields'],
     correctAnswer: 'To group documents',
@@ -968,7 +864,6 @@ const mongoDBQuestions = [
     marks: 2
   },
   {
-    quizId: 'mongodb',
     questionText: 'What is the purpose of the MongoDB $project stage in aggregation?',
     options: ['To project fields', 'To filter documents', 'To group documents', 'To sort documents'],
     correctAnswer: 'To project fields',
@@ -977,7 +872,6 @@ const mongoDBQuestions = [
     marks: 2
   },
   {
-    quizId: 'mongodb',
     questionText: 'What is the purpose of the MongoDB $sort stage in aggregation?',
     options: ['To sort documents', 'To filter documents', 'To group documents', 'To project fields'],
     correctAnswer: 'To sort documents',
@@ -986,7 +880,6 @@ const mongoDBQuestions = [
     marks: 2
   },
   {
-    quizId: 'mongodb',
     questionText: 'What is the purpose of the MongoDB $lookup stage in aggregation?',
     options: ['To perform a join operation', 'To filter documents', 'To group documents', 'To project fields'],
     correctAnswer: 'To perform a join operation',
@@ -995,7 +888,6 @@ const mongoDBQuestions = [
     marks: 2
   },
   {
-    quizId: 'mongodb',
     questionText: 'What is the purpose of the MongoDB $unwind stage in aggregation?',
     options: ['To deconstruct arrays', 'To filter documents', 'To group documents', 'To project fields'],
     correctAnswer: 'To deconstruct arrays',
@@ -1004,7 +896,6 @@ const mongoDBQuestions = [
     marks: 2
   },
   {
-    quizId: 'mongodb',
     questionText: 'What is the purpose of the MongoDB $limit stage in aggregation?',
     options: ['To limit the number of documents', 'To filter documents', 'To group documents', 'To project fields'],
     correctAnswer: 'To limit the number of documents',
@@ -1013,7 +904,6 @@ const mongoDBQuestions = [
     marks: 2
   },
   {
-    quizId: 'mongodb',
     questionText: 'What is the purpose of the MongoDB $skip stage in aggregation?',
     options: ['To skip a number of documents', 'To filter documents', 'To group documents', 'To project fields'],
     correctAnswer: 'To skip a number of documents',
@@ -1024,7 +914,6 @@ const mongoDBQuestions = [
 
   // Hard Questions
   {
-    quizId: 'mongodb',
     questionText: 'What is a replica set in MongoDB?',
     options: ['A group of MongoDB servers', 'A single MongoDB server', 'A collection of documents', 'A database'],
     correctAnswer: 'A group of MongoDB servers',
@@ -1033,7 +922,6 @@ const mongoDBQuestions = [
     marks: 3
   },
   {
-    quizId: 'mongodb',
     questionText: 'What is sharding in MongoDB?',
     options: ['A method of distributing data', 'A method of indexing data', 'A method of querying data', 'A method of updating data'],
     correctAnswer: 'A method of distributing data',
@@ -1042,7 +930,6 @@ const mongoDBQuestions = [
     marks: 3
   },
   {
-    quizId: 'mongodb',
     questionText: 'What is the purpose of the MongoDB oplog?',
     options: ['To track changes to the database', 'To store documents', 'To index data', 'To query data'],
     correctAnswer: 'To track changes to the database',
@@ -1051,7 +938,6 @@ const mongoDBQuestions = [
     marks: 3
   },
   {
-    quizId: 'mongodb',
     questionText: 'What is the purpose of the MongoDB $geoNear stage in aggregation?',
     options: ['To perform geospatial queries', 'To filter documents', 'To group documents', 'To project fields'],
     correctAnswer: 'To perform geospatial queries',
@@ -1060,7 +946,6 @@ const mongoDBQuestions = [
     marks: 3
   },
   {
-    quizId: 'mongodb',
     questionText: 'What is the purpose of the MongoDB $text index?',
     options: ['To perform text searches', 'To index data', 'To query data', 'To update data'],
     correctAnswer: 'To perform text searches',
@@ -1069,7 +954,6 @@ const mongoDBQuestions = [
     marks: 3
   },
   {
-    quizId: 'mongodb',
     questionText: 'What is the purpose of the MongoDB $graphLookup stage in aggregation?',
     options: ['To perform graph traversal', 'To filter documents', 'To group documents', 'To project fields'],
     correctAnswer: 'To perform graph traversal',
@@ -1078,7 +962,6 @@ const mongoDBQuestions = [
     marks: 3
   },
   {
-    quizId: 'mongodb',
     questionText: 'What is the purpose of the MongoDB $bucket stage in aggregation?',
     options: ['To group documents into buckets', 'To filter documents', 'To sort documents', 'To project fields'],
     correctAnswer: 'To group documents into buckets',
@@ -1087,7 +970,6 @@ const mongoDBQuestions = [
     marks: 3
   },
   {
-    quizId: 'mongodb',
     questionText: 'What is the purpose of the MongoDB $facet stage in aggregation?',
     options: ['To perform multiple aggregations', 'To filter documents', 'To group documents', 'To project fields'],
     correctAnswer: 'To perform multiple aggregations',
@@ -1096,7 +978,6 @@ const mongoDBQuestions = [
     marks: 3
   },
   {
-    quizId: 'mongodb',
     questionText: 'What is the purpose of the MongoDB $merge stage in aggregation?',
     options: ['To merge results into a collection', 'To filter documents', 'To group documents', 'To project fields'],
     correctAnswer: 'To merge results into a collection',
@@ -1105,7 +986,6 @@ const mongoDBQuestions = [
     marks: 3
   },
   {
-    quizId: 'mongodb',
     questionText: 'What is the purpose of the MongoDB $out stage in aggregation?',
     options: ['To write results to a collection', 'To filter documents', 'To group documents', 'To project fields'],
     correctAnswer: 'To write results to a collection',
@@ -1119,7 +999,6 @@ const mongoDBQuestions = [
 const linkedListQuestions = [
   // Easy Questions
   {
-    quizId: 'linkedlist',
     questionText: 'What is a linked list?',
     options: ['A linear data structure', 'A type of array', 'A database', 'A sorting algorithm'],
     correctAnswer: 'A linear data structure',
@@ -1128,7 +1007,6 @@ const linkedListQuestions = [
     marks: 1
   },
   {
-    quizId: 'linkedlist',
     questionText: 'What is the first node of a linked list called?',
     options: ['Head', 'Tail', 'Root', 'Start'],
     correctAnswer: 'Head',
@@ -1137,7 +1015,6 @@ const linkedListQuestions = [
     marks: 1
   },
   {
-    quizId: 'linkedlist',
     questionText: 'What is the last node of a linked list called?',
     options: ['Tail', 'Head', 'End', 'Root'],
     correctAnswer: 'Tail',
@@ -1146,7 +1023,6 @@ const linkedListQuestions = [
     marks: 1
   },
   {
-    quizId: 'linkedlist',
     questionText: 'What does each node in a linked list contain?',
     options: ['Data and a pointer', 'Only data', 'Only a pointer', 'Data and an index'],
     correctAnswer: 'Data and a pointer',
@@ -1155,7 +1031,6 @@ const linkedListQuestions = [
     marks: 1
   },
   {
-    quizId: 'linkedlist',
     questionText: 'What is a singly linked list?',
     options: ['A list where each node points to the next node', 'A list where each node points to the previous node', 'A list with two pointers', 'A circular list'],
     correctAnswer: 'A list where each node points to the next node',
@@ -1164,7 +1039,6 @@ const linkedListQuestions = [
     marks: 1
   },
   {
-    quizId: 'linkedlist',
     questionText: 'What is a doubly linked list?',
     options: ['A list where each node points to both the next and previous nodes', 'A list with only one pointer', 'A circular list', 'A list with no pointers'],
     correctAnswer: 'A list where each node points to both the next and previous nodes',
@@ -1173,7 +1047,6 @@ const linkedListQuestions = [
     marks: 1
   },
   {
-    quizId: 'linkedlist',
     questionText: 'What is the time complexity of inserting a node at the beginning of a linked list?',
     options: ['O(1)', 'O(n)', 'O(log n)', 'O(n^2)'],
     correctAnswer: 'O(1)',
@@ -1182,7 +1055,6 @@ const linkedListQuestions = [
     marks: 1
   },
   {
-    quizId: 'linkedlist',
     questionText: 'What is the time complexity of searching for an element in a linked list?',
     options: ['O(n)', 'O(1)', 'O(log n)', 'O(n^2)'],
     correctAnswer: 'O(n)',
@@ -1191,7 +1063,6 @@ const linkedListQuestions = [
     marks: 1
   },
   {
-    quizId: 'linkedlist',
     questionText: 'What is a circular linked list?',
     options: ['A list where the last node points to the first node', 'A list with no end', 'A list with two pointers', 'A doubly linked list'],
     correctAnswer: 'A list where the last node points to the first node',
@@ -1200,7 +1071,6 @@ const linkedListQuestions = [
     marks: 1
   },
   {
-    quizId: 'linkedlist',
     questionText: 'What is the advantage of a linked list over an array?',
     options: ['Dynamic size', 'Faster access', 'Less memory', 'None of the above'],
     correctAnswer: 'Dynamic size',
@@ -1211,7 +1081,6 @@ const linkedListQuestions = [
 
   // Medium Questions
   {
-    quizId: 'linkedlist',
     questionText: 'How do you reverse a linked list?',
     options: ['By changing the direction of pointers', 'By swapping data', 'By creating a new list', 'By sorting the list'],
     correctAnswer: 'By changing the direction of pointers',
@@ -1220,7 +1089,6 @@ const linkedListQuestions = [
     marks: 2
   },
   {
-    quizId: 'linkedlist',
     questionText: 'How do you detect a cycle in a linked list?',
     options: ['Using two pointers', 'By counting nodes', 'By checking null pointers', 'By sorting the list'],
     correctAnswer: 'Using two pointers',
@@ -1229,7 +1097,6 @@ const linkedListQuestions = [
     marks: 2
   },
   {
-    quizId: 'linkedlist',
     questionText: 'What is the time complexity of deleting a node in a linked list?',
     options: ['O(1)', 'O(n)', 'O(log n)', 'O(n^2)'],
     correctAnswer: 'O(1)',
@@ -1238,7 +1105,6 @@ const linkedListQuestions = [
     marks: 2
   },
   {
-    quizId: 'linkedlist',
     questionText: 'How do you merge two sorted linked lists?',
     options: ['By comparing nodes', 'By concatenating lists', 'By sorting the lists', 'By reversing one list'],
     correctAnswer: 'By comparing nodes',
@@ -1247,7 +1113,6 @@ const linkedListQuestions = [
     marks: 2
   },
   {
-    quizId: 'linkedlist',
     questionText: 'What is the space complexity of a linked list?',
     options: ['O(n)', 'O(1)', 'O(log n)', 'O(n^2)'],
     correctAnswer: 'O(n)',
@@ -1256,7 +1121,6 @@ const linkedListQuestions = [
     marks: 2
   },
   {
-    quizId: 'linkedlist',
     questionText: 'How do you find the middle element of a linked list?',
     options: ['Using two pointers', 'By counting nodes', 'By sorting the list', 'By reversing the list'],
     correctAnswer: 'Using two pointers',
@@ -1265,7 +1129,6 @@ const linkedListQuestions = [
     marks: 2
   },
   {
-    quizId: 'linkedlist',
     questionText: 'What is the time complexity of appending a node to the end of a singly linked list?',
     options: ['O(n)', 'O(1)', 'O(log n)', 'O(n^2)'],
     correctAnswer: 'O(n)',
@@ -1274,7 +1137,6 @@ const linkedListQuestions = [
     marks: 2
   },
   {
-    quizId: 'linkedlist',
     questionText: 'How do you remove duplicates from a linked list?',
     options: ['Using a hash set', 'By sorting the list', 'By reversing the list', 'By counting nodes'],
     correctAnswer: 'Using a hash set',
@@ -1283,7 +1145,6 @@ const linkedListQuestions = [
     marks: 2
   },
   {
-    quizId: 'linkedlist',
     questionText: 'What is the time complexity of searching for an element in a doubly linked list?',
     options: ['O(n)', 'O(1)', 'O(log n)', 'O(n^2)'],
     correctAnswer: 'O(n)',
@@ -1292,7 +1153,6 @@ const linkedListQuestions = [
     marks: 2
   },
   {
-    quizId: 'linkedlist',
     questionText: 'How do you split a linked list into two halves?',
     options: ['Using two pointers', 'By counting nodes', 'By sorting the list', 'By reversing the list'],
     correctAnswer: 'Using two pointers',
@@ -1303,7 +1163,6 @@ const linkedListQuestions = [
 
   // Hard Questions
   {
-    quizId: 'linkedlist',
     questionText: 'How do you detect and remove a cycle in a linked list?',
     options: ['Using two pointers', 'By counting nodes', 'By checking null pointers', 'By sorting the list'],
     correctAnswer: 'Using two pointers',
@@ -1312,7 +1171,6 @@ const linkedListQuestions = [
     marks: 3
   },
   {
-    quizId: 'linkedlist',
     questionText: 'How do you flatten a linked list?',
     options: ['By merging sublists', 'By sorting the list', 'By reversing the list', 'By concatenating lists'],
     correctAnswer: 'By merging sublists',
@@ -1321,7 +1179,6 @@ const linkedListQuestions = [
     marks: 3
   },
   {
-    quizId: 'linkedlist',
     questionText: 'How do you rotate a linked list?',
     options: ['By changing pointers', 'By sorting the list', 'By reversing the list', 'By concatenating lists'],
     correctAnswer: 'By changing pointers',
@@ -1330,7 +1187,6 @@ const linkedListQuestions = [
     marks: 3
   },
   {
-    quizId: 'linkedlist',
     questionText: 'How do you find the intersection point of two linked lists?',
     options: ['Using two pointers', 'By counting nodes', 'By sorting the lists', 'By reversing one list'],
     correctAnswer: 'Using two pointers',
@@ -1339,7 +1195,6 @@ const linkedListQuestions = [
     marks: 3
   },
   {
-    quizId: 'linkedlist',
     questionText: 'How do you clone a linked list with random pointers?',
     options: ['Using a hash map', 'By sorting the list', 'By reversing the list', 'By concatenating lists'],
     correctAnswer: 'Using a hash map',
@@ -1348,7 +1203,6 @@ const linkedListQuestions = [
     marks: 3
   },
   {
-    quizId: 'linkedlist',
     questionText: 'How do you reverse a doubly linked list?',
     options: ['By swapping pointers', 'By sorting the list', 'By reversing the list', 'By concatenating lists'],
     correctAnswer: 'By swapping pointers',
@@ -1357,7 +1211,6 @@ const linkedListQuestions = [
     marks: 3
   },
   {
-    quizId: 'linkedlist',
     questionText: 'How do you find the kth node from the end of a linked list?',
     options: ['Using two pointers', 'By counting nodes', 'By sorting the list', 'By reversing the list'],
     correctAnswer: 'Using two pointers',
@@ -1366,7 +1219,6 @@ const linkedListQuestions = [
     marks: 3
   },
   {
-    quizId: 'linkedlist',
     questionText: 'How do you check if two linked lists are identical?',
     options: ['By comparing nodes', 'By sorting the lists', 'By reversing one list', 'By concatenating lists'],
     correctAnswer: 'By comparing nodes',
@@ -1375,7 +1227,6 @@ const linkedListQuestions = [
     marks: 3
   },
   {
-    quizId: 'linkedlist',
     questionText: 'How do you find the length of a cycle in a linked list?',
     options: ['Using two pointers', 'By counting nodes', 'By checking null pointers', 'By sorting the list'],
     correctAnswer: 'Using two pointers',
@@ -1384,7 +1235,6 @@ const linkedListQuestions = [
     marks: 3
   },
   {
-    quizId: 'linkedlist',
     questionText: 'How do you sort a linked list?',
     options: ['Using merge sort', 'By swapping nodes', 'By reversing the list', 'By concatenating lists'],
     correctAnswer: 'Using merge sort',
@@ -1398,7 +1248,6 @@ const linkedListQuestions = [
 const arrayQuestions = [
   // Easy Questions
   {
-    quizId: 'array',
     questionText: 'What is an array?',
     options: ['A collection of elements', 'A single value', 'A function', 'A variable'],
     correctAnswer: 'A collection of elements',
@@ -1407,7 +1256,6 @@ const arrayQuestions = [
     marks: 1
   },
   {
-    quizId: 'array',
     questionText: 'How do you declare an array in JavaScript?',
     options: ['var arr = [];', 'var arr = {};', 'var arr = ();', 'var arr = <>;'],
     correctAnswer: 'var arr = [];',
@@ -1416,7 +1264,6 @@ const arrayQuestions = [
     marks: 1
   },
   {
-    quizId: 'array',
     questionText: 'What is the index of the first element in an array?',
     options: ['0', '1', '-1', 'None'],
     correctAnswer: '0',
@@ -1425,7 +1272,6 @@ const arrayQuestions = [
     marks: 1
   },
   {
-    quizId: 'array',
     questionText: 'How do you access the third element of an array named arr?',
     options: ['arr[2]', 'arr[3]', 'arr[1]', 'arr[0]'],
     correctAnswer: 'arr[2]',
@@ -1434,7 +1280,6 @@ const arrayQuestions = [
     marks: 1
   },
   {
-    quizId: 'array',
     questionText: 'What is the length of an array arr = [1, 2, 3]?',
     options: ['3', '2', '4', 'None'],
     correctAnswer: '3',
@@ -1443,7 +1288,6 @@ const arrayQuestions = [
     marks: 1
   },
   {
-    quizId: 'array',
     questionText: 'How do you add an element to the end of an array?',
     options: ['push()', 'pop()', 'shift()', 'unshift()'],
     correctAnswer: 'push()',
@@ -1452,7 +1296,6 @@ const arrayQuestions = [
     marks: 1
   },
   {
-    quizId: 'array',
     questionText: 'How do you remove the last element of an array?',
     options: ['pop()', 'push()', 'shift()', 'unshift()'],
     correctAnswer: 'pop()',
@@ -1461,7 +1304,6 @@ const arrayQuestions = [
     marks: 1
   },
   {
-    quizId: 'array',
     questionText: 'What is the output of the following code: console.log([1, 2, 3].length)?',
     options: ['3', '2', '4', 'None'],
     correctAnswer: '3',
@@ -1470,7 +1312,6 @@ const arrayQuestions = [
     marks: 1
   },
   {
-    quizId: 'array',
     questionText: 'How do you check if an array includes a specific element?',
     options: ['includes()', 'contains()', 'has()', 'exists()'],
     correctAnswer: 'includes()',
@@ -1479,7 +1320,6 @@ const arrayQuestions = [
     marks: 1
   },
   {
-    quizId: 'array',
     questionText: 'What is the output of the following code: console.log([].length)?',
     options: ['0', '1', 'undefined', 'None'],
     correctAnswer: '0',
@@ -1490,7 +1330,6 @@ const arrayQuestions = [
 
   // Medium Questions
   {
-    quizId: 'array',
     questionText: 'How do you merge two arrays in JavaScript?',
     options: ['concat()', 'merge()', 'combine()', 'append()'],
     correctAnswer: 'concat()',
@@ -1499,7 +1338,6 @@ const arrayQuestions = [
     marks: 2
   },
   {
-    quizId: 'array',
     questionText: 'How do you find the index of an element in an array?',
     options: ['indexOf()', 'findIndex()', 'search()', 'locate()'],
     correctAnswer: 'indexOf()',
@@ -1508,7 +1346,6 @@ const arrayQuestions = [
     marks: 2
   },
   {
-    quizId: 'array',
     questionText: 'What is the output of the following code: console.log([1, 2, 3].slice(1, 2))?',
     options: ['[2]', '[1, 2]', '[2, 3]', '[1]'],
     correctAnswer: '[2]',
@@ -1517,7 +1354,6 @@ const arrayQuestions = [
     marks: 2
   },
   {
-    quizId: 'array',
     questionText: 'How do you remove the first element of an array?',
     options: ['shift()', 'pop()', 'unshift()', 'push()'],
     correctAnswer: 'shift()',
@@ -1526,7 +1362,6 @@ const arrayQuestions = [
     marks: 2
   },
   {
-    quizId: 'array',
     questionText: 'What is the output of the following code: console.log([1, 2, 3].splice(1, 1))?',
     options: ['[2]', '[1, 2]', '[2, 3]', '[1]'],
     correctAnswer: '[2]',
@@ -1535,7 +1370,6 @@ const arrayQuestions = [
     marks: 2
   },
   {
-    quizId: 'array',
     questionText: 'How do you sort an array in ascending order?',
     options: ['sort()', 'order()', 'arrange()', 'sequence()'],
     correctAnswer: 'sort()',
@@ -1544,7 +1378,6 @@ const arrayQuestions = [
     marks: 2
   },
   {
-    quizId: 'array',
     questionText: 'What is the output of the following code: console.log([1, 2, 3].reverse())?',
     options: ['[3, 2, 1]', '[1, 2, 3]', '[2, 3, 1]', '[1, 3, 2]'],
     correctAnswer: '[3, 2, 1]',
@@ -1553,7 +1386,6 @@ const arrayQuestions = [
     marks: 2
   },
   {
-    quizId: 'array',
     questionText: 'How do you iterate over an array in JavaScript?',
     options: ['forEach()', 'map()', 'filter()', 'reduce()'],
     correctAnswer: 'forEach()',
@@ -1562,7 +1394,6 @@ const arrayQuestions = [
     marks: 2
   },
   {
-    quizId: 'array',
     questionText: 'What is the output of the following code: console.log([1, 2, 3].map(x => x * 2))?',
     options: ['[2, 4, 6]', '[1, 2, 3]', '[3, 6, 9]', '[1, 4, 9]'],
     correctAnswer: '[2, 4, 6]',
@@ -1571,7 +1402,6 @@ const arrayQuestions = [
     marks: 2
   },
   {
-    quizId: 'array',
     questionText: 'How do you filter elements of an array?',
     options: ['filter()', 'map()', 'reduce()', 'forEach()'],
     correctAnswer: 'filter()',
@@ -1582,7 +1412,6 @@ const arrayQuestions = [
 
   // Hard Questions
   {
-    quizId: 'array',
     questionText: 'How do you find the maximum value in an array?',
     options: ['Math.max(...arr)', 'arr.max()', 'max(arr)', 'Math.max(arr)'],
     correctAnswer: 'Math.max(...arr)',
@@ -1591,7 +1420,6 @@ const arrayQuestions = [
     marks: 3
   },
   {
-    quizId: 'array',
     questionText: 'How do you flatten a nested array?',
     options: ['flat()', 'flatten()', 'reduce()', 'concat()'],
     correctAnswer: 'flat()',
@@ -1600,7 +1428,6 @@ const arrayQuestions = [
     marks: 3
   },
   {
-    quizId: 'array',
     questionText: 'What is the output of the following code: console.log([1, [2, [3]]].flat(2))?',
     options: ['[1, 2, 3]', '[1, [2, 3]]', '[1, 2, [3]]', '[1, [2, [3]]]'],
     correctAnswer: '[1, 2, 3]',
@@ -1609,7 +1436,6 @@ const arrayQuestions = [
     marks: 3
   },
   {
-    quizId: 'array',
     questionText: 'How do you find the sum of all elements in an array?',
     options: ['reduce()', 'sum()', 'add()', 'accumulate()'],
     correctAnswer: 'reduce()',
@@ -1618,7 +1444,6 @@ const arrayQuestions = [
     marks: 3
   },
   {
-    quizId: 'array',
     questionText: 'How do you remove duplicates from an array?',
     options: ['new Set(arr)', 'filter()', 'map()', 'reduce()'],
     correctAnswer: 'new Set(arr)',
@@ -1627,7 +1452,6 @@ const arrayQuestions = [
     marks: 3
   },
   {
-    quizId: 'array',
     questionText: 'How do you shuffle elements of an array?',
     options: ['sort(() => Math.random() - 0.5)', 'shuffle()', 'randomize()', 'mix()'],
     correctAnswer: 'sort(() => Math.random() - 0.5)',
@@ -1636,7 +1460,6 @@ const arrayQuestions = [
     marks: 3
   },
   {
-    quizId: 'array',
     questionText: 'How do you find the intersection of two arrays?',
     options: ['filter()', 'map()', 'reduce()', 'concat()'],
     correctAnswer: 'filter()',
@@ -1645,7 +1468,6 @@ const arrayQuestions = [
     marks: 3
   },
   {
-    quizId: 'array',
     questionText: 'How do you rotate an array?',
     options: ['slice() and concat()', 'reverse()', 'sort()', 'splice()'],
     correctAnswer: 'slice() and concat()',
@@ -1654,7 +1476,6 @@ const arrayQuestions = [
     marks: 3
   },
   {
-    quizId: 'array',
     questionText: 'How do you find the kth largest element in an array?',
     options: ['sort() and index', 'filter()', 'map()', 'reduce()'],
     correctAnswer: 'sort() and index',
@@ -1663,7 +1484,6 @@ const arrayQuestions = [
     marks: 3
   },
   {
-    quizId: 'array',
     questionText: 'How do you partition an array into chunks of size n?',
     options: ['slice() in a loop', 'map()', 'filter()', 'reduce()'],
     correctAnswer: 'slice() in a loop',

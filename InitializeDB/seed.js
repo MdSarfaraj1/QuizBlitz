@@ -27,22 +27,34 @@ async function seedDatabase() {
     });
     //add admin id to quiz 
     const quizzes = initialQuizCategory.map(quiz => ({...quiz,createdBy: newAdmin._id}));
-    //insert the quize
-    const quiz = await Quiz.create(quizzes);
-    //add quize id to each 30 question 
-    const questionsWithQuizIds =initialQuestions.map((question, index) => {
-      const quizIndex = Math.floor(index / 30); // For every 30 questions
-    
-  
-        return {
-          ...question,
-          quizId: quiz[quizIndex]._id
-        };
+    const insertedQuizzes = await Quiz.insertMany(quizzes);
+    const questions = await Question.insertMany(initialQuestions);
 
-    }) 
-    
-    // insert the questions 
-    const questions = await Question.insertMany(questionsWithQuizIds);
+    //  assign questions to each quiz's levels
+    for (let i = 0; i <5; i++) {
+      const quizData = insertedQuizzes[i];
+      const quizQuestions = questions.filter((question, index) => {
+        const quizIndex = Math.floor(index / 30); // Every 30 questions belong to a different quiz
+        return quizIndex === i; 
+      });
+  
+      // Separate 10 questions for each level (easy, medium, hard)
+      const easyQuestions = quizQuestions.filter(q => q.level === 'easy').slice(0, 10);
+      const mediumQuestions = quizQuestions.filter(q => q.level === 'medium').slice(0, 10);
+      const hardQuestions = quizQuestions.filter(q => q.level === 'hard').slice(0, 10);
+  
+      // Update the quiz with questions for each level
+      await Quiz.updateOne(
+        { _id: quizData._id },
+        {
+          $push: {
+            'questions.easy': { $each: easyQuestions.map(q => q._id) },
+            'questions.medium': { $each: mediumQuestions.map(q => q._id) },
+            'questions.hard': { $each: hardQuestions.map(q => q._id) },
+          },
+        }
+      );
+    }
    
     console.log(" Seeded database successfully");
   } catch (err) {

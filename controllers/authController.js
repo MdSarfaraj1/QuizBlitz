@@ -1,18 +1,23 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { mailTransporter } = require('../utils/mailTransporter');
+const { mailTransporter } = require('../utills/mailTransporter');
+const isValidEmail= require('../utills/isValidEmail');
 
 exports.register = async (req, res) => {
   try {
     const data= req.body;
     if(!data.username||!data.password||!data.email)  //if bypassed the frontend
     return res.status(422).json({message:"Please provide all details"})
+    //check is email valid(incase bypass frontend check)
+    if(!isValidEmail(data.email)){
+      return res.status(422).json({message:"Please provide a valid email"})
+    }
     // Check if user already exists
      let existingUser = await User.findOne({
        $or: [{ email: data.email }, { username: data.username }],
      });
-
+ 
      if (existingUser) {
        const field = existingUser.email === data.email ? "email" : "username";
        return res
@@ -118,15 +123,13 @@ exports.updateProfile= async (req, res) => {
 }
 
 exports.getProfile=async (req, res) => {
-  const user = await User.findById(req.body.userID);
-  if (!user) {
-    return res.status(404).json({ message: "User not found" });
-  } else {
+  const user = req.user.userID; // as loggin middleware assigned the user to req 
+  console.log(user);
     res.status(200).json({
       username: user.username, 
       email: user.email,
-    });
-  }
+   
+  })
 }
 exports.verifyEmail = async (req, res) => {
    try{ 
@@ -142,6 +145,33 @@ exports.verifyEmail = async (req, res) => {
    res.status(200).json({OTP:otp})
    }catch (error) {
    console.error(error);
-   res.status(500).json({ message: "Error in password reset request" });
+   res.status(500).json({ message: "Error in verify email" });
  }
  }
+
+exports.getLeaderboard= async (req, res) => {
+  try {
+    const topUsers = await User.find({ role: 'user' })
+      .sort({ totalScore: -1 })
+      .limit(10)
+      .select('username totalScore');
+
+    // Find the rank of the current user
+    const allUsersSorted = await User.find({ role: 'user' })
+      .sort({ totalScore: -1 })
+      .select('_id');
+
+    const userRank = allUsersSorted.findIndex(u => u._id.toString() === req.user._id.toString()) + 1;
+    let currentUser=null
+if(!userRank<=10)
+{
+  currentUser = await User.findById(req.user._id).select('username totalScore');
+  currentUser = { ...currentUser.toObject(), rank: userRank };
+}
+    
+    res.status(200).json({toppers:topUsers,activeUser: currentUser });
+  } catch (error) {
+    console.error("Error fetching leaderboard:", error);
+    res.status(500).json({ message: "Failed to fetch leaderboard" });
+  }
+};
