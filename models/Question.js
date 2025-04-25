@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const MimeNode = require('nodemailer/lib/mime-node');
 
 const questionSchema = new mongoose.Schema({
   createdBy: {
@@ -11,7 +12,7 @@ const questionSchema = new mongoose.Schema({
   },
   options: {
     type: [String],
-    validate: [arrayLimit, '{PATH} must have 4 options'],
+   minLength: 2,
   },
   correctAnswer: {
     type: String,
@@ -30,9 +31,5 @@ const questionSchema = new mongoose.Schema({
 
 });
 
-// Helper to validate 4 options
-function arrayLimit(val) {
-  return val.length === 4;
-}
 
 module.exports = mongoose.model('Question', questionSchema);

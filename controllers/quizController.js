@@ -120,8 +120,8 @@ exports.getMyAttemptedQuizzes = async (req, res) => {
   }
 };
 
-router.post('/submit-quiz', async (req, res) => {
-  const {  quizId, score, wrongAnswers, timeTaken } = req.body;
+exports.submitQuiz= async (req, res) => {
+  const {  quizId, level, score, wrongAnswers, timeTaken } = req.body;
   const userId = req.user._id;
 
   try {
@@ -129,6 +129,7 @@ router.post('/submit-quiz', async (req, res) => {
     const newQuizResult = new QuizResult({
       userId, 
       quizId,
+      quizLevel: level,
       score,
       wrongAnswers,
       timeTaken
@@ -141,7 +142,7 @@ router.post('/submit-quiz', async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Error submitting quiz results', error });
   }
-});
+};
 
 
 exports.unsaveQuiz = async (req, res) => {
@@ -176,3 +177,100 @@ exports.unsaveQuiz = async (req, res) => {
     });
   }
 };
+
+
+
+exports.createQuiz = async (req, res) => {
+  try {
+    const { category, description, questions, } = req.body;
+
+    if (!questions) {
+      return res.status(400).json({ error: 'Questions are required.' });
+    }
+
+    // Initialize an object to hold question IDs by level
+    const questionIds = {
+      easy: [],
+      medium: [],
+      hard: [],
+    };
+
+    // Save each question and push its ID to the correct level
+    for (const q of questions) {
+      const newQuestion = new Question({
+        ...q,
+        level: q.level, // assuming level is in each question object
+        createdBy: req.user._id,
+      });
+      const savedQuestion = await newQuestion.save();
+      questionIds[q.level].push(savedQuestion._id);
+    }
+
+    // Create the quiz
+    const newQuiz = new Quiz({
+      category,
+      description,
+      createdBy: req.user._id,
+      questions: questionIds,
+    });
+
+    const savedQuiz = await newQuiz.save();
+
+    res.status(201).json({
+      message: 'Quiz created successfully',
+      quiz: savedQuiz
+    });
+  } catch (error) {
+    console.error('Error creating quiz:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+exports.updateQuiz = async (req, res) => {
+  try {
+    const quizId = req.params.id;
+    const { description, questions } = req.body;
+    const quiz = await Quiz.findById(quizId);
+    if (!quiz) {
+      return res.status(404).json({ error: 'Quiz not found' });
+    }
+
+    // Check if the quiz belongs to the logged-in user
+    if (quiz.createdBy.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ error: 'Unauthorized: You do not own this quiz' });
+    }
+
+    // Update fields
+    if (description) quiz.description = description;
+    if (questions) {
+      const questionIds = {
+        easy: [],
+        medium: [],
+        hard: [],
+      };
+
+      for (const q of questions) {
+        const newQuestion = new Question({
+          ...q,
+          level: q.level,
+          createdBy: req.user._id,
+        });
+        const savedQuestion = await newQuestion.save();
+        questionIds[q.level].push(savedQuestion._id);
+      }
+
+      quiz.questions = questionIds;
+    }
+
+    const updatedQuiz = await quiz.save();
+
+    res.status(200).json({
+      message: 'Quiz updated successfully',
+      quiz: updatedQuiz
+    });
+  } catch (error) {
+    console.error('Error updating quiz:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+

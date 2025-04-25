@@ -18,7 +18,7 @@ app.use(cookieParser());
 
 //Routes
 app.use("/Admin",AdminRouter);
-//app.use("/Quiz",QuizRouter);
+app.use("/Quiz",QuizRouter);
 app.use("/UserAuth",UserAuthRouter);
 app.use("/resetPassword", ResetPassword);
 

@@ -12,6 +12,11 @@ const quizResultSchema = new mongoose.Schema({
     ref: 'Quiz', 
     required: true
   },
+  quizLevel: {
+    type: String,
+    enum: ['easy', 'medium', 'hard'], 
+    required: true
+  },
   score: {
     type: Number,
     required: true

@@ -17,8 +17,8 @@ router.post('/submitQuiz',quizController.submitQuiz); //auto save
 router.delete('/unsave', isLoggedIn,quizController.unsaveQuiz);
 
 // Quiz creation and management (creator/admin)
-router.post('/', quizController.createQuiz);
-router.put('/:id',  quizController.updateQuiz);
-router.delete('/:id', quizController.deleteQuiz);
+router.post('/create', isLoggedIn,quizController.createQuiz);
+router.put('/update/:id',  quizController.updateQuiz);
+
 
 module.exports = router;
