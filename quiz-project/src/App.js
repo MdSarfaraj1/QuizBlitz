@@ -6,8 +6,10 @@ import Signup from './pages/signup';
 import Homepage from './pages/homepage';
 import ChooseTopic from './pages/topicselect';
 import SelectDifficulty from './pages/level';
-import ProfilePage from './pages/profile';
 import Quiz from './pages/quiz';
+import ProfilePage from './pages/profile';
+import UpdateProfile from './pages/update';
+import UploadPhoto from './pages/change-photo';
 
 const App = () => {
   return (
@@ -20,8 +22,10 @@ const App = () => {
         <Route path="/homepage" element={<Homepage />} />
         <Route path="/topicselect" element={<ChooseTopic />} />
         <Route path="/level" element={<SelectDifficulty />} />
-        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/quiz" element={<Quiz />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/update" element={<UpdateProfile />} />
+        <Route path="/change-photo" element={<UploadPhoto />} />
       </Routes>
     </Router>
   );
