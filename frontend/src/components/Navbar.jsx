@@ -1,11 +1,12 @@
-
-import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect , } from "react";
 import { Menu } from "lucide-react";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
+  const navigate=useNavigate();
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 20) {
@@ -35,7 +36,9 @@ const Navbar = () => {
           <a href="#features" className="text-gray-700 hover:text-myColour font-medium">Features</a>
           <a href="#how-it-works" className="text-gray-700 hover:text-myColour  font-medium">How It Works</a>
           <a href="#testimonials" className="text-gray-700 hover:text-myColour  font-medium">Testimonials</a>
-          <button className="bg-myColour hover:bg-accent/90 p-2 rounded-md text-white">Get Started</button>
+          <button className="bg-myColour hover:bg-myColour/90 p-2 rounded-md text-white" 
+          onClick={() => navigate("/login")}>
+          Get Started</button>
         </nav>
         {/* Mobile Menu */}
         <button
@@ -71,7 +74,7 @@ const Navbar = () => {
             >
               Testimonials
             </a>
-            <button className="bg-myColour hover:bg-myColour/90 w-full">
+            <button className="bg-myColour opacity-100 hover:opacity-95 py-1 rounded-md " onClick={() => navigate("/login")}>
               Get Started
             </button>
           </div>
