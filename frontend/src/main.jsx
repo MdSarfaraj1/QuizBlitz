@@ -1,10 +1,19 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
+import { createBrowserRouter, createRoutesFromElements, Route ,RouterProvider} from 'react-router-dom';
+import Layout from './layout/MainLayout';
+import Home from './pages/Home';
+import './index.css';// geenrate tailwind css file
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route element={<Layout />}>
+      <Route path="/" element={<Home />} />
+    </Route>
+  )
+);
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </StrictMode>,
 )
