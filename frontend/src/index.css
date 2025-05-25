@@ -13,13 +13,29 @@
   background: linear-gradient(135deg, #449ee7 0%, #d8e9ff 50%, #eee6ff 100%);
   min-height: 100vh;
 }
-.illustration-area {
+.illustration-login-area {
   background-image: url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');
   background-size: cover;
   background-position: center;
   position: relative;
 }
-.illustration-area::after {
+.illustration-signup-area {
+  background-image: url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.illustration-signup-area::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(146, 164, 247, 0.4) 0%, rgba(173, 135, 247, 0.4) 100%);
+  z-index: 1;
+}
+.illustration-login-area::after {
   content: '';
   position: absolute;
   top: 0;
@@ -38,5 +54,25 @@
 }
 
 .login-input-field{
-  @apply pl-10 pr-40 h-12 rounded-md border-purple-100 shadow-md transition-all focus:border-purple-300 focus:ring-2 focus:ring-blue-300/20
+  @apply pl-10 pr-40 h-12 rounded-full border-purple-300 shadow-md   focus:outline-none  focus:border-blue-300 focus:ring-2 focus:ring-blue-300/20
 }
+.signup-input{
+  @apply w-full border px-3 py-2 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400/20
+}
+.signup-label{
+  @apply text-sm font-semibold text-gray-600
+}
+.quiz-card {
+    @apply relative  overflow-hidden bg-white rounded-xl shadow-md border mt-5 transition-all hover:shadow-lg p-5;
+  }
+    .leaderboard-card {
+    @apply bg-white rounded-lg shadow-md transition-transform hover:shadow-lg hover:-translate-y-1;
+  }
+  
+  
+  .quiz-card-gradient {
+    @apply bg-gradient-to-br from-white to-quizDashboard-soft-bg;
+  }
+  .achievement-badge {
+    @apply flex items-center justify-center w-12 h-12 rounded-full border border-quizDashboard-primary/20;
+  }

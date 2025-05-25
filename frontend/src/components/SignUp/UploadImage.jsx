@@ -40,7 +40,7 @@ const UploadImage = ({ onAvatarChange }) => {
 
   return (
     <div className="flex flex-col items-center space-y-4">
-      <div className="relative group w-24 h-24 rounded-full overflow-hidden border-2 border-[#7c3bed] bg-gray-100">
+      <div className="relative group w-20 h-20 rounded-full overflow-hidden border-2 border-[#7c3bed] bg-gray-100">
         {avatarPreview ? (
           <img
             src={avatarPreview}
@@ -49,7 +49,7 @@ const UploadImage = ({ onAvatarChange }) => {
           />
         ) : (
           <div className="flex items-center justify-center w-full h-full text-gray-400 bg-gray-100">
-            <UserCircle className="w-12 h-12" />
+            <UserCircle className="w-8 h-8" />
           </div>
         )}
 

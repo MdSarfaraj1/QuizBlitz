@@ -31,7 +31,7 @@ const LoginPage = () => {
   return (
     <div className="login-background flex min-h-screen flex-col md:flex-row">
       {/* Illustration Area (hidden on mobile) */}
-      <div className="hidden md:block md:w-1/2 lg:w-7/12 illustration-area relative">
+      <div className="hidden md:block md:w-1/2 lg:w-7/12 illustration-login-area relative">
         <div className="absolute inset-0 z-10 flex items-center justify-center p-12">
           <div className="w-full max-w-md text-white">
             <h2 className="text-4xl font-bold mb-4">Welcome Back</h2>
@@ -55,7 +55,7 @@ const LoginPage = () => {
           </div>
           
           {/* Login Form */}
-          <div className="bg-white rounded-xl p-6 sm:p-8 shadow-md">
+          <div className="bg-white rounded-3xl p-5 h- sm:p-8 shadow-md">
             <h3 className="text-xl font-semibold text-gray-800 mb-6">Sign In</h3>
             
             <form onSubmit={handleLogin} className="space-y-5">
@@ -126,7 +126,7 @@ const LoginPage = () => {
               {/* Submit Button */}
               <button 
                 type="submit" 
-                className="w-full h-12 text-base bg-myColour/20 rounded-md font-medium shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all"
+                className="w-full h-12 text-base bg-myColour/20 rounded-full font-medium shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all"
               >
                 Sign In
               </button>
