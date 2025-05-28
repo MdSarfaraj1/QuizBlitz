@@ -1,6 +1,7 @@
 const Quiz = require("../models/Quiz");
 const User = require('../models/User');
 const QuizResult = require('../models/QuizResult'); 
+
 exports.getCategories=async (req,res)=>{
     try{
         const category=await Quiz.distinct('category');
@@ -14,6 +15,18 @@ exports.getCategories=async (req,res)=>{
     }
 }
 
+exports.getRandomQuizSets=async (req,res)=>{ 
+  try{
+       const randomSets= await Quiz.find({},{questions:0})
+         res.status(200).json({
+            randomSets:randomSets
+        })
+  }catch(e){
+        console.log("SOme error occured while fetchin the sets",e)
+        res.status(500).json({ message: "Failed to fetch category" });
+    }
+   
+}
 
 exports.getAllQuizzesOfACategory = async (req, res) => {
   try {

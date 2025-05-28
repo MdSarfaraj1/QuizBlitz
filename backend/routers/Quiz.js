@@ -7,12 +7,13 @@ const { isLoggedIn } = require('../middleware/middleware');
 // Public quiz endpoints
 router.get('/allCategories', quizController.getCategories);
 router.get('/category/allQuizzes',quizController.getAllQuizzesOfACategory)
+router.get('/getRandomQuizSets',quizController.getRandomQuizSets)
 router.get('start-quiz/:id', quizController.startQuiz);
-
-//endpoints , used by user to deal with quiz
-router.get('/userCreatedQuiz',isLoggedIn, quizController.getMyCreatedQuizzes);
+ 
+// //endpoints , used by user to deal with quiz
+// router.get('/userCreatedQuiz',isLoggedIn, quizController.getMyCreatedQuizzes);
 router.get('/userAttempedQuiz',isLoggedIn,quizController.getMyAttemptedQuizzes);
-router.get('/userSavedQuiz', isLoggedIn, quizController.getMySavedQuizzes);
+// router.get('/userSavedQuiz', isLoggedIn, quizController.getMySavedQuizzes);
 router.post('/submitQuiz',quizController.submitQuiz); //auto save
 router.delete('/unsave', isLoggedIn,quizController.unsaveQuiz);
 
