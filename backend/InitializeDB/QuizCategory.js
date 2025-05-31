@@ -1,277 +1,248 @@
 module.exports.initialQuizCategory = [
     {
-        category: 'JavaScript',
+        title: 'JavaScript',
         description: 'Basic JavaScript quiz covering variables, loops, and functions.',
-        
-        
+        icon: '🟨',
     },
     {
-        category: 'Python',
+        title: 'Python',
         description: 'Intermediate Python quiz focusing on data structures and algorithms.',
-        
-        
+        icon: '🐍',
     },
     {
-        category: 'MySQL',
+        title: 'MySQL',
         description: 'Intermediate MySQL quiz covering queries, joins, and database design.',
-        
+        icon: '🛢️',
     },
     {
-        category: 'MongoDB',
+        title: 'MongoDB',
         description: 'Quiz on MongoDB basics, aggregation framework, and NoSQL concepts.',
-        
+        icon: '🍃',
     },
     {
-        category: 'Linked List',
+        title: 'Linked List',
         description: 'Basic quiz on linked list operations like insertion, deletion, and traversal.',
-        
+        icon: '🔗',
     },
     {
-        category: 'Array',
+        title: 'Array',
         description: 'Quiz on array manipulation, searching, and sorting algorithms.',
-        
+        icon: '📚',
     },
     {
-        category: 'Stack',
+        title: 'Stack',
         description: 'Intermediate quiz on stack operations, applications, and implementation.',
-        
+        icon: '🗂️',
     },
     {
-        category: 'Queue',
+        title: 'Queue',
         description: 'Quiz on queue operations, circular queue, and priority queue.',
-        
+        icon: '📥',
     },
     {
-        category: 'Graph',
+        title: 'Graph',
         description: 'Advanced quiz on graph algorithms like BFS, DFS, and shortest path.',
-        
+        icon: '🕸️',
     },
     {
-        category: 'C',
+        title: 'C',
         description: 'Basic C programming quiz covering syntax, loops, and functions.',
-        
+        icon: '💻',
     },
     {
-        category: 'C++',
+        title: 'C++',
         description: 'Intermediate C++ quiz focusing on OOP concepts, STL, and algorithms.',
-        
-    },{
-        category: 'C',
-        description: 'Basic C programming quiz covering syntax, loops, and functions.',
-        
+        icon: '🧩',
     },
     {
-        category: 'C++',
-        description: 'Intermediate C++ quiz focusing on OOP concepts, STL, and algorithms.',
-        
-    },
-    {
-        category: 'Linux',
+        title: 'Linux',
         description: 'Advanced Linux quiz about shell scripting and system administration.',
-        
-        
+        icon: '🐧',
     },
     {
-        category: 'Operating Systems',
+        title: 'Operating Systems',
         description: 'Introduction to OS concepts like processes, threads, and memory management.',
-        
-        
+        icon: '🖥️',
     },
     {
-        category: 'Computer Networks',
+        title: 'Computer Networks',
         description: 'Advanced quiz on networking concepts like TCP/IP, DNS, routing protocols, and security.',
-        
-        
+        icon: '🌐',
     },
     {
-        category: 'Software Engineering',
+        title: 'Software Engineering',
         description: 'Quiz on software development methodologies, testing, and project management.',
-        
-        
+        icon: '🛠️',
     },
     {
-        category: 'Artificial Intelligence',
+        title: 'Artificial Intelligence',
         description: 'Advanced AI quiz focusing on machine learning, neural networks, and deep learning.',
-        
-        
+        icon: '🤖',
     },
     {
-        category: 'Cybersecurity',
+        title: 'Cybersecurity',
         description: 'Intermediate quiz on security protocols, encryption, and ethical hacking.',
-        
-        
+        icon: '🛡️',
     },
     {
-        category: 'Cloud Computing',
+        title: 'Cloud Computing',
         description: 'Quiz on cloud services, cloud architectures, and deployment models.',
-        
-        
+        icon: '☁️',
     },
     {
-        category: 'Blockchain',
+        title: 'Blockchain',
         description: 'Advanced quiz on blockchain technology, consensus algorithms, and cryptography.',
-        
-        
+        icon: '⛓️',
     },
     {
-        category: 'Big Data',
+        title: 'Big Data',
         description: 'Advanced quiz on big data technologies, data processing frameworks, and Hadoop.',
-        
-        
+        icon: '📊',
     },
     {
-        category: 'Web Development',
+        title: 'Web Development',
         description: 'Introduction to web development concepts like HTML, CSS, and JavaScript.',
-        
-        
+        icon: '🌍',
     },
     {
-        category: 'Mobile App Development',
+        title: 'Mobile App Development',
         description: 'Quiz on mobile app development using Android or iOS frameworks.',
-        
-        
+        icon: '📱',
     },
     {
-        category: 'Machine Learning',
+        title: 'Machine Learning',
         description: 'Advanced quiz on machine learning algorithms, model evaluation, and applications.',
-        
-        
+        icon: '🧠',
     },
     {
-        category: 'Parallel Computing',
+        title: 'Parallel Computing',
         description: 'Advanced quiz on parallel computing techniques, architectures, and algorithms.',
-        
-        
+        icon: '🧵',
     },
     {
-        category: 'Cryptography',
+        title: 'Cryptography',
         description: 'Intermediate quiz on encryption algorithms, hashing, and cryptographic protocols.',
-        
-        
+        icon: '🔒',
     },
     {
-        category: 'Computer Graphics',
+        title: 'Computer Graphics',
         description: 'Advanced quiz on computer graphics techniques, rendering, and 3D modeling.',
-        
-        
+        icon: '🎨',
     },
     {
-        category: 'Quantum Computing',
+        title: 'Quantum Computing',
         description: 'Advanced quiz on quantum algorithms, qubits, and quantum gates.',
-        
-        
+        icon: '⚛️',
     },
     {
-        category: 'Theory of Computation',
+        title: 'Theory of Computation',
         description: 'Quiz on automata theory, regular languages, and Turing machines.',
-        
-        
+        icon: '📖',
     },
     {
-        category: 'Compilers',
+        title: 'Compilers',
         description: 'Advanced quiz on compiler design, parsing techniques, and optimization.',
-        
+        icon: '📝',
     },
     {
-        category: 'Natural Language Processing',
+        title: 'Natural Language Processing',
         description: 'Advanced quiz on NLP techniques, tokenization, and sentiment analysis.',
-        
+        icon: '🗣️',
     },
     {
-        category: 'Robotics',
+        title: 'Robotics',
         description: 'Intermediate quiz on robot design, kinematics, and control systems.',
-        
+        icon: '🤖',
     },
     {
-        category: 'Augmented Reality',
+        title: 'Augmented Reality',
         description: 'Quiz on AR concepts, applications, and development frameworks.',
-        
+        icon: '🕶️',
     },
     {
-        category: 'Game Development',
+        title: 'Game Development',
         description: 'Intermediate quiz on game mechanics, engines, and interactive design.',
-        
+        icon: '🎮',
     },
     {
-        category: 'Distributed Systems',
+        title: 'Distributed Systems',
         description: 'Advanced quiz on distributed algorithms, consistency, and fault tolerance.',
-        
+        icon: '🛰️',
     },
     {
-        category: 'Edge Computing',
+        title: 'Edge Computing',
         description: 'Advanced quiz on edge computing architecture and applications.',
-        
+        icon: '🏞️',
     },
     {
-        category: 'IoT (Internet of Things)',
+        title: 'IoT (Internet of Things)',
         description: 'Intermediate quiz on IoT devices, protocols, and cloud integration.',
-        
+        icon: '📡',
     },
     {
-        category: 'Data Science',
+        title: 'Data Science',
         description: 'Advanced quiz on data analysis, visualization, and statistical modeling.',
-        
+        icon: '📈',
     },
     {
-        category: 'Computer Vision',
+        title: 'Computer Vision',
         description: 'Advanced quiz on image processing, feature extraction, and computer vision algorithms.',
-        
+        icon: '👁️',
     },
     {
-        category: 'Cloud Security',
+        title: 'Cloud Security',
         description: 'Intermediate quiz on securing cloud services, encryption, and identity management.',
-        
+        icon: '🔐',
     },
     {
-        category: 'Virtualization',
+        title: 'Virtualization',
         description: 'Quiz on virtualization technologies, hypervisors, and cloud computing integration.',
-        
+        icon: '🌀',
     },
     {
-        category: 'DevOps',
+        title: 'DevOps',
         description: 'Intermediate quiz on DevOps practices, CI/CD pipelines, and containerization.',
-        
+        icon: '🔄',
     },
     {
-        category: 'API Development',
+        title: 'API Development',
         description: 'Intermediate quiz on RESTful API design, endpoints, and security.',
-        
+        icon: '🔗',
     },
     {
-        category: 'Microservices',
+        title: 'Microservices',
         description: 'Advanced quiz on microservices architecture, containerization, and service orchestration.',
-        
+        icon: '🧬',
     },
     {
-        category: 'Agile Methodology',
+        title: 'Agile Methodology',
         description: 'Quiz on Agile practices, Scrum, and project management.',
-        
+        icon: '🏃‍♂️',
     },
     {
-        category: 'Version Control',
+        title: 'Version Control',
         description: 'Introduction to version control systems, focusing on Git and GitHub.',
-        
+        icon: '🗃️',
     },
     {
-        category: 'Rust',
+        title: 'Rust',
         description: 'Advanced Rust quiz on memory safety, ownership, and concurrency.',
-        
+        icon: '🦀',
     },
     {
-        category: 'Go',
+        title: 'Go',
         description: 'Intermediate Go quiz covering goroutines, channels, and standard library.',
-        
-        
+        icon: '🦫',
     },
     {
-        category: 'Swift',
+        title: 'Swift',
         description: 'Quiz on Swift programming for iOS development and SwiftUI basics.',
-        
+        icon: '🕊️',
     },
     {
-        category: 'Dynamic Programming',
+        title: 'Dynamic Programming',
         description: 'Advanced quiz on dynamic programming concepts like memoization, tabulation, and optimization problems.',
-        
+        icon: '🔁',
     },
 ];
 

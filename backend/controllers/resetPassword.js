@@ -5,9 +5,7 @@ const User = require("../models/User");
 exports.SendOTP=async (req, res) => {
   try {
     const { email } = req.body;
-    console.log(email)
     let user = await User.findOne({ email});
-    console.log(user)
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -15,7 +13,7 @@ exports.SendOTP=async (req, res) => {
     // generating reset token
     const resetToken = generateOTP();
     user.resetPasswordToken = resetToken;
-    user.resetPasswordExpires = Date.now() + 3600; // 1 mintues
+    user.resetPasswordExpires = Date.now() + 36000; // 1 mintues
     await user.save();
     //sending mmail
     const mailOptions = {
@@ -40,11 +38,11 @@ exports.SendOTP=async (req, res) => {
 exports.VerifyOTP=async (req, res) => {
   try {
     const { otp } = req.body;
+    console.log("otp is:",otp)
     const user = await User.findOne({
       resetPasswordToken: otp,
       resetPasswordExpires: { $gt: Date.now() },
     });
-
     if (!user) {
       return res.status(400).json({ message: "Invalid OTP" });
     }

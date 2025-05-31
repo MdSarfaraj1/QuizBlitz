@@ -8,6 +8,7 @@ const AdminRouter=require("./routers/Admin");
 const QuizRouter=require("./routers/Quiz");
 const UserAuthRouter=require("./routers/Authentication");
 const ResetPassword =require("./routers/forgetPassword")
+const Acheivement=require("./routers/Achievements")
 const connectDB = require("./configure/database");
 app.use(express.json());
 app.use(cors({
@@ -16,12 +17,15 @@ app.use(cors({
 }));
 app.use(cookieParser()); 
 
+let cachedQuiz = null;
+let lastQuizDate = null;
+
 //Routes
 app.use("/Admin",AdminRouter);
 app.use("/Quiz",QuizRouter);
-app.use("/UserAuth",UserAuthRouter);
+app.use("/User",UserAuthRouter);
 app.use("/resetPassword", ResetPassword);
-
+app.use("/Acheivement",Acheivement)
 
 // Connect to database and start server
 const startServer = async () => {

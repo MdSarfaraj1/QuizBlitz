@@ -2,17 +2,13 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { mailTransporter } = require('../utills/mailTransporter');
-const isValidEmail= require('../utills/isValidEmail');
 
 exports.register = async (req, res) => {
   try {
     const data= req.body;
     if(!data.username||!data.password||!data.email)  //if bypassed the frontend
     return res.status(422).json({message:"Please provide all details"})
-    //check is email valid(incase bypass frontend check)
-    if(!isValidEmail(data.email)){
-      return res.status(422).json({message:"Please provide a valid email"})
-    }
+   
     // Check if user already exists
      let existingUser = await User.findOne({
        $or: [{ email: data.email }, { username: data.username }],
@@ -55,7 +51,7 @@ exports.login = async (req, res) => {
           return res.status(400).json({
             message: "You are already logged in.",
           });
-        } catch (err) {
+        } catch (err) { 
           // Token is invalid or expired, continue with login
           res.clearCookie("sessionToken");
         }

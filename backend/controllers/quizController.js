@@ -1,10 +1,17 @@
-const Quiz = require("../models/Quiz");
+const QuizSets = require("../models/QuizSets");
+const Question = require("../models/Qustions");
 const User = require('../models/User');
 const QuizResult = require('../models/QuizResult'); 
+const Category=require('../models/Category')
+const { generateQuizOfTheDay }= require('../utills/getQuizOfTheDay');
+let cachedQuiz = null;
+let lastQuizDate = null;
 
 exports.getCategories=async (req,res)=>{
     try{
-        const category=await Quiz.distinct('category');
+      
+        const category=await Category.find({});
+        console.log("Fetching quiz categories",category);
         res.status(200).json({
             categories:category
         })
@@ -17,7 +24,7 @@ exports.getCategories=async (req,res)=>{
 
 exports.getRandomQuizSets=async (req,res)=>{ 
   try{
-       const randomSets= await Quiz.find({},{questions:0})
+       const randomSets= await QuizSets.find({},{questions:0})
          res.status(200).json({
             randomSets:randomSets
         })
@@ -32,7 +39,7 @@ exports.getAllQuizzesOfACategory = async (req, res) => {
   try {
    
     const { category } = req.body.category;
-    const quizzes = await Quiz.find({ category: category });
+    const quizzes = await QuizSets.find({ category: category });
 
     if (quizzes.length === 0) {
       return res.status(404).json({ message: "No quizzes found for this category" });
@@ -51,25 +58,54 @@ exports.getAllQuizzesOfACategory = async (req, res) => {
 
 exports.startQuiz = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    // Find the quiz by ID and ensure it's published
-    const quiz = await Quiz.findById(id)
-    .populate('questions.easy')
-    .populate('questions.medium')
-    .populate('questions.hard');
-
-    if (!quiz) {
-      return res.status(404).json({ message: 'Quiz not found' });
+    const { id: categoryId } = req.params;
+    const { difficulty, numberOfQuestions } = req.body;
+console.log("starting quiz")
+    const validDifficulties = ['easy', 'medium', 'hard'];
+    if (!validDifficulties.includes(difficulty)) {
+      return res.status(400).json({ message: 'Invalid difficulty level' });
+    }
+    // Fetch quiz set by category and populate all difficulty levels
+    const quizSet = await QuizSets.findOne({ category: categoryId })
+      .populate('questions.easy')
+      .populate('questions.medium')
+      .populate('questions.hard');
+    if (!quizSet) {
+      return res.status(404).json({ message: 'Quiz not found for this category' }); 
     }
 
-    res.status(200).json({ quiz: quiz });
+    // Decide which questions to use
+    let combinedQuestions = [];
+
+    if (numberOfQuestions <= 10) {
+      combinedQuestions = quizSet.questions[difficulty] || [];
+    } else {
+      if (difficulty === 'easy') {
+        combinedQuestions = [
+          ...quizSet.questions.easy,
+          ...quizSet.questions.medium
+        ];
+      } else {
+        combinedQuestions = [
+          ...quizSet.questions.medium,
+          ...quizSet.questions.hard
+        ];
+      }
+    }
+
+    // Shuffle and limit to requested number
+    combinedQuestions = combinedQuestions
+      .sort(() => 0.5 - Math.random())
+      .slice(0, numberOfQuestions);
+console.log("Starting quiz with questions:", combinedQuestions);
+    res.status(200).json({ questions: combinedQuestions,quizSetId: quizSet._id, difficulty });
 
   } catch (error) {
     console.error('Error starting quiz:', error);
     res.status(500).json({ message: 'Failed to start quiz' });
   }
 };
+
 
 exports.getMyCreatedQuizzes = async (req, res) => {
   try {
@@ -145,7 +181,7 @@ exports.submitQuiz= async (req, res) => {
       quizLevel: level,
       score,
       wrongAnswers,
-      timeTaken
+      timeTaken,
     });
 
     // Save the quiz result to the database
@@ -220,7 +256,7 @@ exports.createQuiz = async (req, res) => {
     }
 
     // Create the quiz
-    const newQuiz = new Quiz({
+    const newQuiz = new QuizSets({
       category,
       description,
       createdBy: req.user._id,
@@ -243,7 +279,7 @@ exports.updateQuiz = async (req, res) => {
   try {
     const quizId = req.params.id;
     const { description, questions } = req.body;
-    const quiz = await Quiz.findById(quizId);
+    const quiz = await QuizSets.findById(quizId);
     if (!quiz) {
       return res.status(404).json({ error: 'Quiz not found' });
     }
@@ -287,3 +323,22 @@ exports.updateQuiz = async (req, res) => {
   }
 };
 
+
+exports.quizOfTheDay= async (req, res) => {
+  try {
+    const today = new Date().toISOString().split('T')[0];
+
+    if (cachedQuiz && lastQuizDate === today) {
+      return res.json({ quiz: cachedQuiz });
+    }
+
+    const question = await generateQuizOfTheDay();
+
+    cachedQuiz = question;
+    lastQuizDate = today;
+    res.status(200).json({ quiz:question });
+  } catch (error) {
+    console.error("Error generating quiz:", error);
+    res.status(500).json({ error: "Failed to generate quiz question." });
+  }
+};

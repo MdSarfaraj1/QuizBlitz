@@ -3,20 +3,24 @@ const mongoose = require("mongoose");
 const connectDB = require("../configure/database");
 const{ initialQuizCategory}=require("./QuizCategory")
 const initialQuestions = require("./questions");
-console.log(process.env.admin_email)
+const achievementsData = require("./achievements");
 // import your models
-const Quiz = require("../models/Quiz");
+const QuizSets = require("../models/QuizSets");
 const Question = require("../models/Question");
 const User = require("../models/User");
+const Category = require("../models/Category");
+const Achievement = require("../models/Achievement");
 
 async function seedDatabase() {
   await connectDB();
 
   try {
     //  Clear old data first
-    await Quiz.deleteMany({});
+    await QuizSets.deleteMany({});
     await Question.deleteMany({});
     await User.deleteMany({});
+    await Category.deleteMany({});
+    await Achievement.deleteMany({});
 
     //insert new data
     const newAdmin = await User.create({
@@ -26,9 +30,18 @@ async function seedDatabase() {
       role: 'admin',
     });
     //add admin id to quiz 
-    const quizzes = initialQuizCategory.map(quiz => ({...quiz,createdBy: newAdmin._id}));
-    const insertedQuizzes = await Quiz.insertMany(quizzes);
-    const questions = await Question.insertMany(initialQuestions);
+    const categories=await Category.insertMany(initialQuizCategory)
+    console.log("Categories seeded:", categories);
+     const questions = await Question.insertMany(initialQuestions);
+   const quizsets = categories.slice(0, 5).map((category, index) => ({
+  category: category._id,
+  description: `Quiz Set ${index + 1}`, // You can customize description
+  createdBy: newAdmin._id,
+}));
+
+// Step 3: Insert quiz sets
+const insertedQuizzes = await QuizSets.insertMany(quizsets);
+   
 
     //  assign questions to each quiz's levels
     for (let i = 0; i <5; i++) {
@@ -44,7 +57,7 @@ async function seedDatabase() {
       const hardQuestions = quizQuestions.filter(q => q.level === 'hard').slice(0, 10);
   
       // Update the quiz with questions for each level
-      await Quiz.updateOne(
+      await QuizSets.updateOne(
         { _id: quizData._id },
         {
           $push: {
@@ -55,7 +68,7 @@ async function seedDatabase() {
         }
       );
     }
-   
+    await Achievement.insertMany(achievementsData);
     console.log(" Seeded database successfully");
   } catch (err) {
     console.error(" Error seeding:", err);
