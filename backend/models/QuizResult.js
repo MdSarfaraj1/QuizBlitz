@@ -12,15 +12,11 @@ const quizResultSchema = new mongoose.Schema({
     ref: 'Quiz', 
     required: true
   },
-  quizLevel: {
-    type: String,
-    enum: ['easy', 'medium', 'hard'], 
-    required: true
-  },
-  score: {
+  scoreObtained: {
     type: Number,
     required: true
   },
+  correctAnswers: Number,
   wrongAnswers: {
     type: Number,
     required: true
@@ -29,10 +25,16 @@ const quizResultSchema = new mongoose.Schema({
     type: Number, 
     required: true
   },
-  submittedAt: {
+  submissionDate: {
     type: Date,
     default: Date.now
-  }
+  },
+   learnLaterQuestions: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Question', 
+      required: true
+   }],
+
 });
 
 const QuizResult = mongoose.model('QuizResult', quizResultSchema);

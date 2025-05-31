@@ -9,7 +9,8 @@ const questions = [
      
     hint: 'It starts with console.',
     level: 'easy',
-  marks:1 },
+  marks:1,
+  category: 'JavaScript' },
   {
     questionText: 'Which of the following is a JavaScript data type?',
     options: ['String', 'Number', 'Boolean', 'All of the above'],
@@ -17,7 +18,8 @@ const questions = [
      
     hint: 'JavaScript supports multiple data types.',
     level: 'easy',
-  marks:1 },
+  marks:1,
+  category: 'JavaScript' },
   {
     questionText: 'How do you declare a variable in JavaScript?',
     options: ['var', 'let', 'const', 'All of the above'],
@@ -25,7 +27,8 @@ const questions = [
      
     hint: 'JavaScript has multiple ways to declare variables.',
     level: 'easy',
-  marks:1 },
+  marks:1,
+  category: 'JavaScript' },
   {
     questionText: 'Which company developed JavaScript?',
     options: ['Microsoft', 'Netscape', 'Google', 'Sun Microsystems'],
@@ -33,7 +36,8 @@ const questions = [
      
     hint: 'It was developed for web browsers.',
     level: 'easy',
-  marks:1 },
+  marks:1,
+  category: 'JavaScript' },
   {
     questionText: 'What is the correct way to write a JavaScript array?',
     options: ['var colors = (1:"red", 2:"green", 3:"blue")', 'var colors = ["red", "green", "blue"]', 'var colors = "red", "green", "blue"', 'var colors = {"red", "green", "blue"}'],
@@ -41,7 +45,8 @@ const questions = [
      
     hint: 'Arrays use square brackets.',
     level: 'easy',
-  marks:1 },
+  marks:1,
+  category: 'JavaScript' },
   {
     questionText: 'How do you call a function named myFunction in JavaScript?',
     options: ['call myFunction()', 'myFunction()', 'call function myFunction()', 'Call.myFunction()'],
@@ -49,7 +54,8 @@ const questions = [
      
     hint: 'Functions are called using parentheses.',
     level: 'easy',
-  marks:1 },
+  marks:1,
+  category: 'JavaScript' },
   {
     questionText: 'Which event occurs when the user clicks on an HTML element?',
     options: ['onchange', 'onclick', 'onmouseover', 'onmouseclick'],
@@ -57,7 +63,8 @@ const questions = [
      
     hint: 'It starts with "on".',
     level: 'easy',
-  marks:1 },
+  marks:1,
+  category: 'JavaScript' },
   {
     questionText: 'How do you add a comment in JavaScript?',
     options: ['<!-- This is a comment -->', '// This is a comment', '/* This is a comment */', '** This is a comment **'],
@@ -65,7 +72,8 @@ const questions = [
      
     hint: 'It starts with two slashes.',
     level: 'easy',
-  marks:1 },
+  marks:1,
+  category: 'JavaScript' },
   {
     questionText: 'What is the correct way to write a JavaScript object?',
     options: ['var obj = {name: "John", age: 30}', 'var obj = (name: "John", age: 30)', 'var obj = [name: "John", age: 30]', 'var obj = "name: John, age: 30"'],
@@ -73,7 +81,8 @@ const questions = [
      
     hint: 'Objects use curly braces.',
     level: 'easy',
-  marks:1 },
+  marks:1,
+  category: 'JavaScript' },
   {
     questionText: 'What is the output of the following code: console.log(1 + "1")?',
     options: ['2', '11', 'undefined', 'NaN'],
@@ -81,7 +90,8 @@ const questions = [
      
     hint: 'It performs string concatenation.',
     level: 'easy',
-  marks:1 },
+  marks:1,
+  category: 'JavaScript' },
 
   // Medium Questions
   {
@@ -91,7 +101,8 @@ const questions = [
      
     hint: 'It is a known bug in JavaScript.',
     level: 'medium',
-  marks:2 },
+  marks:2,
+  category: 'JavaScript' },
   {
     questionText: 'Which method is used to add an element to the end of an array in JavaScript?',
     options: ['push()', 'pop()', 'shift()', 'unshift()'],
@@ -99,7 +110,8 @@ const questions = [
      
     hint: 'It is a common array method.',
     level: 'medium',
-  marks:2 },
+  marks:2,
+  category: 'JavaScript' },
   {
     questionText: 'What is the purpose of the JavaScript isNaN() function?',
     options: ['To check if a value is NaN', 'To check if a value is a number', 'To convert a value to NaN', 'None of the above'],
@@ -107,7 +119,8 @@ const questions = [
      
     hint: 'It checks for Not-a-Number.',
     level: 'medium',
-  marks:2 },
+  marks:2,
+  category: 'JavaScript' },
   {
     questionText: 'What is the output of the following code: console.log([] + []);',
     options: ['""', '[]', 'undefined', 'NaN'],
@@ -115,7 +128,8 @@ const questions = [
      
     hint: 'It concatenates two empty arrays.',
     level: 'medium',
-  marks:2 },
+  marks:2,
+  category: 'JavaScript' },
   {
     questionText: 'Which keyword is used to define a constant in JavaScript?',
     options: ['let', 'var', 'const', 'constant'],
@@ -123,7 +137,8 @@ const questions = [
      
     hint: 'It is a reserved keyword.',
     level: 'medium',
-  marks:2 },
+  marks:2,
+  category: 'JavaScript' },
   {
     questionText: 'What is the purpose of the JavaScript map() function?',
     options: ['To iterate over an array', 'To transform each element of an array', 'To filter elements of an array', 'To find an element in an array'],
@@ -131,7 +146,8 @@ const questions = [
      
     hint: 'It creates a new array.',
     level: 'medium',
-  marks:2 },
+  marks:2,
+  category: 'JavaScript' },
   {
     questionText: 'What is the output of the following code: console.log(typeof NaN);',
     options: ['number', 'NaN', 'undefined', 'string'],
@@ -139,7 +155,8 @@ const questions = [
      
     hint: 'NaN is a special value in JavaScript.',
     level: 'medium',
-  marks:2 },
+  marks:2,
+  category: 'JavaScript' },
   {
     questionText: 'Which method is used to remove the last element of an array in JavaScript?',
     options: ['pop()', 'push()', 'shift()', 'unshift()'],
@@ -147,7 +164,8 @@ const questions = [
      
     hint: 'It modifies the original array.',
     level: 'medium',
-  marks:2 },
+  marks:2,
+  category: 'JavaScript' },
   {
     questionText: 'What is the output of the following code: console.log(1 == "1");',
     options: ['true', 'false', 'undefined', 'NaN'],
@@ -155,7 +173,8 @@ const questions = [
      
     hint: 'It performs type coercion.',
     level: 'medium',
-  marks:2 },
+  marks:2,
+  category: 'JavaScript' },
   {
     questionText: 'What is the purpose of the JavaScript reduce() function?',
     options: ['To reduce the size of an array', 'To apply a function to each element and accumulate a result', 'To filter elements of an array', 'To find the maximum value in an array'],
@@ -163,7 +182,8 @@ const questions = [
      
     hint: 'It reduces an array to a single value.',
     level: 'medium',
-  marks:2 },
+  marks:2,
+  category: 'JavaScript' },
 
   // Hard Questions
   {
@@ -173,7 +193,8 @@ const questions = [
      
     hint: 'One checks type as well.',
     level: 'hard',
-  marks:3 },
+  marks:3,
+  category: 'JavaScript' },
   {
     questionText: 'What is a closure in JavaScript?',
     options: ['A function having access to its outer scope', 'A function without parameters', 'A function that returns another function', 'None of the above'],
@@ -181,7 +202,8 @@ const questions = [
      
     hint: 'It is related to scope.',
     level: 'hard',
-  marks:3 },
+  marks:3,
+  category: 'JavaScript' },
   {
     questionText: 'What is the output of the following code: console.log(0.1 + 0.2 === 0.3)?',
     options: ['true', 'false', 'undefined', 'NaN'],
@@ -189,7 +211,8 @@ const questions = [
      
     hint: 'It is due to floating-point precision.',
     level: 'hard',
-  marks:3 },
+  marks:3,
+  category: 'JavaScript' },
   {
     questionText: 'What is the output of the following code: console.log([] == ![]);',
     options: ['true', 'false', 'undefined', 'NaN'],
@@ -197,7 +220,8 @@ const questions = [
      
     hint: 'It involves type coercion and logical negation.',
     level: 'hard',
-  marks:3 },
+  marks:3,
+  category: 'JavaScript' },
   {
     questionText: 'What is the purpose of the JavaScript bind() method?',
     options: ['To bind an event to an element', 'To create a new function with a specific this value', 'To call a function immediately', 'To apply a function to an array'],
@@ -205,7 +229,8 @@ const questions = [
      
     hint: 'It is used to set the this context.',
     level: 'hard',
-  marks:3 },
+  marks:3,
+  category: 'JavaScript' },
   {
     questionText: 'What is the output of the following code: console.log(typeof function(){});',
     options: ['function', 'object', 'undefined', 'string'],
@@ -213,7 +238,8 @@ const questions = [
      
     hint: 'Functions are first-class objects in JavaScript.',
     level: 'hard',
-  marks:3 },
+  marks:3,
+  category: 'JavaScript' },
   {
     questionText: 'What is the purpose of the JavaScript Object.freeze() method?',
     options: ['To prevent adding new properties to an object', 'To make an object immutable', 'To delete all properties of an object', 'To clone an object'],
@@ -221,7 +247,8 @@ const questions = [
      
     hint: 'It prevents modification of an object.',
     level: 'hard',
-  marks:3 },
+  marks:3,
+  category: 'JavaScript' },
   {
     questionText: 'What is the output of the following code: console.log(0.1 + 0.2);',
     options: ['0.3', '0.30000000000000004', 'undefined', 'NaN'],
@@ -229,7 +256,8 @@ const questions = [
      
     hint: 'It is due to floating-point precision.',
     level: 'hard',
-  marks:3 },
+  marks:3,
+  category: 'JavaScript' },
   {
     questionText: 'What is the purpose of the JavaScript async/await syntax?',
     options: ['To handle asynchronous operations', 'To create promises', 'To define a function', 'To loop through an array'],
@@ -237,7 +265,8 @@ const questions = [
      
     hint: 'It is used with promises.',
     level: 'hard',
-  marks:3 },
+  marks:3,
+  category: 'JavaScript' },
   {
     questionText: 'What is the output of the following code: console.log(typeof Symbol());',
     options: ['symbol', 'object', 'undefined', 'string'],
@@ -245,19 +274,18 @@ const questions = [
      
     hint: 'It is a unique primitive type.',
     level: 'hard',
-  marks:3 },
-];
+  marks:3,
+  category: 'JavaScript' },
 
-// Adding 30 Python questions (10 easy, 10 medium, 10 hard)
-const pythonQuestions = [
-  // Easy Questions
+  // Easy Questions - Python
   {
     questionText: 'What is the correct file extension for Python files?',
     options: ['.py', '.python', '.pt', '.pyt'],
     correctAnswer: '.py',
     hint: 'It is a two-letter extension.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'Python'
   },
   {
     questionText: 'Which keyword is used to define a function in Python?',
@@ -265,7 +293,8 @@ const pythonQuestions = [
     correctAnswer: 'def',
     hint: 'It is a three-letter keyword.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'Python'
   },
   {
     questionText: 'How do you print a message in Python?',
@@ -273,7 +302,8 @@ const pythonQuestions = [
     correctAnswer: 'print("message")',
     hint: 'It starts with print.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'Python'
   },
   {
     questionText: 'Which of the following is a Python data type?',
@@ -281,7 +311,8 @@ const pythonQuestions = [
     correctAnswer: 'All of the above',
     hint: 'Python supports multiple data types.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'Python'
   },
   {
     questionText: 'How do you start a comment in Python?',
@@ -289,7 +320,8 @@ const pythonQuestions = [
     correctAnswer: '# This is a comment',
     hint: 'It starts with a hash symbol.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'Python'
   },
   {
     questionText: 'What is the output of the following code: print(2 + 3)?',
@@ -297,7 +329,8 @@ const pythonQuestions = [
     correctAnswer: '5',
     hint: 'It performs addition.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'Python'
   },
   {
     questionText: 'Which keyword is used to create a loop in Python?',
@@ -305,7 +338,8 @@ const pythonQuestions = [
     correctAnswer: 'for',
     hint: 'It is a three-letter keyword.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'Python'
   },
   {
     questionText: 'What is the correct way to create a list in Python?',
@@ -313,7 +347,8 @@ const pythonQuestions = [
     correctAnswer: 'list = [1, 2, 3]',
     hint: 'Lists use square brackets.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'Python'
   },
   {
     questionText: 'Which function is used to get the length of a list in Python?',
@@ -321,7 +356,8 @@ const pythonQuestions = [
     correctAnswer: 'len()',
     hint: 'It is a three-letter function.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'Python'
   },
   {
     questionText: 'What is the output of the following code: print("Hello" + " World")?',
@@ -329,17 +365,19 @@ const pythonQuestions = [
     correctAnswer: 'Hello World',
     hint: 'It concatenates strings.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'Python'
   },
 
-  // Medium Questions
+  // Medium Questions - Python
   {
     questionText: 'What is the output of the following code: print(type(5))?',
     options: ['int', 'float', 'str', 'None'],
     correctAnswer: 'int',
     hint: 'It is an integer type.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'Python'
   },
   {
     questionText: 'Which method is used to add an element to the end of a list in Python?',
@@ -347,7 +385,8 @@ const pythonQuestions = [
     correctAnswer: 'append()',
     hint: 'It is a common list method.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'Python'
   },
   {
     questionText: 'What is the purpose of the Python range() function?',
@@ -355,7 +394,8 @@ const pythonQuestions = [
     correctAnswer: 'To create a sequence of numbers',
     hint: 'It generates numbers.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'Python'
   },
   {
     questionText: 'What is the output of the following code: print(10 // 3)?',
@@ -363,7 +403,8 @@ const pythonQuestions = [
     correctAnswer: '3',
     hint: 'It performs floor division.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'Python'
   },
   {
     questionText: 'Which keyword is used to handle exceptions in Python?',
@@ -371,7 +412,8 @@ const pythonQuestions = [
     correctAnswer: 'except',
     hint: 'It is used with try.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'Python'
   },
   {
     questionText: 'What is the output of the following code: print("5" * 3)?',
@@ -379,7 +421,8 @@ const pythonQuestions = [
     correctAnswer: '555',
     hint: 'It repeats the string.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'Python'
   },
   {
     questionText: 'Which method is used to remove an element from a list in Python?',
@@ -387,7 +430,8 @@ const pythonQuestions = [
     correctAnswer: 'remove()',
     hint: 'It modifies the original list.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'Python'
   },
   {
     questionText: 'What is the output of the following code: print(2 ** 3)?',
@@ -395,7 +439,8 @@ const pythonQuestions = [
     correctAnswer: '8',
     hint: 'It performs exponentiation.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'Python'
   },
   {
     questionText: 'What is the purpose of the Python zip() function?',
@@ -403,7 +448,8 @@ const pythonQuestions = [
     correctAnswer: 'To combine two lists into tuples',
     hint: 'It pairs elements.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'Python'
   },
   {
     questionText: 'What is the output of the following code: print(len("Hello"))?',
@@ -411,17 +457,19 @@ const pythonQuestions = [
     correctAnswer: '5',
     hint: 'It counts the characters.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'Python'
   },
 
-  // Hard Questions
+  // Hard Questions - Python
   {
     questionText: 'What is a Python decorator?',
     options: ['A function that modifies another function', 'A function without parameters', 'A function that returns another function', 'None of the above'],
     correctAnswer: 'A function that modifies another function',
     hint: 'It is related to functions.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'Python'
   },
   {
     questionText: 'What is the output of the following code: print(0.1 + 0.2 == 0.3)?',
@@ -429,7 +477,8 @@ const pythonQuestions = [
     correctAnswer: 'False',
     hint: 'It is due to floating-point precision.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'Python'
   },
   {
     questionText: 'What is the purpose of the Python @staticmethod decorator?',
@@ -437,7 +486,8 @@ const pythonQuestions = [
     correctAnswer: 'To define a static method',
     hint: 'It is used in classes.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'Python'
   },
   {
     questionText: 'What is the output of the following code: print(type(lambda x: x))?',
@@ -445,7 +495,8 @@ const pythonQuestions = [
     correctAnswer: 'function',
     hint: 'Lambdas are functions.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'Python'
   },
   {
     questionText: 'What is the purpose of the Python with statement?',
@@ -453,7 +504,8 @@ const pythonQuestions = [
     correctAnswer: 'To manage resources',
     hint: 'It is used with files.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'Python'
   },
   {
     questionText: 'What is the output of the following code: print({1, 2, 3} & {2, 3, 4})?',
@@ -461,7 +513,8 @@ const pythonQuestions = [
     correctAnswer: '{2, 3}',
     hint: 'It performs set intersection.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'Python'
   },
   {
     questionText: 'What is the purpose of the Python super() function?',
@@ -469,7 +522,8 @@ const pythonQuestions = [
     correctAnswer: 'To call a parent class method',
     hint: 'It is used in inheritance.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'Python'
   },
   {
     questionText: 'What is the output of the following code: print(sorted([3, 1, 2]))?',
@@ -477,7 +531,8 @@ const pythonQuestions = [
     correctAnswer: '[1, 2, 3]',
     hint: 'It sorts the list.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'Python'
   },
   {
     questionText: 'What is the purpose of the Python __init__ method?',
@@ -485,7 +540,8 @@ const pythonQuestions = [
     correctAnswer: 'To initialize an object',
     hint: 'It is a constructor.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'Python'
   },
   {
     questionText: 'What is the output of the following code: print({x: x**2 for x in range(3)})?',
@@ -493,20 +549,17 @@ const pythonQuestions = [
     correctAnswer: '{0: 0, 1: 1, 2: 4}',
     hint: 'It creates a dictionary.',
     level: 'hard',
-    marks: 3
-  }
-];
-
-// Adding 30 MySQL questions (10 easy, 10 medium, 10 hard)
-const mysqlQuestions = [
-  // Easy Questions
+    marks: 3,
+    category: 'Python'
+  },
   {
     questionText: 'What does SQL stand for?',
     options: ['Structured Query Language', 'Simple Query Language', 'Structured Question Language', 'Simple Question Language'],
     correctAnswer: 'Structured Query Language',
     hint: 'It is used to interact with databases.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'MySQL'
   },
   {
     questionText: 'Which command is used to retrieve data from a database?',
@@ -514,7 +567,8 @@ const mysqlQuestions = [
     correctAnswer: 'SELECT',
     hint: 'It is used to fetch data.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'MySQL'
   },
   {
     questionText: 'Which keyword is used to sort the result-set in SQL?',
@@ -522,7 +576,8 @@ const mysqlQuestions = [
     correctAnswer: 'ORDER BY',
     hint: 'It orders the rows.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'MySQL'
   },
   {
     questionText: 'Which SQL statement is used to insert new data in a database?',
@@ -530,7 +585,8 @@ const mysqlQuestions = [
     correctAnswer: 'INSERT INTO',
     hint: 'It starts with INSERT.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'MySQL'
   },
   {
     questionText: 'Which SQL statement is used to update data in a database?',
@@ -538,7 +594,8 @@ const mysqlQuestions = [
     correctAnswer: 'UPDATE',
     hint: 'It modifies existing data.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'MySQL'
   },
   {
     questionText: 'Which SQL statement is used to delete data from a database?',
@@ -546,7 +603,8 @@ const mysqlQuestions = [
     correctAnswer: 'DELETE',
     hint: 'It removes rows.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'MySQL'
   },
   {
     questionText: 'Which SQL function is used to count the number of rows in a table?',
@@ -554,7 +612,8 @@ const mysqlQuestions = [
     correctAnswer: 'COUNT()',
     hint: 'It starts with COUNT.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'MySQL'
   },
   {
     questionText: 'Which SQL clause is used to filter records?',
@@ -562,7 +621,8 @@ const mysqlQuestions = [
     correctAnswer: 'WHERE',
     hint: 'It specifies conditions.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'MySQL'
   },
   {
     questionText: 'Which SQL statement is used to create a new table?',
@@ -570,7 +630,8 @@ const mysqlQuestions = [
     correctAnswer: 'CREATE TABLE',
     hint: 'It starts with CREATE.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'MySQL'
   },
   {
     questionText: 'Which SQL keyword is used to retrieve unique values?',
@@ -578,17 +639,19 @@ const mysqlQuestions = [
     correctAnswer: 'DISTINCT',
     hint: 'It removes duplicates.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'MySQL'
   },
 
-  // Medium Questions
+  // Medium Questions - MySQL
   {
     questionText: 'What is the default port for MySQL?',
     options: ['3306', '1433', '1521', '5432'],
     correctAnswer: '3306',
     hint: 'It is a four-digit number.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'MySQL'
   },
   {
     questionText: 'Which SQL clause is used to group rows that have the same values?',
@@ -596,7 +659,8 @@ const mysqlQuestions = [
     correctAnswer: 'GROUP BY',
     hint: 'It groups rows.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'MySQL'
   },
   {
     questionText: 'Which SQL statement is used to create a database?',
@@ -604,7 +668,8 @@ const mysqlQuestions = [
     correctAnswer: 'CREATE DATABASE',
     hint: 'It starts with CREATE.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'MySQL'
   },
   {
     questionText: 'Which SQL function is used to calculate the sum of a column?',
@@ -612,7 +677,8 @@ const mysqlQuestions = [
     correctAnswer: 'SUM()',
     hint: 'It starts with SUM.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'MySQL'
   },
   {
     questionText: 'Which SQL keyword is used to specify a condition for aggregate functions?',
@@ -620,7 +686,8 @@ const mysqlQuestions = [
     correctAnswer: 'HAVING',
     hint: 'It is used with GROUP BY.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'MySQL'
   },
   {
     questionText: 'Which SQL command is used to remove a table from a database?',
@@ -628,7 +695,8 @@ const mysqlQuestions = [
     correctAnswer: 'DROP TABLE',
     hint: 'It starts with DROP.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'MySQL'
   },
   {
     questionText: 'Which SQL statement is used to modify the structure of a table?',
@@ -636,7 +704,8 @@ const mysqlQuestions = [
     correctAnswer: 'ALTER TABLE',
     hint: 'It starts with ALTER.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'MySQL'
   },
   {
     questionText: 'Which SQL keyword is used to combine rows from two or more tables?',
@@ -644,7 +713,8 @@ const mysqlQuestions = [
     correctAnswer: 'JOIN',
     hint: 'It is used to combine tables.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'MySQL'
   },
   {
     questionText: 'Which SQL function is used to find the maximum value in a column?',
@@ -652,7 +722,8 @@ const mysqlQuestions = [
     correctAnswer: 'MAX()',
     hint: 'It starts with MAX.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'MySQL'
   },
   {
     questionText: 'Which SQL function is used to find the minimum value in a column?',
@@ -660,17 +731,19 @@ const mysqlQuestions = [
     correctAnswer: 'MIN()',
     hint: 'It starts with MIN.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'MySQL'
   },
 
-  // Hard Questions
+  // Hard Questions - MySQL
   {
     questionText: 'What is a foreign key in MySQL?',
     options: ['A key that links two tables', 'A key that uniquely identifies a row', 'A key that is used for indexing', 'None of the above'],
     correctAnswer: 'A key that links two tables',
     hint: 'It is used for relationships.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'MySQL'
   },
   {
     questionText: 'What is the purpose of the MySQL AUTO_INCREMENT attribute?',
@@ -678,7 +751,8 @@ const mysqlQuestions = [
     correctAnswer: 'To automatically generate unique values',
     hint: 'It is used for primary keys.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'MySQL'
   },
   {
     questionText: 'What is the purpose of the MySQL PRIMARY KEY constraint?',
@@ -686,7 +760,8 @@ const mysqlQuestions = [
     correctAnswer: 'To uniquely identify each row',
     hint: 'It ensures uniqueness.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'MySQL'
   },
   {
     questionText: 'What is the purpose of the MySQL UNIQUE constraint?',
@@ -694,7 +769,8 @@ const mysqlQuestions = [
     correctAnswer: 'To ensure all values in a column are unique',
     hint: 'It prevents duplicates.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'MySQL'
   },
   {
     questionText: 'What is the purpose of the MySQL INDEX?',
@@ -702,7 +778,8 @@ const mysqlQuestions = [
     correctAnswer: 'To speed up queries',
     hint: 'It improves performance.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'MySQL'
   },
   {
     questionText: 'What is the purpose of the MySQL TRIGGER?',
@@ -710,7 +787,8 @@ const mysqlQuestions = [
     correctAnswer: 'To automatically execute a statement',
     hint: 'It is triggered by events.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'MySQL'
   },
   {
     questionText: 'What is the purpose of the MySQL VIEW?',
@@ -718,7 +796,8 @@ const mysqlQuestions = [
     correctAnswer: 'To create a virtual table',
     hint: 'It is a stored query.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'MySQL'
   },
   {
     questionText: 'What is the purpose of the MySQL TRANSACTION?',
@@ -726,7 +805,8 @@ const mysqlQuestions = [
     correctAnswer: 'To ensure data integrity',
     hint: 'It is used for atomic operations.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'MySQL'
   },
   {
     questionText: 'What is the purpose of the MySQL FOREIGN KEY constraint?',
@@ -734,7 +814,8 @@ const mysqlQuestions = [
     correctAnswer: 'To link two tables',
     hint: 'It is used for relationships.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'MySQL'
   },
   {
     questionText: 'What is the purpose of the MySQL CASCADE option?',
@@ -742,20 +823,17 @@ const mysqlQuestions = [
     correctAnswer: 'To automatically update or delete related rows',
     hint: 'It is used with foreign keys.',
     level: 'hard',
-    marks: 3
-  }
-];
-
-// Adding 30 MongoDB questions (10 easy, 10 medium, 10 hard)
-const mongoDBQuestions = [
-  // Easy Questions
+    marks: 3,
+    category: 'MySQL'
+  },
   {
     questionText: 'What is MongoDB?',
     options: ['A NoSQL database', 'A relational database', 'A programming language', 'A web server'],
     correctAnswer: 'A NoSQL database',
     hint: 'It is a type of database.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'MongoDB'
   },
   {
     questionText: 'Which command is used to show all databases in MongoDB?',
@@ -763,7 +841,8 @@ const mongoDBQuestions = [
     correctAnswer: 'show dbs',
     hint: 'It starts with show.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'MongoDB'
   },
   {
     questionText: 'What is the default port for MongoDB?',
@@ -771,7 +850,8 @@ const mongoDBQuestions = [
     correctAnswer: '27017',
     hint: 'It is a five-digit number.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'MongoDB'
   },
   {
     questionText: 'Which data format does MongoDB use to store data?',
@@ -779,7 +859,8 @@ const mongoDBQuestions = [
     correctAnswer: 'JSON',
     hint: 'It is a lightweight data format.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'MongoDB'
   },
   {
     questionText: 'Which command is used to insert a document into a collection?',
@@ -787,7 +868,8 @@ const mongoDBQuestions = [
     correctAnswer: 'insert()',
     hint: 'It starts with insert.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'MongoDB'
   },
   {
     questionText: 'Which command is used to delete a document in MongoDB?',
@@ -795,7 +877,8 @@ const mongoDBQuestions = [
     correctAnswer: 'deleteOne()',
     hint: 'It starts with delete.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'MongoDB'
   },
   {
     questionText: 'Which command is used to update a document in MongoDB?',
@@ -803,7 +886,8 @@ const mongoDBQuestions = [
     correctAnswer: 'updateOne()',
     hint: 'It starts with update.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'MongoDB'
   },
   {
     questionText: 'What is a collection in MongoDB?',
@@ -811,7 +895,8 @@ const mongoDBQuestions = [
     correctAnswer: 'A group of documents',
     hint: 'It is similar to a table in relational databases.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'MongoDB'
   },
   {
     questionText: 'Which command is used to drop a collection in MongoDB?',
@@ -819,7 +904,8 @@ const mongoDBQuestions = [
     correctAnswer: 'drop()',
     hint: 'It starts with drop.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'MongoDB'
   },
   {
     questionText: 'What is the shell command to connect to a MongoDB instance?',
@@ -827,17 +913,19 @@ const mongoDBQuestions = [
     correctAnswer: 'mongo',
     hint: 'It is a short command.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'MongoDB'
   },
 
-  // Medium Questions
+  // Medium Questions - MongoDB
   {
     questionText: 'What is the purpose of the MongoDB find() method?',
     options: ['To retrieve documents', 'To insert documents', 'To update documents', 'To delete documents'],
     correctAnswer: 'To retrieve documents',
     hint: 'It is used to query data.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'MongoDB'
   },
   {
     questionText: 'What is the purpose of the MongoDB aggregate() method?',
@@ -845,7 +933,8 @@ const mongoDBQuestions = [
     correctAnswer: 'To perform aggregation operations',
     hint: 'It is used for data processing.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'MongoDB'
   },
   {
     questionText: 'What is the purpose of the MongoDB $match stage in aggregation?',
@@ -853,7 +942,8 @@ const mongoDBQuestions = [
     correctAnswer: 'To filter documents',
     hint: 'It is similar to a WHERE clause.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'MongoDB'
   },
   {
     questionText: 'What is the purpose of the MongoDB $group stage in aggregation?',
@@ -861,7 +951,8 @@ const mongoDBQuestions = [
     correctAnswer: 'To group documents',
     hint: 'It is used for grouping data.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'MongoDB'
   },
   {
     questionText: 'What is the purpose of the MongoDB $project stage in aggregation?',
@@ -869,7 +960,8 @@ const mongoDBQuestions = [
     correctAnswer: 'To project fields',
     hint: 'It is used to include or exclude fields.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'MongoDB'
   },
   {
     questionText: 'What is the purpose of the MongoDB $sort stage in aggregation?',
@@ -877,7 +969,8 @@ const mongoDBQuestions = [
     correctAnswer: 'To sort documents',
     hint: 'It is used to order data.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'MongoDB'
   },
   {
     questionText: 'What is the purpose of the MongoDB $lookup stage in aggregation?',
@@ -885,7 +978,8 @@ const mongoDBQuestions = [
     correctAnswer: 'To perform a join operation',
     hint: 'It is used to join collections.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'MongoDB'
   },
   {
     questionText: 'What is the purpose of the MongoDB $unwind stage in aggregation?',
@@ -893,7 +987,8 @@ const mongoDBQuestions = [
     correctAnswer: 'To deconstruct arrays',
     hint: 'It is used to flatten arrays.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'MongoDB'
   },
   {
     questionText: 'What is the purpose of the MongoDB $limit stage in aggregation?',
@@ -901,7 +996,8 @@ const mongoDBQuestions = [
     correctAnswer: 'To limit the number of documents',
     hint: 'It is used to restrict results.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'MongoDB'
   },
   {
     questionText: 'What is the purpose of the MongoDB $skip stage in aggregation?',
@@ -909,17 +1005,19 @@ const mongoDBQuestions = [
     correctAnswer: 'To skip a number of documents',
     hint: 'It is used to offset results.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'MongoDB'
   },
 
-  // Hard Questions
+  // Hard Questions - MongoDB
   {
     questionText: 'What is a replica set in MongoDB?',
     options: ['A group of MongoDB servers', 'A single MongoDB server', 'A collection of documents', 'A database'],
     correctAnswer: 'A group of MongoDB servers',
     hint: 'It is used for high availability.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'MongoDB'
   },
   {
     questionText: 'What is sharding in MongoDB?',
@@ -927,7 +1025,8 @@ const mongoDBQuestions = [
     correctAnswer: 'A method of distributing data',
     hint: 'It is used for horizontal scaling.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'MongoDB'
   },
   {
     questionText: 'What is the purpose of the MongoDB oplog?',
@@ -935,7 +1034,8 @@ const mongoDBQuestions = [
     correctAnswer: 'To track changes to the database',
     hint: 'It is used in replication.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'MongoDB'
   },
   {
     questionText: 'What is the purpose of the MongoDB $geoNear stage in aggregation?',
@@ -943,7 +1043,8 @@ const mongoDBQuestions = [
     correctAnswer: 'To perform geospatial queries',
     hint: 'It is used for location-based queries.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'MongoDB'
   },
   {
     questionText: 'What is the purpose of the MongoDB $text index?',
@@ -951,7 +1052,8 @@ const mongoDBQuestions = [
     correctAnswer: 'To perform text searches',
     hint: 'It is used for full-text search.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'MongoDB'
   },
   {
     questionText: 'What is the purpose of the MongoDB $graphLookup stage in aggregation?',
@@ -959,7 +1061,8 @@ const mongoDBQuestions = [
     correctAnswer: 'To perform graph traversal',
     hint: 'It is used for hierarchical data.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'MongoDB'
   },
   {
     questionText: 'What is the purpose of the MongoDB $bucket stage in aggregation?',
@@ -967,7 +1070,8 @@ const mongoDBQuestions = [
     correctAnswer: 'To group documents into buckets',
     hint: 'It is used for data binning.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'MongoDB'
   },
   {
     questionText: 'What is the purpose of the MongoDB $facet stage in aggregation?',
@@ -975,7 +1079,8 @@ const mongoDBQuestions = [
     correctAnswer: 'To perform multiple aggregations',
     hint: 'It is used for multi-faceted analysis.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'MongoDB'
   },
   {
     questionText: 'What is the purpose of the MongoDB $merge stage in aggregation?',
@@ -983,7 +1088,8 @@ const mongoDBQuestions = [
     correctAnswer: 'To merge results into a collection',
     hint: 'It is used to write results.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'MongoDB'
   },
   {
     questionText: 'What is the purpose of the MongoDB $out stage in aggregation?',
@@ -991,20 +1097,17 @@ const mongoDBQuestions = [
     correctAnswer: 'To write results to a collection',
     hint: 'It is used to output data.',
     level: 'hard',
-    marks: 3
-  }
-];
-
-// Adding 30 Linked List questions (10 easy, 10 medium, 10 hard)
-const linkedListQuestions = [
-  // Easy Questions
+    marks: 3,
+    category: 'MongoDB'
+  },
   {
     questionText: 'What is a linked list?',
     options: ['A linear data structure', 'A type of array', 'A database', 'A sorting algorithm'],
     correctAnswer: 'A linear data structure',
     hint: 'It consists of nodes connected by pointers.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'LinkedList'
   },
   {
     questionText: 'What is the first node of a linked list called?',
@@ -1012,7 +1115,8 @@ const linkedListQuestions = [
     correctAnswer: 'Head',
     hint: 'It is the starting point.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'LinkedList'
   },
   {
     questionText: 'What is the last node of a linked list called?',
@@ -1020,7 +1124,8 @@ const linkedListQuestions = [
     correctAnswer: 'Tail',
     hint: 'It points to null.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'LinkedList'
   },
   {
     questionText: 'What does each node in a linked list contain?',
@@ -1028,7 +1133,8 @@ const linkedListQuestions = [
     correctAnswer: 'Data and a pointer',
     hint: 'It stores data and a reference.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'LinkedList'
   },
   {
     questionText: 'What is a singly linked list?',
@@ -1036,7 +1142,8 @@ const linkedListQuestions = [
     correctAnswer: 'A list where each node points to the next node',
     hint: 'It has one direction.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'LinkedList'
   },
   {
     questionText: 'What is a doubly linked list?',
@@ -1044,7 +1151,8 @@ const linkedListQuestions = [
     correctAnswer: 'A list where each node points to both the next and previous nodes',
     hint: 'It has two directions.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'LinkedList'
   },
   {
     questionText: 'What is the time complexity of inserting a node at the beginning of a linked list?',
@@ -1052,7 +1160,8 @@ const linkedListQuestions = [
     correctAnswer: 'O(1)',
     hint: 'It is a constant time operation.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'LinkedList'
   },
   {
     questionText: 'What is the time complexity of searching for an element in a linked list?',
@@ -1060,7 +1169,8 @@ const linkedListQuestions = [
     correctAnswer: 'O(n)',
     hint: 'It requires traversal.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'LinkedList'
   },
   {
     questionText: 'What is a circular linked list?',
@@ -1068,7 +1178,8 @@ const linkedListQuestions = [
     correctAnswer: 'A list where the last node points to the first node',
     hint: 'It forms a loop.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'LinkedList'
   },
   {
     questionText: 'What is the advantage of a linked list over an array?',
@@ -1076,17 +1187,19 @@ const linkedListQuestions = [
     correctAnswer: 'Dynamic size',
     hint: 'It can grow or shrink.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'LinkedList'
   },
 
-  // Medium Questions
+  // Medium Questions - Linked List
   {
     questionText: 'How do you reverse a linked list?',
     options: ['By changing the direction of pointers', 'By swapping data', 'By creating a new list', 'By sorting the list'],
     correctAnswer: 'By changing the direction of pointers',
     hint: 'It involves pointer manipulation.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'LinkedList'
   },
   {
     questionText: 'How do you detect a cycle in a linked list?',
@@ -1094,7 +1207,8 @@ const linkedListQuestions = [
     correctAnswer: 'Using two pointers',
     hint: 'It involves a slow and fast pointer.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'LinkedList'
   },
   {
     questionText: 'What is the time complexity of deleting a node in a linked list?',
@@ -1102,7 +1216,8 @@ const linkedListQuestions = [
     correctAnswer: 'O(1)',
     hint: 'It depends on the position.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'LinkedList'
   },
   {
     questionText: 'How do you merge two sorted linked lists?',
@@ -1110,7 +1225,8 @@ const linkedListQuestions = [
     correctAnswer: 'By comparing nodes',
     hint: 'It involves traversal.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'LinkedList'
   },
   {
     questionText: 'What is the space complexity of a linked list?',
@@ -1118,7 +1234,8 @@ const linkedListQuestions = [
     correctAnswer: 'O(n)',
     hint: 'It depends on the number of nodes.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'LinkedList'
   },
   {
     questionText: 'How do you find the middle element of a linked list?',
@@ -1126,7 +1243,8 @@ const linkedListQuestions = [
     correctAnswer: 'Using two pointers',
     hint: 'It involves a slow and fast pointer.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'LinkedList'
   },
   {
     questionText: 'What is the time complexity of appending a node to the end of a singly linked list?',
@@ -1134,7 +1252,8 @@ const linkedListQuestions = [
     correctAnswer: 'O(n)',
     hint: 'It requires traversal.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'LinkedList'
   },
   {
     questionText: 'How do you remove duplicates from a linked list?',
@@ -1142,7 +1261,8 @@ const linkedListQuestions = [
     correctAnswer: 'Using a hash set',
     hint: 'It involves storing visited nodes.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'LinkedList'
   },
   {
     questionText: 'What is the time complexity of searching for an element in a doubly linked list?',
@@ -1150,7 +1270,8 @@ const linkedListQuestions = [
     correctAnswer: 'O(n)',
     hint: 'It requires traversal.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'LinkedList'
   },
   {
     questionText: 'How do you split a linked list into two halves?',
@@ -1158,17 +1279,19 @@ const linkedListQuestions = [
     correctAnswer: 'Using two pointers',
     hint: 'It involves a slow and fast pointer.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'LinkedList'
   },
 
-  // Hard Questions
+  // Hard Questions - Linked List
   {
     questionText: 'How do you detect and remove a cycle in a linked list?',
     options: ['Using two pointers', 'By counting nodes', 'By checking null pointers', 'By sorting the list'],
     correctAnswer: 'Using two pointers',
     hint: 'It involves a slow and fast pointer.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'LinkedList'
   },
   {
     questionText: 'How do you flatten a linked list?',
@@ -1176,7 +1299,8 @@ const linkedListQuestions = [
     correctAnswer: 'By merging sublists',
     hint: 'It involves recursion.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'LinkedList'
   },
   {
     questionText: 'How do you rotate a linked list?',
@@ -1184,7 +1308,8 @@ const linkedListQuestions = [
     correctAnswer: 'By changing pointers',
     hint: 'It involves pointer manipulation.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'LinkedList'
   },
   {
     questionText: 'How do you find the intersection point of two linked lists?',
@@ -1192,7 +1317,8 @@ const linkedListQuestions = [
     correctAnswer: 'Using two pointers',
     hint: 'It involves traversal.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'LinkedList'
   },
   {
     questionText: 'How do you clone a linked list with random pointers?',
@@ -1200,7 +1326,8 @@ const linkedListQuestions = [
     correctAnswer: 'Using a hash map',
     hint: 'It involves storing references.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'LinkedList'
   },
   {
     questionText: 'How do you reverse a doubly linked list?',
@@ -1208,7 +1335,8 @@ const linkedListQuestions = [
     correctAnswer: 'By swapping pointers',
     hint: 'It involves pointer manipulation.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'LinkedList'
   },
   {
     questionText: 'How do you find the kth node from the end of a linked list?',
@@ -1216,7 +1344,8 @@ const linkedListQuestions = [
     correctAnswer: 'Using two pointers',
     hint: 'It involves a slow and fast pointer.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'LinkedList'
   },
   {
     questionText: 'How do you check if two linked lists are identical?',
@@ -1224,7 +1353,8 @@ const linkedListQuestions = [
     correctAnswer: 'By comparing nodes',
     hint: 'It involves traversal.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'LinkedList'
   },
   {
     questionText: 'How do you find the length of a cycle in a linked list?',
@@ -1232,7 +1362,8 @@ const linkedListQuestions = [
     correctAnswer: 'Using two pointers',
     hint: 'It involves a slow and fast pointer.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'LinkedList'
   },
   {
     questionText: 'How do you sort a linked list?',
@@ -1240,20 +1371,17 @@ const linkedListQuestions = [
     correctAnswer: 'Using merge sort',
     hint: 'It is a divide-and-conquer algorithm.',
     level: 'hard',
-    marks: 3
-  }
-];
-
-// Adding 30 Array questions (10 easy, 10 medium, 10 hard)
-const arrayQuestions = [
-  // Easy Questions
+    marks: 3,
+    category: 'LinkedList'
+  },
   {
     questionText: 'What is an array?',
     options: ['A collection of elements', 'A single value', 'A function', 'A variable'],
     correctAnswer: 'A collection of elements',
     hint: 'It stores multiple values.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'Array'
   },
   {
     questionText: 'How do you declare an array in JavaScript?',
@@ -1261,7 +1389,8 @@ const arrayQuestions = [
     correctAnswer: 'var arr = [];',
     hint: 'It uses square brackets.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'Array'
   },
   {
     questionText: 'What is the index of the first element in an array?',
@@ -1269,7 +1398,8 @@ const arrayQuestions = [
     correctAnswer: '0',
     hint: 'It starts from zero.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'Array'
   },
   {
     questionText: 'How do you access the third element of an array named arr?',
@@ -1277,7 +1407,8 @@ const arrayQuestions = [
     correctAnswer: 'arr[2]',
     hint: 'Indexing starts from zero.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'Array'
   },
   {
     questionText: 'What is the length of an array arr = [1, 2, 3]?',
@@ -1285,7 +1416,8 @@ const arrayQuestions = [
     correctAnswer: '3',
     hint: 'It counts the number of elements.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'Array'
   },
   {
     questionText: 'How do you add an element to the end of an array?',
@@ -1293,7 +1425,8 @@ const arrayQuestions = [
     correctAnswer: 'push()',
     hint: 'It is a common array method.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'Array'
   },
   {
     questionText: 'How do you remove the last element of an array?',
@@ -1301,7 +1434,8 @@ const arrayQuestions = [
     correctAnswer: 'pop()',
     hint: 'It modifies the original array.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'Array'
   },
   {
     questionText: 'What is the output of the following code: console.log([1, 2, 3].length)?',
@@ -1309,7 +1443,8 @@ const arrayQuestions = [
     correctAnswer: '3',
     hint: 'It counts the number of elements.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'Array'
   },
   {
     questionText: 'How do you check if an array includes a specific element?',
@@ -1317,7 +1452,8 @@ const arrayQuestions = [
     correctAnswer: 'includes()',
     hint: 'It is a built-in method.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'Array'
   },
   {
     questionText: 'What is the output of the following code: console.log([].length)?',
@@ -1325,17 +1461,19 @@ const arrayQuestions = [
     correctAnswer: '0',
     hint: 'It is an empty array.',
     level: 'easy',
-    marks: 1
+    marks: 1,
+    category: 'Array'
   },
 
-  // Medium Questions
+  // Medium Questions - Array
   {
     questionText: 'How do you merge two arrays in JavaScript?',
     options: ['concat()', 'merge()', 'combine()', 'append()'],
     correctAnswer: 'concat()',
     hint: 'It is a built-in method.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'Array'
   },
   {
     questionText: 'How do you find the index of an element in an array?',
@@ -1343,7 +1481,8 @@ const arrayQuestions = [
     correctAnswer: 'indexOf()',
     hint: 'It returns the position.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'Array'
   },
   {
     questionText: 'What is the output of the following code: console.log([1, 2, 3].slice(1, 2))?',
@@ -1351,7 +1490,8 @@ const arrayQuestions = [
     correctAnswer: '[2]',
     hint: 'It extracts a portion.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'Array'
   },
   {
     questionText: 'How do you remove the first element of an array?',
@@ -1359,7 +1499,8 @@ const arrayQuestions = [
     correctAnswer: 'shift()',
     hint: 'It modifies the original array.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'Array'
   },
   {
     questionText: 'What is the output of the following code: console.log([1, 2, 3].splice(1, 1))?',
@@ -1367,7 +1508,8 @@ const arrayQuestions = [
     correctAnswer: '[2]',
     hint: 'It removes elements.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'Array'
   },
   {
     questionText: 'How do you sort an array in ascending order?',
@@ -1375,7 +1517,8 @@ const arrayQuestions = [
     correctAnswer: 'sort()',
     hint: 'It is a built-in method.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'Array'
   },
   {
     questionText: 'What is the output of the following code: console.log([1, 2, 3].reverse())?',
@@ -1383,7 +1526,8 @@ const arrayQuestions = [
     correctAnswer: '[3, 2, 1]',
     hint: 'It reverses the array.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'Array'
   },
   {
     questionText: 'How do you iterate over an array in JavaScript?',
@@ -1391,7 +1535,8 @@ const arrayQuestions = [
     correctAnswer: 'forEach()',
     hint: 'It is a loop method.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'Array'
   },
   {
     questionText: 'What is the output of the following code: console.log([1, 2, 3].map(x => x * 2))?',
@@ -1399,7 +1544,8 @@ const arrayQuestions = [
     correctAnswer: '[2, 4, 6]',
     hint: 'It transforms each element.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'Array'
   },
   {
     questionText: 'How do you filter elements of an array?',
@@ -1407,17 +1553,19 @@ const arrayQuestions = [
     correctAnswer: 'filter()',
     hint: 'It creates a new array.',
     level: 'medium',
-    marks: 2
+    marks: 2,
+    category: 'Array'
   },
 
-  // Hard Questions
+  // Hard Questions - Array
   {
     questionText: 'How do you find the maximum value in an array?',
     options: ['Math.max(...arr)', 'arr.max()', 'max(arr)', 'Math.max(arr)'],
     correctAnswer: 'Math.max(...arr)',
     hint: 'It uses the spread operator.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'Array'
   },
   {
     questionText: 'How do you flatten a nested array?',
@@ -1425,7 +1573,8 @@ const arrayQuestions = [
     correctAnswer: 'flat()',
     hint: 'It is a built-in method.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'Array'
   },
   {
     questionText: 'What is the output of the following code: console.log([1, [2, [3]]].flat(2))?',
@@ -1433,7 +1582,8 @@ const arrayQuestions = [
     correctAnswer: '[1, 2, 3]',
     hint: 'It flattens the array.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'Array'
   },
   {
     questionText: 'How do you find the sum of all elements in an array?',
@@ -1441,7 +1591,8 @@ const arrayQuestions = [
     correctAnswer: 'reduce()',
     hint: 'It accumulates values.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'Array'
   },
   {
     questionText: 'How do you remove duplicates from an array?',
@@ -1449,7 +1600,8 @@ const arrayQuestions = [
     correctAnswer: 'new Set(arr)',
     hint: 'It uses a Set.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'Array'
   },
   {
     questionText: 'How do you shuffle elements of an array?',
@@ -1457,7 +1609,8 @@ const arrayQuestions = [
     correctAnswer: 'sort(() => Math.random() - 0.5)',
     hint: 'It uses sort.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'Array'
   },
   {
     questionText: 'How do you find the intersection of two arrays?',
@@ -1465,7 +1618,8 @@ const arrayQuestions = [
     correctAnswer: 'filter()',
     hint: 'It involves filtering.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'Array'
   },
   {
     questionText: 'How do you rotate an array?',
@@ -1473,7 +1627,8 @@ const arrayQuestions = [
     correctAnswer: 'slice() and concat()',
     hint: 'It involves slicing.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'Array'
   },
   {
     questionText: 'How do you find the kth largest element in an array?',
@@ -1481,7 +1636,8 @@ const arrayQuestions = [
     correctAnswer: 'sort() and index',
     hint: 'It involves sorting.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'Array'
   },
   {
     questionText: 'How do you partition an array into chunks of size n?',
@@ -1489,14 +1645,325 @@ const arrayQuestions = [
     correctAnswer: 'slice() in a loop',
     hint: 'It involves slicing.',
     level: 'hard',
-    marks: 3
+    marks: 3,
+    category: 'Array'
+  },
+  {
+    questionText: 'What is the time complexity of searching an element in a well-balanced Binary Search Tree (BST)?',
+    options: ['O(1)', 'O(log n)', 'O(n)', 'O(n log n)'],
+    correctAnswer: 'O(log n)',
+    hint: 'Think about how the search space is halved in a balanced tree.',
+    level: 'medium',
+    marks: 2,
+    category: ['Data Structures and Algorithms', 'Trees']
+  },
+  {
+    questionText: 'Which data structure is best suited for implementing a \'undo\' feature in a text editor?',
+    options: ['Queue', 'Stack', 'Linked List', 'Hash Table'],
+    correctAnswer: 'Stack',
+    hint: 'Think about LIFO (Last-In, First-Out) principle.',
+    level: 'easy',
+    marks: 1,
+    category: ['Data Structures and Algorithms', 'Stack']
+  },
+  {
+    questionText: 'What is the primary advantage of a Doubly Linked List over a Singly Linked List?',
+    options: ['Less memory usage', 'Faster insertion at the beginning', 'Ability to traverse in both directions', 'Simpler implementation'],
+    correctAnswer: 'Ability to traverse in both directions',
+    hint: 'Consider the pointers each node holds.',
+    level: 'easy',
+    marks: 1,
+    category: ['Data Structures and Algorithms', 'Linked List']
+  },
+  {
+    questionText: 'In a Max Heap, where is the largest element always located?',
+    options: ['At the root', 'At the last leaf node', 'Anywhere in the tree', 'At the leftmost node'],
+    correctAnswer: 'At the root',
+    hint: 'Heaps maintain a specific ordering property for their parent and child nodes.',
+    level: 'easy',
+    marks: 1,
+    category: ['Data Structures and Algorithms', 'Heap', 'Trees']
+  },
+  {
+    questionText: 'Which sorting algorithm has an average time complexity of O(n log n) and is a comparison sort?',
+    options: ['Bubble Sort', 'Insertion Sort', 'Merge Sort', 'Selection Sort'],
+    correctAnswer: 'Merge Sort',
+    hint: 'This algorithm divides the array into halves, sorts them, and then merges them.',
+    level: 'medium',
+    marks: 2,
+    category: ['Data Structures and Algorithms', 'Sorting']
+  },
+  {
+    questionText: 'What is a \'collision\' in the context of Hash Tables?',
+    options: ['When two different keys map to different indices', 'When two different keys map to the same index', 'When a key is not found', 'When the hash table is empty'],
+    correctAnswer: 'When two different keys map to the same index',
+    hint: 'It\'s what happens when the hash function produces the same output for distinct inputs.',
+    level: 'medium',
+    marks: 2,
+    category: ['Data Structures and Algorithms', 'Hash Table']
+  },
+  {
+    questionText: 'Which traversal algorithm for a graph uses a queue?',
+    options: ['Depth-First Search (DFS)', 'Breadth-First Search (BFS)', 'Dijkstra\'s Algorithm', 'A* Search'],
+    correctAnswer: 'Breadth-First Search (BFS)',
+    hint: 'Think about exploring all neighbors at the current level before moving to the next level.',
+    level: 'medium',
+    marks: 2,
+    category: ['Data Structures and Algorithms', 'Graph', 'Queue']
+  },
+  {
+    questionText: 'What is the worst-case time complexity of Quick Sort?',
+    options: ['O(n log n)', 'O(n^2)', 'O(log n)', 'O(n)'],
+    correctAnswer: 'O(n^2)',
+    hint: 'Consider what happens if the pivot selection is always the smallest or largest element.',
+    level: 'hard',
+    marks: 3,
+    category: ['Data Structures and Algorithms', 'Sorting']
+  },
+  {
+    questionText: 'What is the purpose of a \'pointer\' in data structures?',
+    options: ['To store data directly', 'To allocate memory', 'To store the memory address of another variable', 'To define a new data type'],
+    correctAnswer: 'To store the memory address of another variable',
+    hint: 'Pointers \'point\' to locations in memory.',
+    level: 'easy',
+    marks: 1,
+    category: ['Data Structures and Algorithms']
+  },
+  {
+    questionText: 'An algorithm has a time complexity of O(n!). What does this indicate?',
+    options: ['It scales linearly with input size.', 'It scales logarithmically with input size.', 'It scales factorially with input size, making it very inefficient for large inputs.', 'It has constant time performance.'],
+    correctAnswer: 'It scales factorially with input size',
+    hint: 'n! grows extremely rapidly.',
+    level: 'hard',
+    marks: 3,
+    category: ['Data Structures and Algorithms', 'Algorithms']
+  },
+  {
+    questionText: 'Which data structure allows access to elements only from one end (insertion) and removal from the other end (deletion)?',
+    options: ['Stack', 'Queue', 'Array', 'Tree'],
+    correctAnswer: 'Queue',
+    hint: 'Think about a waiting line.',
+    level: 'easy',
+    marks: 1,
+    category: ['Data Structures and Algorithms', 'Queue']
+  },
+  {
+    questionText: 'What is the primary difference between a complete binary tree and a full binary tree?',
+    options: [
+      'A complete binary tree has all levels completely filled, while a full binary tree does not.',
+      'A full binary tree has every node with either zero or two children, while a complete binary tree fills levels from left to right.',
+      'There is no difference, they are the same.',
+      'A complete binary tree is always a full binary tree.'
+    ],
+    correctAnswer: 'A full binary tree has every node with either zero or two children, while a complete binary tree fills levels from left to right.',
+    hint: 'Focus on the child count for full, and level-by-level filling for complete.',
+    level: 'medium',
+    marks: 2,
+    category: ['Data Structures and Algorithms', 'Trees']
+  },
+  {
+    questionText: 'What is the average time complexity for inserting an element into a Hash Table with good hash function and proper collision resolution?',
+    options: ['O(1)', 'O(log n)', 'O(n)', 'O(n log n)'],
+    correctAnswer: 'O(1)',
+    hint: 'Ideally, it should be a constant-time operation.',
+    level: 'medium',
+    marks: 2,
+    category: ['Data Structures and Algorithms', 'Hash Table']
+  },
+  {
+    questionText: 'Which algorithm is used to find the shortest path in an unweighted graph?',
+    options: ['Dijkstra\'s Algorithm', 'Bellman-Ford Algorithm', 'Breadth-First Search (BFS)', 'Floyd-Warshall Algorithm'],
+    correctAnswer: 'Breadth-First Search (BFS)',
+    hint: 'BFS explores layer by layer, naturally finding the shortest path in terms of edges.',
+    level: 'medium',
+    marks: 2,
+    category: ['Data Structures and Algorithms', 'Graph', 'Algorithms']
+  },
+  {
+    questionText: 'What is the maximum number of children a node can have in a binary tree?',
+    options: ['One', 'Two', 'Any number', 'Three'],
+    correctAnswer: 'Two',
+    hint: 'The term "binary" implies two.',
+    level: 'easy',
+    marks: 1,
+    category: ['Data Structures and Algorithms', 'Trees']
+  },
+  {
+    questionText: 'Which sorting algorithm repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order?',
+    options: ['Selection Sort', 'Insertion Sort', 'Bubble Sort', 'Merge Sort'],
+    correctAnswer: 'Bubble Sort',
+    hint: 'Elements "bubble" up to their correct positions.',
+    level: 'easy',
+    marks: 1,
+    category: ['Data Structures and Algorithms', 'Sorting']
+  },
+  {
+    questionText: 'What is the main drawback of using an array to implement a queue?',
+    options: [
+      'Fixed size, leading to overflow or underflow issues.',
+      'Slow access to elements.',
+      'Requires dynamic memory allocation.',
+      'Cannot store heterogeneous data types.'
+    ],
+    correctAnswer: 'Fixed size, leading to overflow or underflow issues.',
+    hint: 'Arrays have a predefined capacity.',
+    level: 'medium',
+    marks: 2,
+    category: ['Data Structures and Algorithms', 'Queue', 'Arrays']
+  },
+  {
+    questionText: 'In an Adjacency List representation of a graph, what does each list represent?',
+    options: [
+      'The vertices in the graph.',
+      'The edges originating from a specific vertex.',
+      'The weights of the edges.',
+      'The shortest paths between vertices.'
+    ],
+    correctAnswer: 'The edges originating from a specific vertex.',
+    hint: 'Each vertex has its own list of connected vertices.',
+    level: 'medium',
+    marks: 2,
+    category: ['Data Structures and Algorithms', 'Graph']
+  },
+  {
+    questionText: 'Which algorithm finds the minimum spanning tree (MST) of a connected, undirected graph?',
+    options: ['Dijkstra\'s Algorithm', 'Prim\'s Algorithm', 'Topological Sort', 'Kruskal\'s Algorithm'],
+    correctAnswer: 'Prim\'s Algorithm',
+    hint: 'Consider algorithms that build the MST by progressively adding the cheapest edge.',
+    level: 'hard',
+    marks: 3,
+    category: ['Data Structures and Algorithms', 'Graph', 'Algorithms']
+  },
+  {
+    questionText: 'What is tail recursion?',
+    options: [
+      'A recursive function that calls itself multiple times.',
+      'A recursive function where the recursive call is the last operation in the function.',
+      'A recursive function that does not have a base case.',
+      'A non-recursive function that simulates recursion.'
+    ],
+    correctAnswer: 'A recursive function where the recursive call is the last operation in the function.',
+    hint: 'It allows for potential compiler optimizations to iterative code.',
+    level: 'hard',
+    marks: 3,
+    category: ['Data Structures and Algorithms', 'Algorithms', 'Recursion']
+  },
+  {
+    questionText: 'What is the space complexity of an in-place sorting algorithm?',
+    options: ['O(1)', 'O(log n)', 'O(n)', 'O(n log n)'],
+    correctAnswer: 'O(1)',
+    hint: 'In-place algorithms modify the input directly without significant extra space.',
+    level: 'medium',
+    marks: 2,
+    category: ['Data Structures and Algorithms', 'Sorting', 'Algorithms']
+  },
+  {
+    questionText: 'Which searching algorithm requires the data to be sorted?',
+    options: ['Linear Search', 'Binary Search', 'Hash Table Search', 'Depth-First Search'],
+    correctAnswer: 'Binary Search',
+    hint: 'It works by repeatedly dividing the search interval in half.',
+    level: 'easy',
+    marks: 1,
+    category: ['Data Structures and Algorithms', 'Searching', 'Algorithms']
+  },
+  {
+    questionText: 'What is a B-tree primarily used for?',
+    options: [
+      'Representing social networks',
+      'Implementing undo/redo functionality',
+      'Storing data on disk in databases and file systems',
+      'Efficiently finding the shortest path in a graph'
+    ],
+    correctAnswer: 'Storing data on disk in databases and file systems',
+    hint: 'They are optimized for disk access, common in database indexing.',
+    level: 'hard',
+    marks: 3,
+    category: ['Data Structures and Algorithms', 'Trees', 'Databases']
+  },
+  {
+    questionText: 'Which principle does a Stack follow?',
+    options: ['FIFO (First-In, First-Out)', 'LIFO (Last-In, First-Out)', 'LILO (Last-In, Last-Out)', 'FILO (First-In, Last-Out)'],
+    correctAnswer: 'LIFO (Last-In, First-Out)',
+    hint: 'Think of a stack of plates.',
+    level: 'easy',
+    marks: 1,
+    category: ['Data Structures and Algorithms', 'Stack']
+  },
+  {
+    questionText: 'What is the purpose of a hash function in a Hash Table?',
+    options: [
+      'To sort the elements in the table.',
+      'To convert a key into an index in the array.',
+      'To resolve collisions.',
+      'To traverse the table elements.'
+    ],
+    correctAnswer: 'To convert a key into an index in the array.',
+    hint: 'It maps keys to array positions.',
+    level: 'medium',
+    marks: 2,
+    category: ['Data Structures and Algorithms', 'Hash Table']
+  },
+  {
+    questionText: 'What is dynamic programming primarily used for?',
+    options: [
+      'Solving problems by dividing them into independent subproblems.',
+      'Solving optimization problems by breaking them down into overlapping subproblems and storing results.',
+      'Graph traversal.',
+      'Sorting large datasets.'
+    ],
+    correctAnswer: 'Solving optimization problems by breaking them down into overlapping subproblems and storing results.',
+    hint: 'It involves memoization or tabulation to avoid recomputing.',
+    level: 'hard',
+    marks: 3,
+    category: ['Data Structures and Algorithms', 'Algorithms', 'Dynamic Programming']
+  },
+  {
+    questionText: 'Which of these is NOT a common method for handling collisions in a Hash Table?',
+    options: ['Separate Chaining', 'Open Addressing', 'Quadratic Probing', 'Binary Search'],
+    correctAnswer: 'Binary Search',
+    hint: 'Binary Search is a searching algorithm, not a collision resolution technique.',
+    level: 'medium',
+    marks: 2,
+    category: ['Data Structures and Algorithms', 'Hash Table']
+  },
+  {
+    questionText: "What is the definition of a 'root' in a tree data structure?",
+    options: [
+      'A node with no children.',
+      'The topmost node with no parent.',
+      'A node that has exactly one child.',
+      'Any leaf node.'
+    ],
+    correctAnswer: 'The topmost node with no parent.',
+    hint: 'It is the starting point of the tree.',
+    level: 'easy',
+    marks: 1,
+    category: ['Data Structures and Algorithms', 'Trees']
+  },
+  {
+    questionText: 'Which data structure is suitable for implementing an adjacency matrix representation of a graph?',
+    options: ['Linked List', 'Array (2D)', 'Stack', 'Queue'],
+    correctAnswer: 'Array (2D)',
+    hint: 'Matrices are typically represented using 2D arrays.',
+    level: 'easy',
+    marks: 1,
+    category: ['Data Structures and Algorithms', 'Graph', 'Arrays']
+  },
+  {
+    questionText: 'What is the key idea behind the Greedy approach to algorithm design?',
+    options: [
+      'Solving a problem by finding the global optimal solution through exhaustive search.',
+      'Making the locally optimal choice at each stage with the hope of finding a global optimum.',
+      'Breaking down a problem into smaller, independent subproblems.',
+      'Storing results of subproblems to avoid recomputation.'
+    ],
+    correctAnswer: 'Making the locally optimal choice at each stage with the hope of finding a global optimum.',
+    hint: 'It often works for optimization problems, but not always guarantees the best overall solution.',
+    level: 'medium',
+    marks: 2,
+    category: ['Data Structures and Algorithms', 'Algorithms']
   }
-];
 
-questions.push(...pythonQuestions);
-questions.push(...mysqlQuestions);
-questions.push(...mongoDBQuestions);
-questions.push(...linkedListQuestions);
-questions.push(...arrayQuestions);
+]
 
 module.exports = questions;

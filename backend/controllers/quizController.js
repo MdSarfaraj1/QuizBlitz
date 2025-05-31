@@ -1,9 +1,11 @@
 const QuizSets = require("../models/QuizSets");
-const Question = require("../models/Qustions");
+const RandomQuizSet=require("../models/RandomQuzeSet")
+const Question = require("../models/Questions");
 const User = require('../models/User');
 const QuizResult = require('../models/QuizResult'); 
 const Category=require('../models/Category')
 const { generateQuizOfTheDay }= require('../utills/getQuizOfTheDay');
+const RandomQuzeSet = require("../models/RandomQuzeSet");
 let cachedQuiz = null;
 let lastQuizDate = null;
 
@@ -24,9 +26,9 @@ exports.getCategories=async (req,res)=>{
 
 exports.getRandomQuizSets=async (req,res)=>{ 
   try{
-       const randomSets= await QuizSets.find({},{questions:0})
+       const randomSets= await RandomQuizSet.find({},{questions:0})
          res.status(200).json({
-            randomSets:randomSets
+            quiz:randomSets
         })
   }catch(e){
         console.log("SOme error occured while fetchin the sets",e)
@@ -35,20 +37,16 @@ exports.getRandomQuizSets=async (req,res)=>{
    
 }
 
-exports.getAllQuizzesOfACategory = async (req, res) => {
+exports.startRandomQuizSet = async (req, res) => {
   try {
    
-    const { category } = req.body.category;
-    const quizzes = await QuizSets.find({ category: category });
-
+    const { id } = req.params
+    const quizzes = await RandomQuzeSet.findById(id).populate('questions')
     if (quizzes.length === 0) {
-      return res.status(404).json({ message: "No quizzes found for this category" });
+      return res.status(404).json({ message: "No quizzes found for this id" });
     }
 
-    res.status(200).json({
-      message: `Quizzes in the ${category} category`,
-      quizzes: quizzes,
-    });
+   res.status(200).json({ questions: quizzes.questions,id:id});
   } catch (e) {
     console.log("Error occurred while fetching quizzes:", e);
     res.status(500).json({ message: "Failed to fetch quizzes of this category" });
@@ -98,7 +96,7 @@ console.log("starting quiz")
       .sort(() => 0.5 - Math.random())
       .slice(0, numberOfQuestions);
 console.log("Starting quiz with questions:", combinedQuestions);
-    res.status(200).json({ questions: combinedQuestions,quizSetId: quizSet._id, difficulty });
+    res.status(200).json({ questions: combinedQuestions,quizId: quizSet._id, difficulty });
 
   } catch (error) {
     console.error('Error starting quiz:', error);
@@ -169,8 +167,15 @@ exports.getMyAttemptedQuizzes = async (req, res) => {
   }
 };
 
-exports.submitQuiz= async (req, res) => {
-  const {  quizId, level, score, wrongAnswers, timeTaken } = req.body;
+exports.submitQuizResult= async (req, res) => {
+  console.log("Submitting quiz result:", req.body.quizResult);
+  const { quizId,
+      scoreObtained,
+      totalScore,
+      correctAnswers,
+      wrongAnswers,
+      learnLaterQuestions,
+      timeTaken } = req.body.quizResult;
   const userId = req.user._id;
 
   try {
@@ -178,14 +183,51 @@ exports.submitQuiz= async (req, res) => {
     const newQuizResult = new QuizResult({
       userId, 
       quizId,
-      quizLevel: level,
-      score,
+      scoreObtained,
+      totalScore,
+      correctAnswers,
       wrongAnswers,
+      learnLaterQuestions,
+      submissionDate: new Date(),
       timeTaken,
     });
+    // Check if the user has already submitted a result for this quiz
+   let quizResult = await QuizResult.findOne({ userId, quizId });
 
-    // Save the quiz result to the database
-    await newQuizResult.save();
+    if (quizResult) {
+      // Update existing result
+      quizResult.scoreObtained = scoreObtained;
+      quizResult.totalScore = totalScore;
+      quizResult.correctAnswers = correctAnswers;
+      quizResult.wrongAnswers = wrongAnswers;
+      quizResult.learnLaterQuestions = learnLaterQuestions;
+      quizResult.timeTaken = timeTaken;
+      quizResult.submissionDate = new Date();
+    } else {
+      // Create new quiz result
+      quizResult = new QuizResult({
+        userId,
+        quizId,
+        scoreObtained,
+        totalScore,
+        correctAnswers,
+        wrongAnswers,
+        learnLaterQuestions,
+        submissionDate: new Date(),
+        timeTaken,
+      });
+    }
+        // Save the quiz result (either new or updated)
+    let outcome=await quizResult.save();
+    console.log("Quiz result saved:", outcome);
+    // Update the user's quizzes taken
+    const user = await User.findById(userId);
+    if (!user.quizzesTaken.includes(quizId)) {
+      user.quizzesTaken.push(quizId);
+    }
+    // Update the user's score
+    user.totalScore += scoreObtained;
+    await user.save();
 
     res.status(200).json({ message: 'Quiz results submitted successfully' });
   } catch (error) {

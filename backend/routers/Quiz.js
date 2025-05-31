@@ -6,10 +6,10 @@ const { isLoggedIn } = require('../middleware/middleware');
 
 // Public quiz endpoints
 router.get('/allCategories', quizController.getCategories);//done
-router.get('/category/allQuizzes',quizController.getAllQuizzesOfACategory)
-router.get('/getRandomQuizSets',quizController.getRandomQuizSets)
+router.get('/getRandomQuizSets',quizController.getRandomQuizSets)//done
+router.get('/startRandomQuiz/:id',quizController.startRandomQuizSet)//done
 router.post('/startQuiz/:id', quizController.startQuiz);//done
-router.post('/submitQuiz',quizController.submitQuiz); 
+router.post('/submitQuizResult',isLoggedIn,quizController.submitQuizResult); //done
 
  
 // //endpoints , used by user to deal with quiz

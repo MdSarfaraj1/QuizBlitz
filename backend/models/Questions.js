@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
+const Category = require('./Category');
 
 const questionSchema = new mongoose.Schema({
+category: {
+    type: [String], 
+    required: true
+},
   questionText:{
     type: String,
     required: true

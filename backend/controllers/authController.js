@@ -119,11 +119,15 @@ exports.updateProfile= async (req, res) => {
 }
 
 exports.getProfile=async (req, res) => {
-  const user = req.user.userID; // as loggin middleware assigned the user to req 
-  console.log(user);
+  const userId = req.user.userID;
+  if (!userId) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  const userData = await User.findById(userId).select('username email avatar totalQuizzes averageScore totalScore');
+  console.log(userData);
     res.status(200).json({
-      username: user.username, 
-      email: user.email,
+      username: userData.username, 
+      email: userData.email,
    
   })
 }

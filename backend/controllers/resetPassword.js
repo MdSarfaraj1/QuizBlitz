@@ -13,7 +13,7 @@ exports.SendOTP=async (req, res) => {
     // generating reset token
     const resetToken = generateOTP();
     user.resetPasswordToken = resetToken;
-    user.resetPasswordExpires = Date.now() + 36000; // 1 mintues
+    user.resetPasswordExpires = Date.now() +300000; // 5 mintues
     await user.save();
     //sending mmail
     const mailOptions = {
