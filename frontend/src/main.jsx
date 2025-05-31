@@ -10,7 +10,7 @@ import Dashboard from './pages/Dashboard';
 import StartQuiz from './components/StartQuiz/StartQuiz';
 import RunningQuiz from './components/StartQuiz/RunningQuiz';
 import ResultsPage from './components/StartQuiz/Result';
-import UserSettings from './pages/UserSettings';
+import UserSettings from './components/UserSettings/UserSettings';
 import NotFound from './pages/NoFoundPage';
 import { UserContextProvider } from './Context/UserContextProvider';
 import ResetPassword from './components/ResetPassword/ResetPassword';

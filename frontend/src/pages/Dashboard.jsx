@@ -8,7 +8,7 @@ import Achievements from "../components/Dashboard/Acheivements";
 import QuizTakenChart from "../components/Dashboard/Chart";
 import MainDashBoard from "../components/Dashboard/MainDashboard";
 import ThingsToLearn from '../components/Dashboard/ThingsToLearn';
-import { Settings } from '../components/UserSettings/Settings';
+import  UserSettings  from '../components/UserSettings/UserSettings';
 // Placeholder components for other sections
 const MyQuizzes = () => (
   <div className="bg-white rounded-lg shadow-md p-6">
@@ -89,7 +89,7 @@ const Dashboard = () => {
       
       case 'settings':
         return (
-         <Settings/>
+         <UserSettings/>
         );
       
       case 'signout':

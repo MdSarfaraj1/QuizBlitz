@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { ProfileSection } from "../components/UserSettings/Profile";
-import { SecuritySection } from "../components/UserSettings/Security";
+import { ProfileSection } from "./Profile";
+import { SecuritySection } from "./Security";
 // import { NotificationsSection } from "@/components/settings/NotificationsSection";
 // import { DangerZoneSection } from "@/components/settings/DangerZoneSection";
 import { Home } from "lucide-react";
-import { SettingsSidebar } from "../components/UserSettings/Settings"; 
+import { Settings } from "./Settings"; 
 import {Link} from 'react-router-dom'
+
 export default function UserSettings() {
   const [activeSection, setActiveSection] = useState("profile");
 
@@ -43,7 +44,7 @@ export default function UserSettings() {
             <div className="flex flex-col md:flex-row gap-6">
               {/* Sidebar - On mobile */}
               <div className="md:hidden mb-4">
-                <SettingsSidebar
+                <Settings
                   activeSection={activeSection}
                   onSectionChange={setActiveSection}
                 />
@@ -51,7 +52,7 @@ export default function UserSettings() {
 
               {/* Desktop Sidebar */}
               <div className="hidden md:block">
-                <SettingsSidebar
+                <Settings
                   activeSection={activeSection}
                   onSectionChange={setActiveSection}
                 />

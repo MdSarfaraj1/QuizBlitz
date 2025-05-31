@@ -13,7 +13,7 @@ export function Settings({ activeSection, onSectionChange }) {
     { title: "Security", icon: <Lock className="h-4 w-4" />, id: "security" },
     { title: "Notifications", icon: <Bell className="h-4 w-4" />, id: "notifications" },
     { title: "Account", icon: <Trash className="h-4 w-4" />, id: "danger" },
-      {title: "Logout", icon: <LogOut className="h-4 w-4" />, id: "logout" }
+    
   ];
 
   return (
@@ -38,7 +38,7 @@ export function Settings({ activeSection, onSectionChange }) {
               key={item.id}
               className={cn( "flex gap-2 px-4 py-2 rounded-md  text-slate-900 font-sans hover:bg-purple-100 font-semibold text-sm tracking-wide",
                 activeSection === item.id ? "bg-[#7c3bed] text-white hover:bg-[#7c3bed]/90" : " ",
-                item.title==='Logout' ? ' md:text-red-600 md:hover:bg-red-100 md:mt-36 md:border-t md:border-2' : ''
+                
               )}
               onClick={() => onSectionChange(item.id)}
             >
