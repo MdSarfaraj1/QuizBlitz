@@ -1,6 +1,8 @@
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const CTASection = () => {
+  const navigate=useNavigate();
   return (
     <section className="pb-20">
       <div className="container-padding max-w-7xl mx-auto">
@@ -14,10 +16,10 @@ const CTASection = () => {
               Explore diverse categories, compete with friends, and learn while having fun!
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <button  className="bg-white font-medium hover:text-myColour/80 text-myColour size-lg rounded-md flex py-2.5 md:px-6 px-3">
+              <button onClick={()=>navigate('/startQuiz')} className="bg-white font-medium hover:text-myColour/80 text-myColour size-lg rounded-md flex py-2.5 md:px-6 px-3">
                   Start Quiz Now <ArrowRight className="ml-2 h-7 w-5" />
                 </button>
-             <button className="bg-white hover:bg-myColour/95 hover:text-white text-myColour border border-myColour rounded-md flex py-2.5 md:px-6 px-3">
+             <button onClick={()=>navigate('/exploreQuizzes')} className="bg-white hover:bg-quizDashboard-accent/95 hover:text-white text-myColour border border-myColour rounded-md flex py-2.5 md:px-6 px-3">
                   Explore Categories
                 </button>
             </div>

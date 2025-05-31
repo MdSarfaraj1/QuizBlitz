@@ -1,20 +1,32 @@
-import { useState, useMemo } from 'react';
+import { useState} from 'react';
 import { ArrowLeft } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { categories } from './temporarydata';
+import { Link, useNavigate } from 'react-router-dom';
+ // Assuming this path is correct
+import CategorySelection from './Categories'; // Import the new component
+import axios from 'axios';
 
 const StartQuiz = () => {
+  const navigate=useNavigate();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedDifficulty, setSelectedDifficulty] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
   const [numberOfQuestions, setNumberOfQuestions] = useState(10);
 
-  const filteredCategories = useMemo(() => {
-    return categories.filter(category =>
-      category.name.toLowerCase().includes(searchTerm.toLowerCase()) 
-    );
-  }, [searchTerm]);
-
+const handleStartQuiz = async () => {
+  try{
+    const response=await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/Quiz/startQuiz/${selectedCategory._id}`, {
+      difficulty: selectedDifficulty,
+      numberOfQuestions: numberOfQuestions
+    }, { withCredentials: true });
+  
+    if(response.status===200){
+      const quizData = response.data
+     
+      navigate('/runQuiz', {state:{ quizData }} );
+  }
+}catch(error){
+    console.error("Error starting quiz:", error);
+  }
+}
   const canStartQuiz = selectedCategory && selectedDifficulty;
 
   return (
@@ -27,63 +39,44 @@ const StartQuiz = () => {
             <span>Back</span>
           </Link>
           <h1 className="text-3xl md:text-4xl font-bold text-center flex-1">🎯 Choose Your Challenge</h1>
-          <div className="w-24" />
+          <div className="w-24" >
+            <a href="#" className="text-2xl font-bold text-primary">
+              <h1 className="text-2xl font-bold text-quizDashboard-primary">
+                Quiz<span className="text-quizDashboard-accent">Blitz</span>
+              </h1>
+            </a>
+          </div>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
-          {/* Left: Categories */}
+          {/* Left: Categories (now using the new component) */}
           <div className="lg:col-span-2">
-            {/* Search Bar */}
-            <div className="mb-6">
-              <input
-                type="text"
-                placeholder="🔍 Search categories..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-3 bg-[#2a2a40] text-white placeholder-purple-300 border border-purple-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
-              />
-            </div>
-
-            {/* Categories */}
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 max-h-screen  pr-2">
-              {filteredCategories.map((category) => (
-                <div
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`cursor-pointer p-5 rounded-xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl
-                    ${selectedCategory?.id === category.id
-                      ? 'border-purple-500 bg-purple-800/50'
-                      : 'border-transparent bg-purple-900/30'}
-                  `}
-                >
-                  <div className="text-center">
-                    <div className="text-3xl mb-2">{category.icon}</div>
-                    <h3 className="font-semibold mb-1">{category.name}</h3>
-                    <p className="text-sm text-purple-200">{category.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <CategorySelection
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+            />
           </div>
 
-          {/* Right: Settings */}
+          {/* Right: Settings (remains the same) */}
           <div>
             <div className="bg-[#2b2b44] rounded-2xl p-6 sticky top-8 border border-purple-800 shadow-lg">
-              <h2 className="text-2xl font-bold mb-5">⚙️ Quiz Settings</h2>
+              <h2 className="text-2xl font-bold mb-3">⚙️ Quiz Settings</h2>
 
               {/* Selected Category */}
               {selectedCategory && (
-                <div className="mb-6 p-4 bg-purple-950/30 rounded-lg">
-                  <h3 className="font-semibold mb-2">📂 Selected:</h3>
+                <div className="mb-2 p-2 bg-purple-950/30 rounded-lg">
                   <div className="flex items-center gap-3">
+                    <h3 className="font-semibold mb-2">📂 Selected Topic:</h3>
+                    <span >
                     <span className="text-2xl">{selectedCategory.icon}</span>
-                    <span>{selectedCategory.name}</span>
+                    <span>{selectedCategory.title}</span>
+                    </span>
                   </div>
                 </div>
               )}
 
               {/* Difficulty Selection */}
-              <div className="mb-6">
+              <div className="mb-5">
                 <label className="block text-lg font-semibold mb-3">🎚️ Difficulty</label>
                 <div className="grid gap-3">
                   {['easy', 'medium', 'hard'].map((level) => (
@@ -123,6 +116,7 @@ const StartQuiz = () => {
               {/* Start Button */}
               <button
                 disabled={!canStartQuiz}
+                onClick={ handleStartQuiz}
                 className={`w-full py-3 rounded-xl font-semibold transition-all text-lg ${
                   canStartQuiz
                     ? 'bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 hover:scale-105'
@@ -133,9 +127,10 @@ const StartQuiz = () => {
               </button>
 
               {/* Quiz Info */}
-              <div className="mt-6 text-sm text-purple-300 space-y-1">
+              <div className="mt-3 text-sm text-purple-300 space-y-1">
                 <p>⏱️ Timer: 10 minutes</p>
-                <p>💡 2 hints available</p>
+                <p>💡 Maximum questions have hints</p>
+                <p>❌ Each hints reduces 1/2 marks</p>
               </div>
             </div>
           </div>

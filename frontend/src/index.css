@@ -32,9 +32,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(146, 164, 247, 0.4) 0%, rgba(173, 135, 247, 0.4) 100%);
-  z-index: 1;
+  background: linear-gradient(135deg, rgba(146, 164, 247, 0.35), rgba(173, 135, 247, 0.35));
+  backdrop-filter: blur(12px);
+  
 }
+
 .illustration-login-area::after {
   content: '';
   position: absolute;
@@ -44,7 +46,9 @@
   bottom: 0;
   background: linear-gradient(135deg, rgba(146, 164, 247, 0.4) 0%, rgba(173, 135, 247, 0.4) 100%);
   z-index: 1;
+   backdrop-filter: blur(12px);
 }
+
 .input-shadow {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
@@ -54,7 +58,7 @@
 }
 
 .login-input-field{
-  @apply pl-10 pr-40 h-12 rounded-full border-purple-300 shadow-md   focus:outline-none  focus:border-blue-300 focus:ring-2 focus:ring-blue-300/20
+  @apply pl-10 w-full h-12 rounded-full border-purple-300 shadow-md   focus:outline-none  focus:border-blue-300 focus:ring-2 focus:ring-blue-300/20
 }
 .signup-input{
   @apply w-full border px-3 py-2 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400/20
@@ -76,3 +80,52 @@
   .achievement-badge {
     @apply flex items-center justify-center w-12 h-12 rounded-full border border-quizDashboard-primary/20;
   }
+.profile-settings-input{
+  @apply flex h-10 w-full rounded-md border  bg-white 
+px-3 py-2 text-sm text-slate-800 placeholder:text-slate-500 
+focus:outline-none focus:ring-2 focus:ring-[#7c3bed] focus:ring-offset-2 
+disabled:cursor-not-allowed disabled:opacity-50 transition-all
+
+}
+.profile-settings-label
+{
+  @apply text-sm  mb-1 block  text-slate-900 font-sans font-semibold  opacity-90
+
+}
+.profile-settings-button{
+  @apply w-full sm:w-auto inline-flex items-center justify-center gap-2 
+rounded-md px-4 py-2 text-sm font-medium text-white 
+bg-[#7c3bed] hover:bg-[#7c3bed]/90 
+disabled:opacity-50 
+;
+}
+.alert-success{
+  @apply text-blue-500 font-semibold
+}
+.alert-danger{
+  @apply text-red-600 font-semibold
+}
+.reset-password-input{
+  @apply  w-full px-6 py-4 rounded-2xl border-2 border-transparent 
+      bg-white/20 backdrop-blur-sm text-white placeholder-gray-300 
+      focus:outline-none focus:border-purple-400 focus:bg-white/30
+      transition-all duration-300 ease-in-out transform hover:scale-105
+      shadow-lg hover:shadow-xl
+}
+.reset-password-button{
+  @apply w-full py-4 rounded-2xl text-white font-bold text-lg
+      transition-all duration-300 ease-in-out transform hover:scale-105
+      shadow-lg hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-purple-300
+}
+.reset-password-iconClass{
+  @apply w-12 h-12 mx-auto mb-4 flex items-center justify-center rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xl shadow-lg
+}
+.homepage-button{
+  @apply px-6 py-2.5 flex bg-gradient-to-r from-purple-500 to-orange-500 text-white rounded-lg font-semibold shadow-md hover:shadow-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-300 hover:scale-105
+}
+
+.runningQuiz-button{
+    @apply min-w-[160px] px-6 py-3 text-white rounded-lg
+          text-base font-medium transition-colors duration-200 shadow-md flex
+          items-center justify-center
+}

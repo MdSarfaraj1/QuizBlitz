@@ -1,32 +1,54 @@
 import { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import Logo from './Logo';
-import { Link,  } from 'react-router-dom';
+import {useAuth} from '../../Context/UserContextProvider'
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 const LoginPage = () => {
+  const navigate=useNavigate();
+  const {setUser}=useAuth();
+  const [message, setMessage] = useState({ text: "", type: "" });
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [toast,setToast]=useState({})
-  const handleLogin = (e) => {
+ const [loading, setLoading] = useState(false);
+
+const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    
-    // Simple validation
-    if (!email || !password) {
-      setToast({
-        title: "Error",
-        description: "Please enter both email and password.",
-        variant: "destructive",
+  setLoading(true);
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/User/login`, {email,password,rememberMe}, {
+        withCredentials: true,
       });
-      return;
-    }
-    
-    // Demo login success message
-    setToast({
-      title: "Success!",
-      description: "Welcome back! You've successfully logged in.",
-    });
-  };
+      setMessage({
+        text: response.data.message,
+        type: "success",
+      });
+      setUser(response.data.userID,response.data.username,response.data.profilePicture);
+      setTimeout(() => {
+        navigate(`/dashboard`);
+      }, 1000);
+      
+    } catch (error) {
+      if (error.response) {
+
+        setMessage({
+          text: error.response.data.message || "An error occurred during login",
+          type: "error",
+        });
+      }
+      else {
+        setMessage({
+          text: "Network error. Please check your connection.",
+          type: "error",
+        });
+      }
+
+    };
+      setLoading(false);
+  }
 
   return (
     <div className="login-background flex min-h-screen flex-col md:flex-row">
@@ -57,8 +79,17 @@ const LoginPage = () => {
           {/* Login Form */}
           <div className="bg-white rounded-3xl p-5 h- sm:p-8 shadow-md">
             <h3 className="text-xl font-semibold text-gray-800 mb-6">Sign In</h3>
-            
-            <form onSubmit={handleLogin} className="space-y-5">
+            {message.text && (
+                    <div
+                      className={`alert ${message.type === "success"
+                          ? "alert-success"
+                          : "alert-danger"
+                        } mb-3`}
+                    >
+                      {message.text}
+                    </div>
+                  )}
+            <form onSubmit={handleLoginSubmit} className="space-y-5">
               {/* Email Input */}
               <div className="space-y-2">
                 <label htmlFor="email" className="text-sm font-medium">Email</label>
@@ -81,9 +112,9 @@ const LoginPage = () => {
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <label htmlFor="password" className="text-sm font-medium">Password</label>
-                  <a href="#" className="text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors">
+                  <Link to={"/forget-password"} className="text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors">
                     Forgot Password?
-                  </a>
+                  </Link>
                 </div>
                 <div className="relative">
                   <div className="absolute left-3 top-3 text-gray-400">
@@ -113,7 +144,7 @@ const LoginPage = () => {
                 type="checkbox" 
                   id="remember" 
                   checked={rememberMe}
-                  onCheckedChange={(checked) => setRememberMe(prev=>!prev)}
+                  onChange={() => setRememberMe(prev => !prev)}
                 />
                 <label
                   htmlFor="remember"
@@ -125,10 +156,11 @@ const LoginPage = () => {
               
               {/* Submit Button */}
               <button 
+               disabled={loading}
                 type="submit" 
                 className="w-full h-12 text-base bg-myColour/20 rounded-full font-medium shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all"
               >
-                Sign In
+                {loading ? 'Signing in...' : 'Sign In'}
               </button>
               
               {/* Sign up option */}

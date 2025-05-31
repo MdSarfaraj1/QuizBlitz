@@ -1,19 +1,67 @@
 
-import { Award, TrendingUp, Clock, Medal } from 'lucide-react';
-
+import axios from 'axios';
+import { Award, TrendingUp,Bell , Medal } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from "../../Context/UserContextProvider";
 // JSDoc for type hinting for the 'User' object
 const UserProfileHeader = () => {
-let user={
-  name: "John Doe",
-  avatar: "https://i.pravatar.cc/100",
-  totalQuizzes: 25,
-  averageScore: 85,
-  rank: 3,
-  points: 1500,
-  level:9
-}
+  const {username}=useAuth()
+  const navigate = useNavigate();
+  const notificationCount = 5; // Example notification count, replace with actual logic
+  const [user,setUser]=useState({ 
+                            name: "John Doe",
+                            avatar: "https://i.pravatar.cc/100",
+                            totalQuizzes: 25,
+                            averageScore: 85,
+                            rank: 3,
+                            points: 1500,
+                            level:9})
+  useEffect(() => {
+   
+    const fetchUserData = async () => {
+      try{
+        let response=await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}/User/getProfile`, {
+          withCredentials: true,
+        });
+        if(response.status===200){
+          setUser(response.userData); 
+        }else{
+          console.error("Failed to fetch user data",respoonse);
+        }       
+        
+      }catch(error){
+        console.error("Error fetching user data:", error);
+      }
+     
+    };
+
+    fetchUserData();
+  },[]);
+
   return (
+    <>
+     {/* Header */}
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
+                  <div>
+                    <h1 className="text-2xl font-bold">Welcome back, {username}!</h1>
+                    <p className="text-muted-foreground">
+                      Ready for a new quiz challenge?
+                    </p>
+                  </div>
+                   <div className="mt-4 md:mt-0 w-full md:w-auto flex justify-center">
+                <button
+                onClick={()=>navigate("/startQuiz")}
+                className='homepage-button'
+                  size="lg"
+                >
+                  Start New Quiz
+                </button>
+              </div>
+                </div>
+   
     <div className=" border-2 rounded-lg bg-white shadow-md p-4 animate-entry">
+       
       <div className="flex flex-col md:flex-row items-center md:items-start">
         <div className="relative mb-4 md:mb-0 md:mr-6">
           <img
@@ -71,17 +119,21 @@ let user={
           </div>
         </div>
 
-        <div className="mt-4 md:mt-0 w-full md:w-auto flex justify-center">
           <button
-          className='bg-orange-600 hover:bg-orange-700 text-white focus:ring-primary-500 py-3 px-6 text-lg rounded-md shadow-md'
-      
-            size="lg"
+            onClick={() => navigate('/notifications')}
+            className="relative hover:scale-105  p-2 rounded-full bg-slate-200 shadow-md hover-shadow-lg "
+            aria-label="Notifications"
           >
-            Start New Quiz
+            <Bell size={24} className="text-myColour" />
+            {notificationCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full px-1.5">
+                {notificationCount}
+              </span>
+            )}
           </button>
-        </div>
       </div>
     </div>
+     </>
   );
 };
 

@@ -10,25 +10,36 @@ import Dashboard from './pages/Dashboard';
 import StartQuiz from './components/StartQuiz/StartQuiz';
 import RunningQuiz from './components/StartQuiz/RunningQuiz';
 import ResultsPage from './components/StartQuiz/Result';
+import UserSettings from './pages/UserSettings';
+import NotFound from './pages/NoFoundPage';
+import { UserContextProvider } from './Context/UserContextProvider';
+import ResetPassword from './components/ResetPassword/ResetPassword';
+import ExploreQuizzes from './components/Home/ExploreQuizzes';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
      <Route element={<Layout />}>
       <Route path="/" element={<Home />} />
     </Route>
-    <Route path='/dashboard' element={<Dashboard/>}/>
+    <Route path='/dashboard/*' element={<Dashboard/>}/>
     <Route path='/login' element={<Login/>}/>
     <Route path='/signup' element={<SignupForm/>}/>
     <Route path='/startQuiz' element={<StartQuiz/>}/>
-    <Route path='/runningQuiz' element={<RunningQuiz/>}/>
+    <Route path='/runQuiz' element={<RunningQuiz/>}/>
     <Route path='quizResult' element={<ResultsPage/>}/>
+    <Route path='/userSettings' element={<UserSettings/>}/>
+    <Route path='/forget-password' element={<ResetPassword/>}/>
+    <Route path='/exploreQuizzes' element={<ExploreQuizzes/>}/>
+    <Route path='*' element={<NotFound/>}/>
     </>
    
   )
 );
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  <UserContextProvider>
     <RouterProvider router={router} />
-  </StrictMode>,
+  </UserContextProvider>
+    
+  
 )

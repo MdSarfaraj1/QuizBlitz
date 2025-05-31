@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Eye, EyeOff ,ArrowRight} from "lucide-react";
-import UploadImage from "./UploadImage";
+// import UploadImage from "./UploadImage";
 import { useNavigate } from "react-router-dom";
 import {
   validateEmail,
@@ -9,15 +9,19 @@ import {
   validatePasswordMatch,
   getPasswordStrength,
 } from "../../Utills/validation";
+import axios from "axios";
+import { useAuth } from "../../Context/UserContextProvider";
+
 const SignUpInputField = () => {
+   const { setUser } = useAuth()
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [avatarUrl, setAvatarUrl] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+   const [message, setMessage] = useState({ text: "", type: "" });
   const navigate = useNavigate();
 
   const [errors, setErrors] = useState({
@@ -45,7 +49,7 @@ const SignUpInputField = () => {
       isValid = false;
     }
     if (!validatePassword(password)) {
-      newErrors.password = "Password must be at least 8 characters with at least one number";
+      newErrors.password = "Password must be at least 5 characters with at least one number";
       isValid = false;
     }
     if (!validatePasswordMatch(password, confirmPassword)) {
@@ -61,7 +65,33 @@ const SignUpInputField = () => {
     e.preventDefault();
     if (!validateForm()) return;
     setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 1000); // mock delay
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/User/register`, {username:name,email,password},{ withCredentials: true });
+
+      if (response.status === 201) {
+        setMessage({
+          text: response.data.message,
+          type: 'success'
+        });
+        setTimeout(() => {
+          setUser(response.data.userID, response.data.username)
+          navigate(`/dashboard`);
+        }, 1000);
+      }
+    } catch (error) {
+      if (error.response) {
+        setMessage({
+              text: error.response.data.message|| 'Something went wrong. Please try again later.',
+              type: 'error'
+            });
+        }
+       else {
+        setMessage({
+          text: 'Network error. Please check your connection.',
+          type: 'error'
+        });
+      }
+    }
   };
 
   const getPasswordStrengthColor = () => {
@@ -73,17 +103,24 @@ const SignUpInputField = () => {
 
   return (
     <div className="w-full max-w-md mx-auto">
-    
+      {message.text && (
+        <div
+          className={`alert ${
+            message.type === "success" ? "alert-success" : "alert-danger"
+          } mb-3`}
+        >
+          {message.text}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-3">
-        <UploadImage onAvatarChange={setAvatarUrl} />
-
         <div className="space-y-0.5">
           <label className="signup-label" htmlFor="name">
             Name
           </label>
           <input
             id="name"
+            type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Your full name"
