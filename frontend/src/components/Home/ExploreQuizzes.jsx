@@ -19,6 +19,7 @@ const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}/Quiz/g
       if(response.status===200)
       {
         setQuizzes(response.data.quiz)
+        console.log("Quiz of the day:", response.data.quiz);
         setIsLoading(false)
       }
         
@@ -78,10 +79,10 @@ const handleStartQuiz=async(id)=>{
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+   <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
-        <div className="container mx-auto max-w-7xl px-4 py-8">
+        <div className=" mx-auto max-w-7xl px-4 py-8">
           <div className="text-center mb-8">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               Explore <span className="text-quizDashboard-primary">Quiz</span>
@@ -92,47 +93,49 @@ const handleStartQuiz=async(id)=>{
               collection. From algorithms to web development!
             </p>
           </div>
+        </div>
+      </div>
 
-          {/* Search and Filters */}
-          <div className="bg-white rounded-xl shadow-lg p-6 border">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Search */}
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                <input
-                  type="text"
-                  placeholder="Search CS topics, languages, frameworks..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-
-              {/* Category Filter */}
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                {categories.map((category) => (
-                  <option key={category.name} value={category.name}>
-                    {category.label}
-                  </option>
-                ))}
-              </select>
-
-              {/* Difficulty Filter */}
-              <select
-                value={selectedDifficulty}
-                onChange={(e) => setSelectedDifficulty(e.target.value)}
-                className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="all">All Difficulties</option>
-                <option value="Easy">Easy</option>
-                <option value="Medium">Medium</option>
-                <option value="Hard">Hard</option>
-              </select>
+      {/* Search and Filters - Made Sticky */}
+      <div className="sticky top-0 z-50 bg-white shadow-lg border-b backdrop-blur-sm bg-white/95">
+        <div className="container mx-auto max-w-7xl px-4 py-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Search */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <input
+                type="text"
+                placeholder="Search CS topics, languages, frameworks..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
             </div>
+
+            {/* Category Filter */}
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              {categories.map((category) => (
+                <option key={category.name} value={category.name}>
+                  {category.label}
+                </option>
+              ))}
+            </select>
+
+            {/* Difficulty Filter */}
+            <select
+              value={selectedDifficulty}
+              onChange={(e) => setSelectedDifficulty(e.target.value)}
+              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="all">All Difficulties</option>
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
           </div>
         </div>
       </div>
@@ -144,7 +147,7 @@ const handleStartQuiz=async(id)=>{
             {isLoading
               ? "Loading The Quizzes ...."
               : `${filteredQuizzes.length} Quiz${
-                  filteredQuizzes.length !== 1 ? "es" : ""
+                  filteredQuizzes.length !== 1 ? "zes" : ""
                 } Found`}
           </h2>
           <div className="flex items-center gap-2 text-gray-600">

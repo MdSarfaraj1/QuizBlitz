@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { questionsData } from './questionsData';
 import { Toast } from "../UI/toast";
 import { X} from "lucide-react";
 import { useRef } from 'react';
@@ -10,6 +9,7 @@ const RunningQuiz = () => {
   const navigate = useNavigate();
     const location = useLocation();
   const quizData = location.state?.quizData;
+  console.log(quizData)
  const usedHintQuestions = useRef(new Set());
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -131,7 +131,7 @@ const handleLearnLater = (itemIndex) => {
             Quiz Progress
           </h2>
           <div className="grid grid-cols-5 gap-2">
-            {questionsData.map((_, index) => (
+            {quizData.questions.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentQuestionIndex(index)}

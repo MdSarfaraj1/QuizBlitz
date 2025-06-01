@@ -4,7 +4,7 @@ import {
   BookOpen,
   Award,
   BarChart2, 
-  Star,
+  Lightbulb,
   Settings,
   Menu,
   X,
@@ -21,7 +21,7 @@ const Sidebar = ({ activeItem, onItemSelect }) => {
   const menuItems = [
     { icon: Home, label: 'Dashboard', key: 'dashboard' },
     { icon: BookOpen, label: 'My Quizzes', key: 'quizzes' },
-    { icon: Star, label: 'Favorites', key: 'Things To Learn' },
+    { icon: Lightbulb, label: 'Things To Learn', key: 'Things To Learn' },
     { icon: BarChart2, label: 'Leaderboard', key: 'leaderboard' },
     { icon: Award, label: 'Create Quiz', key: 'createQuiz' },
     { icon: Settings, label: 'Settings', key: 'settings' },

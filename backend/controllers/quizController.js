@@ -13,7 +13,6 @@ exports.getCategories=async (req,res)=>{
     try{
       
         const category=await Category.find({});
-        console.log("Fetching quiz categories",category);
         res.status(200).json({
             categories:category
         })
@@ -27,6 +26,7 @@ exports.getCategories=async (req,res)=>{
 exports.getRandomQuizSets=async (req,res)=>{ 
   try{
        const randomSets= await RandomQuizSet.find({},{questions:0})
+       console.log("Random Sets fetched:", randomSets);
          res.status(200).json({
             quiz:randomSets
         })
