@@ -10,10 +10,10 @@ import {
   X,
   LogOut
 } from 'lucide-react';
-
+import {useAuth} from "../../Context/UserContextProvider"
 const Sidebar = ({ activeItem, onItemSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const {username}=useAuth();
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
@@ -51,8 +51,8 @@ const Sidebar = ({ activeItem, onItemSelect }) => {
       >
         {/* Logo */}
         <div className="p-4 flex items-center justify-center border-b border-gray-200">
-          <h1 className="text-2xl font-bold text-blue-600">
-            Quiz<span className="text-purple-600">Blitz</span>
+           <h1 className="text-2xl font-bold text-quizDashboard-primary">
+            Quiz<span className="text-quizDashboard-accent">Blitz</span>
           </h1>
         </div>
 
@@ -97,7 +97,7 @@ const Sidebar = ({ activeItem, onItemSelect }) => {
               />
             </div>
             <div className="ml-3">
-              <p className="text-sm font-medium">Alex Johnson</p>
+              <p className="text-sm font-medium">{username||'User'}</p>
               <p className="text-xs text-gray-500">QuizBlitz</p>
             </div>
           </div>

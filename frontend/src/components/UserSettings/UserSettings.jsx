@@ -4,68 +4,52 @@ import { SecuritySection } from "./Security";
 // import { NotificationsSection } from "@/components/settings/NotificationsSection";
 // import { DangerZoneSection } from "@/components/settings/DangerZoneSection";
 import { Home } from "lucide-react";
-import { Settings } from "./Settings"; 
+import { SettingsNavigation } from "./SettingsNavigation"; 
 import {Link} from 'react-router-dom'
 
-export default function UserSettings() {
+
+
+  const UserSettings = () => {
   const [activeSection, setActiveSection] = useState("profile");
 
-  const renderActiveSection = () => {
+  const renderContent = () => {
     switch (activeSection) {
       case "profile":
         return <ProfileSection />;
       case "security":
         return <SecuritySection />;
-      // case "notifications":
-      //   return <NotificationsSection />;
-      // case "danger":
-      //   return <DangerZoneSection />;
+      case "notifications":
+        return <NotificationsSection />;
+      case "danger":
+        return <DangerZoneSection />;
       default:
         return <ProfileSection />;
     }
   };
 
   return (
-     
-        <div className="h-screen bg-background overflow-x-hidden">
-          <header className="border-b">
-            <div className="container flex items-center justify-between h-16 max-w-7xl">
-              <h1 className="text-2xl font-bold text-quizDashboard-primary">Your Settings</h1>
-              <Link
-                href="/dashboard"
-                className="text-lg flex text-slate-600  hover:text-[#7c3bed] transition-colors hover:underline font-medium"
-              ><Home className="w-8 h-6"/> Return to Dashboard
-              </Link>
-
-            </div>
-          </header>
-
-          <main className="container max-w-7xl py-6 px-4 md:px-6">
-            <div className="flex flex-col md:flex-row gap-6">
-              {/* Sidebar - On mobile */}
-              <div className="md:hidden mb-4">
-                <Settings
-                  activeSection={activeSection}
-                  onSectionChange={setActiveSection}
-                />
-              </div>
-
-              {/* Desktop Sidebar */}
-              <div className="hidden md:block">
-                <Settings
-                  activeSection={activeSection}
-                  onSectionChange={setActiveSection}
-                />
-              </div>
-
-              {/* Main Content Area */}
-              <div className="flex-1 space-y-6">
-                {renderActiveSection()}
-              </div>
-            </div>
-          </main>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
+          <p className="text-gray-600 mt-1">Manage your account settings and preferences</p>
         </div>
-    
-  
+
+        {/* Main Content */}
+        <div className="flex flex-col lg:flex-row gap-8">
+          <SettingsNavigation 
+            activeSection={activeSection} 
+            onSectionChange={setActiveSection} 
+          />
+          
+          <div className="flex-1 min-w-0">
+            {renderContent()}
+          </div>
+        </div>
+      </div>
+    </div>
   );
-}
+};
+
+export default UserSettings;
