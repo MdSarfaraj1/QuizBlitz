@@ -1,17 +1,15 @@
 import React from 'react';
-
 import { Card, CardContent, CardHeader, CardTitle } from "../UI/card";
 import { Award, Star, TrendingUp, Zap, Target } from 'lucide-react';
 import { cn } from "../../Utills/cn";
 
-
-const Achievements = ({ className }) => {
+const Achievements = ({ className, fullPledge = false }) => {
   const achievements = [
     {
       id: 1,
       title: "Quick Thinker",
       description: "Complete 5 quizzes in under 3 minutes each",
-      icon: Zap, // Using the imported Lucide icon component directly
+      icon: Zap,
       unlocked: true,
       progress: 100
     },
@@ -39,38 +37,79 @@ const Achievements = ({ className }) => {
       unlocked: false,
       progress: 66
     },
- 
   ];
 
   return (
-    <Card className={className}>
-      <CardHeader className="pb-3 border-b">
-        <CardTitle className="text-xl font-bold text-gray-800">Achievements & Badges</CardTitle>
+    <Card className={cn(
+      className,
+      fullPledge ? "h-full w-full" : ""
+    )}>
+      <CardHeader className={cn(
+        "pb-3 border-b",
+        fullPledge ? "p-6" : ""
+      )}>
+        <CardTitle className={cn(
+          "font-bold text-gray-800",
+          fullPledge ? "text-3xl" : "text-xl"
+        )}>
+          Achievements & Badges
+        </CardTitle>
       </CardHeader>
-      <CardContent className="pt-4">
-        <div className="space-y-4">
+      <CardContent className={cn(
+        "pt-4",
+        fullPledge ? "p-6 pt-6 h-full overflow-auto" : ""
+      )}>
+        <div className={cn(
+          "space-y-4",
+          fullPledge ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 space-y-0" : ""
+        )}>
           {achievements.map((achievement) => (
             <div
               key={achievement.id}
-              className="flex items-center p-3 rounded-lg bg-quizDashboard-soft-bg animate-entry"
-             
+              className={cn(
+                "flex items-center rounded-lg bg-quizDashboard-soft-bg animate-entry",
+                fullPledge 
+                  ? "flex-col text-center p-6 h-full min-h-[200px] shadow-md hover:shadow-lg transition-shadow" 
+                  : "p-3"
+              )}
             >
               <div
                 className={cn(
-                "achievement-badge",
-                achievement.unlocked ? "bg-quizDashboard-primary text-white" : "bg-gray-100 text-gray-400"
-              )} >
-                <achievement.icon size={20} />
+                  "achievement-badge",
+                  achievement.unlocked ? "bg-quizDashboard-primary text-white" : "bg-gray-100 text-gray-400",
+                  fullPledge ? "mb-4 p-4" : ""
+                )}
+              >
+                <achievement.icon size={fullPledge ? 32 : 20} />
               </div>
-              <div className="ml-4 flex-1">
-                <div className="flex items-center">
-                  <h3 className="font-semibold opacity-85">{achievement.title}</h3>
+              <div className={cn(
+                "flex-1",
+                fullPledge ? "text-center" : "ml-4"
+              )}>
+                <div className="flex items-center justify-center">
+                  <h3 className={cn(
+                    "font-semibold opacity-85",
+                    fullPledge ? "text-xl mb-2" : ""
+                  )}>
+                    {achievement.title}
+                  </h3>
                 </div>
-                <p className="text-xs text-muted-foreground mt-0.5">{achievement.description}</p>
+                <p className={cn(
+                  "text-muted-foreground mt-0.5",
+                  fullPledge ? "text-sm" : "text-xs"
+                )}>
+                  {achievement.description}
+                </p>
                 {!achievement.unlocked && (
-                  <div className="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                  <div className={cn(
+                    "w-full bg-gray-200 rounded-full h-1.5 mt-2",
+                    fullPledge ? "mt-4 h-2" : ""
+                  )}>
                     <div
-                      className="bg-quizDashboard-primary h-1.5 rounded-full"
+                      className={cn(
+                        "bg-quizDashboard-primary rounded-full",
+                        fullPledge ? "h-2" : "h-1.5"
+                      )}
                       style={{ width: `${achievement.progress}%` }}
                     ></div>
                   </div>

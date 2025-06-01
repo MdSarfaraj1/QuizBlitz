@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "../UI/card";
 import { BookOpen, Clock, Star, StarOff } from 'lucide-react';
+import { cn } from "../../Utills/cn";
 
-const SavedQuizzes = () => {
+const SavedQuizzes = ({ fullPledge = false }) => {
   const [savedQuizzes, setSavedQuizzes] = useState([
     {
       id: 1,
@@ -22,20 +23,55 @@ const SavedQuizzes = () => {
     },
     {
       id: 3,
-      title: "Science: Chemistry Basics",
-      category: "Science",
-      questions: 15,
-      timeEstimate: 12,
+      title: "Advanced Mathematics",
+      category: "Mathematics",
+      questions: 30,
+      timeEstimate: 25,
       favorite: false
     },
     {
       id: 4,
-      title: "History: Ancient Civiliza",
+      title: "History: Ancient Civilizations",
       category: "History",
       questions: 25,
       timeEstimate: 20,
       favorite: true
-    }
+    },
+    // Add more quizzes for fullPledge view
+    ...(fullPledge ? [
+      {
+        id: 5,
+        title: "Programming Fundamentals",
+        category: "Technology",
+        questions: 40,
+        timeEstimate: 35,
+        favorite: false
+      },
+      {
+        id: 6,
+        title: "Art History Renaissance",
+        category: "Arts",
+        questions: 18,
+        timeEstimate: 14,
+        favorite: true
+      },
+      {
+        id: 7,
+        title: "Biology: Human Anatomy",
+        category: "Science",
+        questions: 22,
+        timeEstimate: 18,
+        favorite: false
+      },
+      {
+        id: 8,
+        title: "Literature Classics",
+        category: "Literature",
+        questions: 28,
+        timeEstimate: 22,
+        favorite: true
+      }
+    ] : [])
   ]);
 
   const toggleFavorite = (id) => {
@@ -45,48 +81,101 @@ const SavedQuizzes = () => {
   };
 
   return (
-    <Card className={"shadow-md rounded-xl"}>
-      <CardHeader className="pb-3 border-b">
-        <CardTitle className="text-2xl font-bold text-gray-800">Saved Quizzes</CardTitle>
+    <Card className={cn(
+      "shadow-md rounded-xl",
+      fullPledge ? "h-full w-full" : ""
+    )}>
+      <CardHeader className={cn(
+        "pb-3 border-b",
+        fullPledge ? "p-6" : ""
+      )}>
+        <CardTitle className={cn(
+          "font-bold text-gray-800",
+          fullPledge ? "text-3xl" : "text-2xl"
+        )}>
+          Saved Quizzes
+        </CardTitle>
       </CardHeader>
-      <CardContent className="pt-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <CardContent className={cn(
+        "pt-4",
+        fullPledge ? "p-6 pt-6 h-full overflow-auto" : ""
+      )}>
+        <div className={cn(
+          "grid gap-4",
+          fullPledge 
+            ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" 
+            : "grid-cols-1 sm:grid-cols-2"
+        )}>
           {savedQuizzes.map((quiz, index) => (
             <div
               key={quiz.id}
-              className="bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition duration-300 ease-in-out"
+              className={cn(
+                "bg-white border rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out",
+                fullPledge ? "p-6 h-full min-h-[220px] flex flex-col" : "p-4"
+              )}
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div className="flex items-start justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800">{quiz.title}</h3>
-                  <p className="text-sm text-gray-500 mt-1">{quiz.category}</p>
+                <div className="flex-1">
+                  <h3 className={cn(
+                    "font-semibold text-gray-800",
+                    fullPledge ? "text-xl mb-2" : "text-lg"
+                  )}>
+                    {quiz.title}
+                  </h3>
+                  <p className={cn(
+                    "text-gray-500 mt-1",
+                    fullPledge ? "text-base" : "text-sm"
+                  )}>
+                    {quiz.category}
+                  </p>
                 </div>
                 <button
-                  className="h-8 w-8 p-1 rounded-full hover:bg-gray-100"
+                  className={cn(
+                    "p-1 rounded-full hover:bg-gray-100",
+                    fullPledge ? "h-10 w-10" : "h-8 w-8"
+                  )}
                   onClick={() => toggleFavorite(quiz.id)}
                 >
                   {quiz.favorite ? (
-                    <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />
+                    <Star className={cn(
+                      "text-yellow-500 fill-yellow-500",
+                      fullPledge ? "h-6 w-6" : "h-5 w-5"
+                    )} />
                   ) : (
-                    <StarOff className="h-5 w-5 text-gray-400" />
+                    <StarOff className={cn(
+                      "text-gray-400",
+                      fullPledge ? "h-6 w-6" : "h-5 w-5"
+                    )} />
                   )}
                 </button>
               </div>
 
-              <div className="flex items-center mt-4 text-sm text-gray-500">
+              <div className={cn(
+                "flex items-center text-gray-500 mt-4",
+                fullPledge ? "text-base flex-col items-start space-y-2" : "text-sm"
+              )}>
                 <div className="flex items-center">
-                  <BookOpen size={16} className="mr-1" />
+                  <BookOpen size={fullPledge ? 18 : 16} className="mr-1" />
                   <span>{quiz.questions} questions</span>
                 </div>
-                <div className="flex items-center ml-4">
-                  <Clock size={16} className="mr-1" />
+                <div className={cn(
+                  "flex items-center",
+                  fullPledge ? "" : "ml-4"
+                )}>
+                  <Clock size={fullPledge ? 18 : 16} className="mr-1" />
                   <span>~{quiz.timeEstimate} mins</span>
                 </div>
               </div>
 
-              <div className="mt-5 flex justify-end">
-                 <button className="px-3 py-1 text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-purple-700 rounded-md hover:from-purple-600 hover:to-purple-800 transition-all">
+              <div className={cn(
+                "flex justify-end",
+                fullPledge ? "mt-auto pt-4" : "mt-5"
+              )}>
+                <button className={cn(
+                  "font-medium text-white bg-gradient-to-r from-purple-500 to-purple-700 rounded-md hover:from-purple-600 hover:to-purple-800 transition-all",
+                  fullPledge ? "px-4 py-2 text-base" : "px-3 py-1 text-sm"
+                )}>
                   Start Quiz
                 </button>
               </div>
@@ -94,11 +183,13 @@ const SavedQuizzes = () => {
           ))}
         </div>
 
-        <div className="pt-4 text-center">
-          <a href="/saved" className="text-sm text-quizDashboard-primary hover:underline">
-            View All Saved Quizzes
-          </a>
-        </div>
+        {!fullPledge && (
+          <div className="pt-4 text-center">
+            <a href="/saved" className="text-sm text-quizDashboard-primary hover:underline">
+              View All Saved Quizzes
+            </a>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

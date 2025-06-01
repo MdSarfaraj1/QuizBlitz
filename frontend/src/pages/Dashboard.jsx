@@ -71,7 +71,7 @@ const Dashboard = () => {
               <p className="text-gray-600">See how you rank against other players</p>
             </div>
             <div className="bg-white rounded-lg shadow-md">
-              <Leaderboard />
+              <Leaderboard fullPledge="true" />
             </div>
           </>
         );
@@ -109,7 +109,7 @@ const Dashboard = () => {
               <h1 className="text-2xl font-bold">Saved Quizzes</h1>
               <p className="text-gray-600">Your saved quizzes for later</p>
             </div>
-            <SavedQuizzes />
+            <SavedQuizzes fullPledge="true" />
           </>
         );
       case 'achievements':
@@ -119,7 +119,7 @@ const Dashboard = () => {
               <h1 className="text-2xl font-bold">Achievements</h1>
               <p className="text-gray-600">Your earned achievements and badges</p>
             </div>
-            <Achievements />
+            <Achievements fullPledge="true" />
           </>
         );
       
