@@ -8,7 +8,9 @@ import {
   Settings,
   Menu,
   X,
-  LogOut
+  LogOut,
+  Medal,
+  InboxIcon
 } from 'lucide-react';
 import {useAuth} from "../../Context/UserContextProvider"
 const Sidebar = ({ activeItem, onItemSelect }) => {
@@ -22,7 +24,9 @@ const Sidebar = ({ activeItem, onItemSelect }) => {
     { icon: Home, label: 'Dashboard', key: 'dashboard' },
     { icon: BookOpen, label: 'My Quizzes', key: 'quizzes' },
     { icon: Lightbulb, label: 'Things To Learn', key: 'Things To Learn' },
+    { icon: InboxIcon, label: 'Saved Quizzes', key: 'SavedQuizzes' },
     { icon: BarChart2, label: 'Leaderboard', key: 'leaderboard' },
+    { icon: Medal, label: 'Achievements', key: 'achievements' },
     { icon: Award, label: 'Create Quiz', key: 'createQuiz' },
     { icon: Settings, label: 'Settings', key: 'settings' },
     { icon: LogOut, label: 'Sign Out', key: 'signout' },
@@ -45,7 +49,7 @@ const Sidebar = ({ activeItem, onItemSelect }) => {
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-40 bg-white flex flex-col w-64 border-r shadow-lg transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 left-0 z-40 bg-white flex flex-col w-72 border-r shadow-lg transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
@@ -87,7 +91,7 @@ const Sidebar = ({ activeItem, onItemSelect }) => {
         </nav>
 
         {/* User section */}
-        <div className="p-4 border-t border-gray-200">
+        <div className="p-2 border-t border-gray-200">
           <div className="flex items-center">
             <div className="relative w-10 h-10 rounded-full overflow-hidden">
               <img

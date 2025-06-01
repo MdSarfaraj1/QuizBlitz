@@ -49,7 +49,7 @@ export default function DeleteAccount() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-gray-50 min-h-screen">
+    <div className="max-w-4xl mx-auto p-2 bg-gray-50 min-h-screen">
       {/* Toast Notification */}
       {showToast && (
         <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg border transition-all duration-300 ${
@@ -68,19 +68,7 @@ export default function DeleteAccount() {
         </div>
       )}
 
-      {/* User Profile Summary */}
-      <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
-        <div className="flex items-center gap-4">
-          <div className="h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center">
-            <User className="h-8 w-8 text-blue-600" />
-          </div>
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">{mockUser.name}</h2>
-            <p className="text-gray-600">{mockUser.email}</p>
-            <p className="text-sm text-gray-500">Member since {mockUser.joinDate}</p>
-          </div>
-        </div>
-      </div>
+    
 
       {/* Account Stats */}
       <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">

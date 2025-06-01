@@ -1,15 +1,13 @@
 
 import axios from 'axios';
-
-import { Award, TrendingUp,Bell , Medal,Pencil} from 'lucide-react';
+import { Award, TrendingUp, Medal,Pencil} from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate,Link } from 'react-router-dom';
 import { useAuth } from "../../Context/UserContextProvider";
-// JSDoc for type hinting for the 'User' object
+
 const UserProfileHeader = () => {
   const {username}=useAuth()
   const navigate = useNavigate();
-  const notificationCount = 5; // Example notification count, replace with actual logic
   const [user,setUser]=useState({ 
                             name: "John Doe",
                             avatar: "https://i.pravatar.cc/100",

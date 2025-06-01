@@ -102,6 +102,26 @@ const Dashboard = () => {
             </button>
           </div>
         );
+      case 'SavedQuizzes':
+        return (
+          <>
+            <div className="mb-8">
+              <h1 className="text-2xl font-bold">Saved Quizzes</h1>
+              <p className="text-gray-600">Your saved quizzes for later</p>
+            </div>
+            <SavedQuizzes />
+          </>
+        );
+      case 'achievements':
+        return (
+          <>
+            <div className="mb-8">
+              <h1 className="text-2xl font-bold">Achievements</h1>
+              <p className="text-gray-600">Your earned achievements and badges</p>
+            </div>
+            <Achievements />
+          </>
+        );
       
       default:
         return (

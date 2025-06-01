@@ -43,15 +43,6 @@ export function ProfileSection() {
   return (
     <>
       <Card className="bg-white border-0 shadow-sm rounded-2xl overflow-hidden">
-        <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-slate-100">
-          <CardTitle className="text-2xl font-bold text-slate-800 flex items-center gap-3">
-            <div className="p-2 bg-blue-100 rounded-xl">
-              <User className="h-6 w-6 text-blue-600" />
-            </div>
-            Profile Information
-          </CardTitle>
-          <p className="text-slate-600 mt-2">Update your personal information and avatar</p>
-        </CardHeader>
         <CardContent className="p-8">
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Avatar Section */}
