@@ -10,11 +10,10 @@ const location = useLocation();
 const [correctCount, setCorrectCount] = useState(0);
 const [wrongCount, setWrongCount] = useState(0);
 const [unanswered, setUnanswered] = useState(0);
-const [scoreObtained, setScoreObtained] = useState(0);
+const [userScore, setScoreObtained] = useState(0);
 const [totalScore, setTotalScore] = useState(0);
 
-   const { selectedAnswers, learnLater, quizData,hintsUsed,timeTaken} = location.state 
-   console.log(location.state)
+   const { selectedAnswers, learnLater, quizData,hintsUsed,timeTaken,category} = location.state 
   const [expandedSection, setExpandedSection] = useState(null);
   const [incorrectAnswers,setIncorrectAnswer]=useState([])
   const totalQuestions = quizData.questions.length;
@@ -69,17 +68,19 @@ const [totalScore, setTotalScore] = useState(0);
     setTotalScore(total);
 
     if (userId) {
-      console.log("user is present, id:", userId);
       try {
         const result = {
           userId,
           quizId: quizData.quizId,
-          scoreObtained: finalScore,
+          userScore: finalScore,
+          totalScore:total,
           correctAnswers: correct,
           wrongAnswers: wrong,
           learnLaterQuestions: learnLater.map((q) => q.id||q.question),
           timeTaken: timeTaken,
           submissionDate: new Date(),
+          category:category,
+          difficulty: quizData.difficulty,
         };
 
         console.log("result is:", result);
@@ -136,8 +137,8 @@ return (
     </div>
 
     <p className="text-center text-2xl font-bold text-white">
-      Total Score: <span className="text-cyan-300">{scoreObtained}</span><span className="text-cyan-300">/{totalScore}</span>
-       {hintsUsed>0 && scoreObtained>0 && (
+      Total Score: <span className="text-cyan-300">{userScore}</span><span className="text-cyan-300">/{totalScore}</span>
+       {hintsUsed>0 && userScore>0 && (
   <p className="text-center text-sm text-red-400 mt-2">
     ⚠️ Some points were deducted due to hints used.
   </p>

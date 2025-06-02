@@ -6,9 +6,9 @@ const router = express.Router();
 router.delete('/deleteUser/:id', async (req, res) => {
     try {
         const userId = req.params.id;
-        const adminID=req.body.adminID;
+        const adminId=req.body.adminId;
         // Check if the user is an admin
-        const admin = await User.findOne({ _id: adminID, role: "admin" });
+        const admin = await User.findOne({ _id: adminId, role: "admin" });
         if (!admin) {
             return res.status(403).json({ message: "Unauthorized" });
         }

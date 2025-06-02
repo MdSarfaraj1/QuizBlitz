@@ -72,10 +72,7 @@ const Dashboard = () => {
       case 'leaderboard':
         return (
           <div className="ml-10">
-            <div className="mb-8">
-              <h1 className="text-2xl font-bold">Leaderboard</h1>
-              <p className="text-gray-600">See how you rank against other players</p>
-            </div>
+            
             <div className="bg-white rounded-lg shadow-md">
               <Leaderboard fullPledge="true" />
             </div>
@@ -111,20 +108,13 @@ const Dashboard = () => {
       case 'SavedQuizzes':
         return (
           <div className="ml-10">
-            <div className="mb-8">
-              <h1 className="text-2xl font-bold">Saved Quizzes</h1>
-              <p className="text-gray-600">Your saved quizzes for later</p>
-            </div>
             <SavedQuizzes fullPledge="true" />
           </div >
         );
       case 'achievements':
         return (
           <div className="ml-10">
-            <div className="mb-8">
-              <h1 className="text-2xl font-bold">Achievements</h1>
-              <p className="text-gray-600">Your earned achievements and badges</p>
-            </div>
+            
             <Achievements fullPledge="true" />
           </div >
         );

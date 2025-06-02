@@ -16,7 +16,7 @@ const QuizSetSchema = new mongoose.Schema({
   difficulty: {
     type: String,
     required: true,
-    enum: ['Easy', 'Medium', 'Hard']
+    enum: ['easy', 'medium', 'hard']
   },
   duration: {
     type: Number,

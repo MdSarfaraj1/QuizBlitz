@@ -5,8 +5,8 @@ export const UserContext=React.createContext()
 
 export const UserContextProvider=({children})=>{
 
-    const [userId, setUserID] = useState(() => {
-        return localStorage.getItem('userID') || null;
+    const [userId, setUserId] = useState(() => {
+        return localStorage.getItem('userId') || null;
     });
 
     const [username, setUsername] = useState(() => {
@@ -23,17 +23,17 @@ export const UserContextProvider=({children})=>{
         setTimeout(() => setMessage(""), 3000);
       };
     
-    // Update localStorage whenever userID changes
-    const updateUserID = (newUserID,newUsername,profilePicture) => {
-        if (newUserID) {
-            localStorage.setItem('userID', newUserID);
+    // Update localStorage whenever userId changes
+    const updateUserId = (newUserId,newUsername,profilePicture) => {
+        if (newUserId) {
+            localStorage.setItem('userId', newUserId);
             localStorage.setItem('username',newUsername)
             localStorage.setItem('profilePicture',profilePicture)
-            setUserID(newUserID);
+            setUserId(newUserId);
             setUsername(newUsername);
             setProfilePicture(profilePicture);
         } else {
-            localStorage.removeItem('userID');
+            localStorage.removeItem('userId');
             localStorage.removeItem('username');
             localStorage.removeItem('profilePicture')
         }
@@ -43,18 +43,19 @@ export const UserContextProvider=({children})=>{
     // useEffect(() => {
     //     async function checkSession() {
     //       try {
-    //         const res = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}/user/verify-token`, {
+    //         const res = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}/User/verify-token`, {
     //           withCredentials: true,
     //         });
       
     //         if (res.status === 200) {
     //           console.log("Token present");
-    //           // Maybe store user info or auth status here
+              
     //         }
     //       } catch (err) {
     //         console.log("Token invalid or error:", err);
-    //         localStorage.removeItem("userID");
+    //         localStorage.removeItem("userId");
     //         localStorage.removeItem("username");
+    //         localStorage.removeItem("profilePicture");
     //       }
     //     }
       
@@ -62,7 +63,7 @@ export const UserContextProvider=({children})=>{
     //   }, []);
       
     return(
-        <UserContext.Provider value={{userId,username,setUser:updateUserID,flashMessage,setFlashMessage,profilePicture}}>
+        <UserContext.Provider value={{userId,username,setUser:updateUserId,flashMessage,setFlashMessage,profilePicture}}>
             {children}
         </UserContext.Provider>
     )

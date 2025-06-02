@@ -26,7 +26,7 @@ const handleLoginSubmit = async (e) => {
         text: response.data.message,
         type: "success",
       });
-      setUser(response.data.userID,response.data.username,response.data.profilePicture);
+      setUser(response.data.userId,response.data.username,response.data.profilePicture);
       setTimeout(() => {
         navigate(`/dashboard`);
       }, 1000);

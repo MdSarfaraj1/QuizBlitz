@@ -1,7 +1,7 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 const connectDB = require("../configure/database");
-
+const bcrypt = require('bcryptjs');
 // Import seed data
 const { initialQuizCategory } = require("./QuizCategory");
 const initialQuestions = require("./questions");
@@ -30,10 +30,11 @@ async function seedDatabase() {
     console.log("🧹 Cleared existing database collections");
 
     // Step 2: Create Admin User
+     const hashPassword = await bcrypt.hash(process.env.admin_password, 10);
     const admin = await User.create({
       username: 'Admin_BeTheHE',
       email: process.env.admin_email,
-      password: process.env.admin_password,
+      password: hashPassword,
       role: 'admin',
     });
     console.log("👤 Admin user created:", admin.username);

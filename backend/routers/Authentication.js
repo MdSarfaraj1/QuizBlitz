@@ -10,8 +10,8 @@ router.post('/login',authController.login);
 router.post('/logout', authController.logout);
 router.post('/verify-email', authController.verifyEmail);
 router.post('/resend-verification', authController.verifyEmail);
-router.get('/getProfile', isLoggedIn, authController.getProfile);
-router.put('/updateProfile', isLoggedIn, authController.updateProfile);
-router.get("/getLeaderboard",isLoggedIn,authController.getLeaderboard);
+router.get('/getProfile', isLoggedIn(), authController.getProfile);
+router.put('/updateProfile', isLoggedIn(), authController.updateProfile);//pending
+router.get('/verify-token', authController.verifyAuthToken);
 
 module.exports = router;

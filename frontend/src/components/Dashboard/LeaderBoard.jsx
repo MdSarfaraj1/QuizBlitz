@@ -2,130 +2,40 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "../UI/card";
 import { BarChart, Trophy, Award, Target, Crown, Medal, Star } from 'lucide-react';
 import { cn } from "../../Utills/cn";
-import { Link } from 'react-router-dom'; // Assuming Link is used for navigation, though not directly in the provided snippets.
-
+import { useEffect,useState } from 'react';
+import { useAuth } from '../../Context/UserContextProvider';
+import axios from 'axios';
 const Leaderboard = ({ fullPledge = false }) => {
-  const topUsers = [
-    { 
-      id: 1, 
-      position: 1, 
-      name: "Sarah Kim", 
-      points: 9850, 
-      quizzesTaken: 127,
-      badgeCount: 18,
-      avatarUrl: "https://i.pravatar.cc/150?img=1",
-      tier: "legendary"
-    },
-    { 
-      id: 2, 
-      position: 2, 
-      name: "David Chen", 
-      points: 9720, 
-      quizzesTaken: 119,
-      badgeCount: 16,
-      avatarUrl: "https://i.pravatar.cc/150?img=2",
-      tier: "epic"
-    },
-    { 
-      id: 3, 
-      position: 3, 
-      name: "Alex Johnson", 
-      points: 9450, 
-      quizzesTaken: 104,
-      badgeCount: 14,
-      avatarUrl: "https://i.pravatar.cc/150?img=3", 
-      isCurrentUser: true,
-      tier: "epic"
-    },
-     { 
-        id: 4, 
-        position: 4, 
-        name: "Emma Wilson", 
-        points: 9320, 
-        quizzesTaken: 98,
-        badgeCount: 13,
-        avatarUrl: "https://i.pravatar.cc/150?img=4",
-        tier: "rare"
-      },
-    // Add more users for fullPledge view
-    ...(fullPledge ? [
-      { 
-        id: 4, 
-        position: 4, 
-        name: "Emma Wilson", 
-        points: 9320, 
-        quizzesTaken: 98,
-        badgeCount: 13,
-        avatarUrl: "https://i.pravatar.cc/150?img=4",
-        tier: "rare"
-      },
-      { 
-        id: 5, 
-        position: 5, 
-        name: "Michael Brown", 
-        points: 9180, 
-        quizzesTaken: 89,
-        badgeCount: 12,
-        avatarUrl: "https://i.pravatar.cc/150?img=5",
-        tier: "rare"
-      },
-      { 
-        id: 6, 
-        position: 6, 
-        name: "Lisa Garcia", 
-        points: 9050, 
-        quizzesTaken: 87,
-        badgeCount: 11,
-        avatarUrl: "https://i.pravatar.cc/150?img=6",
-        tier: "rare"
-      },
-      { 
-        id: 7, 
-        position: 7, 
-        name: "James Davis", 
-        points: 8920, 
-        quizzesTaken: 82,
-        badgeCount: 10,
-        avatarUrl: "https://i.pravatar.cc/150?img=7",
-        tier: "uncommon"
-      },
-      { 
-        id: 8, 
-        position: 8, 
-        name: "Anna Martinez", 
-        points: 8800, 
-        quizzesTaken: 78,
-        badgeCount: 9,
-        avatarUrl: "https://i.pravatar.cc/150?img=8",
-        tier: "uncommon"
-      },
-      { 
-        id: 9, 
-        position: 9, 
-        name: "Tom Wilson", 
-        points: 8650, 
-        quizzesTaken: 74,
-        badgeCount: 8,
-        avatarUrl: "https://i.pravatar.cc/150?img=9",
-        tier: "uncommon"
-      },
-      { 
-        id: 10, 
-        position: 10, 
-        name: "Sophie Lee", 
-        points: 8520, 
-        quizzesTaken: 71,
-        badgeCount: 7,
-        avatarUrl: "https://i.pravatar.cc/150?img=10",
-        tier: "common"
+  const {userId}=useAuth()
+const [topUsers, setTopUsers] = useState([])
+const [currentUser, setCurrentUser] = useState({rank: 0,
+        username: "Loading...",
+        totalScore: 0,
+        quizzesTaken: 0,
+        avatar: "https://cdn-icons-png.flaticon.com/512/10337/10337609.png",
+        achievements: 0,});
+ useEffect(() => {
+  const fetchLeaderboardData = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}/Quiz/getLeaderboard/${userId}`, { withCredentials: true });
+      if (response.status === 200) {
+        const data = response.data;
+        console.log("Leaderboard data:", data);
+      setTopUsers(data.leaderboard || []);
+      setCurrentUser(data.userRank || null);
       }
-    ] : [])
-  ];
-  
-  const currentUser = topUsers.find(user => user.isCurrentUser) || topUsers[2];
+    } catch (error) {
+      console.error("Error fetching leaderboard data:", error);
+    
+    }
+  };
 
-  const getPositionIcon = (position) => {
-    switch (position) {
+  fetchLeaderboardData();
+}, []);
+ 
+
+  const getPositionIcon = (rank) => {
+    switch (rank) {
       case 1: return Crown;
       case 2: return Trophy;
       case 3: return Medal;
@@ -133,8 +43,8 @@ const Leaderboard = ({ fullPledge = false }) => {
     }
   };
 
-  const getPositionColor = (position) => {
-    switch (position) {
+  const getPositionColor = (rank) => {
+    switch (rank) {
       case 1: return "text-yellow-500 bg-yellow-50 border-yellow-200";
       case 2: return "text-gray-400 bg-gray-50 border-gray-200";
       case 3: return "text-amber-600 bg-amber-50 border-amber-200";
@@ -191,54 +101,48 @@ const Leaderboard = ({ fullPledge = false }) => {
             {fullPledge && 
             <div className={cn(
               "mr-4 flex items-center justify-center rounded-full border-2",
-              getPositionColor(currentUser.position),
+              getPositionColor(currentUser.rank),
               fullPledge ? "h-16 w-16" : "h-12 w-12"
             )}>
-              {React.createElement(getPositionIcon(currentUser.position), {
+              {React.createElement(getPositionIcon(currentUser.rank), {
                 size: 24 
               })}
             </div>
             }
-            
-            
             <div className={cn(
               "mr-4 relative flex shrink-0 overflow-hidden rounded-full border-2 border-white shadow-lg",
               fullPledge ? "h-16 w-16" : "h-12 w-12"
             )}>
-              {currentUser.avatarUrl ? (
-                <img src={currentUser.avatarUrl} alt={currentUser.name} className="aspect-square h-full w-full"/>
+              {currentUser.avatar ? (
+                <img src={currentUser.avatar} alt={currentUser.username} className="aspect-square h-full w-full"/>
               ) : (
                 <div className="flex h-full w-full items-center justify-center rounded-full bg-quizDashboard-primary text-white font-bold">
-                  {currentUser.name.charAt(0)}
+                  {currentUser.username.charAt(0)}
                 </div>
               )}
             </div>
 
-            <div className={` ${fullPledge ? "flex-1" : "flex"}`}>
+            <div className={` ${fullPledge ? "flex-1" : "flex flex-col  "}`}>
               <div className="flex items-center gap-2 mb-1">
                 <h3 className={cn(
                   "font-bold text-gray-800",
                   fullPledge ? "text-xl" : "text-lg"
                 )}>
-                  {currentUser.name}
+                  {currentUser.username}
                 </h3>
               </div>
               {
                 !fullPledge && 
-                <div className="text-center">
+                <div className="text-center ">
                   <div className={
                     "font-bold text-quizDashboard-primary text-lg"
                   }>
-                    #{currentUser.position}
+                    #{currentUser.rank} <span className={
+                    "text-gray-600 text-xs"}>Rank </span>
                   </div>
-                  <div className={
-                    "text-gray-600 text-xs}"}>
-                    Rank
-                  </div>
+                 
                 </div>
               }
-              
-             
                 {fullPledge && 
                  <div className={
                 "grid gap-4 grid-cols-4" 
@@ -248,7 +152,7 @@ const Leaderboard = ({ fullPledge = false }) => {
                     "font-bold text-quizDashboard-primary",
                     fullPledge ? "text-2xl" : "text-lg"
                   )}>
-                    #{currentUser.position}
+                    #{currentUser.rank}
                   </div>
                   <div className={cn(
                     "text-gray-600",
@@ -263,7 +167,7 @@ const Leaderboard = ({ fullPledge = false }) => {
                     "font-bold text-green-600",
                     fullPledge ? "text-2xl" : "text-lg"
                   )}>
-                    {currentUser.points.toLocaleString()}
+                    {currentUser.totalScore}
                   </div>
                   <div className={cn(
                     "text-gray-600",
@@ -293,7 +197,7 @@ const Leaderboard = ({ fullPledge = false }) => {
                     "font-bold text-purple-600",
                     fullPledge ? "text-2xl" : "text-lg"
                   )}>
-                    {currentUser.badgeCount}
+                    {currentUser.achievements}
                   </div>
                   <div className={cn(
                     "text-gray-600",
@@ -322,7 +226,7 @@ const Leaderboard = ({ fullPledge = false }) => {
             fullPledge ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4 space-y-0" : ""
           )}>
             {topUsers.slice(0,4).map((user) => {
-              const PositionIcon = getPositionIcon(user.position);
+              const PositionIcon = getPositionIcon(user.rank);
               
               return (
                 <div 
@@ -337,7 +241,7 @@ const Leaderboard = ({ fullPledge = false }) => {
                   {/* Position Icon */}
                   <div className={cn(
                     "mr-3 flex items-center justify-center rounded-full border-2",
-                    getPositionColor(user.position),
+                    getPositionColor(user.rank),
                     fullPledge ? "h-12 w-12" : "h-10 w-10"
                   )}>
                     <PositionIcon size={fullPledge ? 20 : 16} />
@@ -348,8 +252,8 @@ const Leaderboard = ({ fullPledge = false }) => {
                     "mr-3 relative flex shrink-0 overflow-hidden rounded-full border-2 border-white shadow-sm",
                     fullPledge ? "h-12 w-12" : "h-10 w-10"
                   )}>
-                    {user.avatarUrl ? (
-                      <img src={user.avatarUrl} alt={user.name} className="aspect-square h-full w-full"/>
+                    {user.avatar ? (
+                      <img src={user.avatar} alt={user.name} className="aspect-square h-full w-full"/>
                     ) : (
                       <div className="flex h-full w-full items-center justify-center rounded-full bg-quizDashboard-primary text-white font-bold">
                         {user.name.charAt(0)}
@@ -364,13 +268,9 @@ const Leaderboard = ({ fullPledge = false }) => {
                         "font-semibold text-gray-800 truncate",
                         fullPledge ? "text-base" : "text-sm"
                       )}>
-                        {user.name}
+                        {user.username}
                       </p>
-                      {user.isCurrentUser && (
-                        <span className="px-1.5 py-0.5 bg-quizDashboard-primary text-white rounded text-xs font-bold">
-                          YOU
-                        </span>
-                      )}
+      
                     </div>
                     
                     <div className={cn(
@@ -382,7 +282,7 @@ const Leaderboard = ({ fullPledge = false }) => {
                           "font-bold text-quizDashboard-primary",
                           fullPledge ? "text-lg" : "text-sm"
                         )}>
-                          #{user.position}
+                          #{user.rank}
                         </span>
                         {!fullPledge && (
                           <span className="text-xs text-gray-500">rank</span>
@@ -396,7 +296,7 @@ const Leaderboard = ({ fullPledge = false }) => {
                           "font-medium text-gray-700",
                           fullPledge ? "text-sm" : "text-xs"
                         )}>
-                          {user.points.toLocaleString()}
+                          {user.totalScore}
                         </span>
                         {!fullPledge && (
                           <span className="text-xs text-gray-500">pts</span>
@@ -422,7 +322,7 @@ const Leaderboard = ({ fullPledge = false }) => {
                           "text-gray-600",
                           fullPledge ? "text-sm" : "text-xs"
                         )}>
-                          {user.badgeCount}
+                          {user.achievements}
                         </span>
                         {!fullPledge && (
                           <span className="text-xs text-gray-500">badges</span>

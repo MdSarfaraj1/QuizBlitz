@@ -19,7 +19,6 @@ app.use(cookieParser());
 
 let cachedQuiz = null;
 let lastQuizDate = null;
-
 //Routes
 app.use("/Admin",AdminRouter);
 app.use("/Quiz",QuizRouter);

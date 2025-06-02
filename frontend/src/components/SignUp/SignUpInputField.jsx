@@ -74,7 +74,7 @@ const SignUpInputField = () => {
           type: 'success'
         });
         setTimeout(() => {
-          setUser(response.data.userID, response.data.username)
+          setUser(response.data.userId, response.data.username)
           navigate(`/dashboard`);
         }, 1000);
       }
@@ -91,6 +91,7 @@ const SignUpInputField = () => {
           type: 'error'
         });
       }
+      setIsLoading(false);
     }
   };
 

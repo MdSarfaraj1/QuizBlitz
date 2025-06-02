@@ -21,7 +21,7 @@ const handleStartQuiz = async () => {
     if(response.status===200){
       const quizData = response.data
      
-      navigate('/runQuiz', {state:{ quizData }} );
+      navigate('/runQuiz', {state:{ quizData,category:selectedCategory.title }} );
   }
 }catch(error){
     console.error("Error starting quiz:", error);

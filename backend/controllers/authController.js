@@ -2,6 +2,7 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { mailTransporter } = require('../utills/mailTransporter');
+const achievements = require('../InitializeDB/achievements');
 
 exports.register = async (req, res) => {
   try {
@@ -27,13 +28,13 @@ exports.register = async (req, res) => {
           data.password = hashPassword;
           let newUser = new User(data);
           await newUser.save();
-          const newToken = jwt.sign({ UserID: newUser._id }, process.env.secret_key, {expiresIn: "24h"});
+          const newToken = jwt.sign({ UserId: newUser._id }, process.env.secret_key, {expiresIn: "24h"});
           res
             .status(201)
             .cookie("sessionToken", newToken, { maxAge: 24 * 60 * 60 * 1000 })
             .json({
               message: "User created successfully!",
-              userID: newUser._id,
+              userId: newUser._id,
               username: newUser.username,
             }); 
         } catch (error) {
@@ -61,7 +62,7 @@ exports.login = async (req, res) => {
   
       if (user && (await bcrypt.compare(data.password, user.password))) {
         let maximumAge=data.remember?7*24 * 60 * 60 * 1000:24 * 60 * 60 * 1000;
-        const newToken = jwt.sign({ UserID: user._id }, process.env.secret_key, {
+        const newToken = jwt.sign({ UserId: user._id }, process.env.secret_key, {
           expiresIn: maximumAge,
         });
         return res.status(200)
@@ -73,7 +74,7 @@ exports.login = async (req, res) => {
                   path: '/'
                 }).json({
                     message: `Welcome ${user.username}`,
-                    userID: user._id,
+                    userId: user._id,
                     username: user.username,
                   });
       }
@@ -103,10 +104,10 @@ exports.logout= (req, res) => {
     });
   }
 }
-exports.updateProfile= async (req, res) => {
+exports.updateProfile= async (req, res) => { 
   data = req.body;
   console.log(data);
-  const user = await User.findById(data.userID);
+  const user = await User.findById(data.userId);
   if (!user || !(await bcrypt.compare(data.oldPassword, user.password))) {
     return res.status(404).json({ message: "User not found" });
   } else {
@@ -118,19 +119,36 @@ exports.updateProfile= async (req, res) => {
   }
 }
 
-exports.getProfile=async (req, res) => {
-  const userId = req.user.userID;
-  if (!userId) {
-    return res.status(404).json({ message: "User not found" });
-  }
-  const userData = await User.findById(userId).select('username email avatar totalQuizzes averageScore totalScore');
-  console.log(userData);
+exports.getProfile = async (req, res) => {
+  try {
+    const userData = req.user;
+    if (!userData._id) 
+      return res.status(404).json({ message: "User not found" });
+    
+
+    // Calculate averageScore
+    const totalQuizzesTaken = userData.totalQuizzes;
+  const averageScore = totalQuizzesTaken > 0
+  ? Math.round((userData.totalScore / (totalQuizzesTaken * 10)) * 100)
+  : 0;
+    // Calculate rank based on totalScore
+    const betterUsersCount = await User.countDocuments({ totalScore: { $gt: userData.totalScore } });
+    const rank = betterUsersCount+1 ;
+
     res.status(200).json({
-      username: userData.username, 
-      email: userData.email,
-   
-  })
-}
+      username: userData.username,
+      avatar: userData.avatar,
+      totalQuizzesTaken,
+      totalScore: userData.totalScore,
+      averageScore,
+      rank,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 exports.verifyEmail = async (req, res) => {
    try{ 
       const { email } = req.body;
@@ -149,29 +167,12 @@ exports.verifyEmail = async (req, res) => {
  }
  }
 
-exports.getLeaderboard= async (req, res) => {
-  try {
-    const topUsers = await User.find({ role: 'user' })
-      .sort({ totalScore: -1 })
-      .limit(10)
-      .select('username totalScore');
-
-    // Find the rank of the current user
-    const allUsersSorted = await User.find({ role: 'user' })
-      .sort({ totalScore: -1 })
-      .select('_id');
-
-    const userRank = allUsersSorted.findIndex(u => u._id.toString() === req.user._id.toString()) + 1;
-    let currentUser=null
-if(!userRank<=10)
-{
-  currentUser = await User.findById(req.user._id).select('username totalScore');
-  currentUser = { ...currentUser.toObject(), rank: userRank };
-}
-    
-    res.status(200).json({toppers:topUsers,activeUser: currentUser });
-  } catch (error) {
-    console.error("Error fetching leaderboard:", error);
-    res.status(500).json({ message: "Failed to fetch leaderboard" });
+exports.verifyAuthToken=(req,res)=>{
+    const token = req.cookies.sessionToken;
+    if (!token) {
+      return res.status(401).json({message:"token not present"});
+    }
+    else{
+      return res.status(200).json({message:"token present"})
+    }
   }
-};

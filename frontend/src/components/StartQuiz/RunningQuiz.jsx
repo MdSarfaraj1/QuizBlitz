@@ -9,7 +9,8 @@ const RunningQuiz = () => {
   const navigate = useNavigate();
     const location = useLocation();
   const quizData = location.state?.quizData;
-  console.log(quizData)
+  const category=location.state?.category
+  console.log(quizData,category)
  const usedHintQuestions = useRef(new Set());
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -110,6 +111,7 @@ const handleLearnLater = (itemIndex) => {
         quizData,
         hintsUsed:usedHintQuestions.current.size,
         timeTaken: 600 - timeLeft, 
+        category
 
        
       },
