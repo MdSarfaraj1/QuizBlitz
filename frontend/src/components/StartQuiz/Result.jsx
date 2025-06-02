@@ -166,13 +166,15 @@ return (
         )}
       </div>
     )}
-     <div className="flex justify-center gap-4">
+     {userId ?(
+       <div className="flex justify-center gap-4">
       <button
         onClick={() => navigate('/startQuiz')}
         className="bg-gradient-to-r from-fuchsia-600 to-pink-500 hover:from-fuchsia-700 hover:to-pink-600 text-white font-semibold px-6 py-2.5 rounded-full shadow-md transition duration-200"
       >
         🔄 Start Again
       </button>
+     
       <button
         onClick={() => navigate('/dashboard')}
         className="bg-gray-800 hover:bg-gray-700 text-white font-semibold px-6 py-2.5 rounded-full shadow-md transition duration-200"
@@ -180,6 +182,19 @@ return (
         🏠 Dashboard
       </button>
     </div>
+     ):(
+       <div className="flex justify-center gap-4">
+      <button
+        onClick={() => navigate('/login')}
+        className="bg-gradient-to-r from-fuchsia-600 to-pink-500 hover:from-fuchsia-700 hover:to-pink-600 text-white font-semibold px-6 py-2.5 rounded-full shadow-md transition duration-200"
+      >
+        🔄 Login For More
+      </button>
+    </div>
+     )
+      
+     }
+   
     
   <p class="text-sm sm:text-base font-medium text-[#c2fb3c]">
     📌 Questions you marked to learn later are saved in your dashboard.

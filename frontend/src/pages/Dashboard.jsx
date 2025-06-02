@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import Sidebar from "../components/Dashboard/Sidebar";
-import UserProfile from "../components/Dashboard/UserProfile";
-import RecentQuizzes from "../components/Dashboard/RecentQuizzes";
 import Leaderboard from "../components/Dashboard/LeaderBoard";
 import SavedQuizzes from "../components/Dashboard/SavedQuizzes";
 import Achievements from "../components/Dashboard/Acheivements";
-import QuizTakenChart from "../components/Dashboard/Chart";
 import MainDashBoard from "../components/Dashboard/MainDashboard";
 import ThingsToLearn from '../components/Dashboard/ThingsToLearn';
-import  UserSettings  from '../components/UserSettings/UserSettings';
+import UserSettings  from '../components/UserSettings/UserSettings';
+import QuizProgressDashboard from '../components/Dashboard/Chart';
 // Placeholder components for other sections
 const MyQuizzes = () => (
   <div className="bg-white rounded-lg shadow-md p-6">
@@ -40,32 +38,40 @@ const Dashboard = () => {
       case 'dashboard':
         return (
          <MainDashBoard />  );
-      
+      case 'progress':
+        return (
+          <div className="ml-10">
+            <div className="mb-8">
+              <h1 className="text-2xl font-bold">Progress Overview</h1>
+              <p className="text-gray-600">Track your quiz progress and achievements</p>
+            </div>
+              <QuizProgressDashboard />
+            </div>)
       case 'quizzes':
         return (
-          <>
+          <div className="ml-10">
             <div className="mb-8">
               <h1 className="text-2xl font-bold">My Quizzes</h1>
               <p className="text-gray-600">Manage your created quizzes</p>
             </div>
             <MyQuizzes />
-          </>
+          </div >
         );
       
       case 'Things To Learn':
         return (
-          <>
+          <div className="ml-10">
             <div className="mb-8">
               <h1 className="text-2xl font-bold">Favorite Quizzes</h1>
               <p className="text-gray-600">Your starred and favorite quizzes</p>
             </div>
             <ThingsToLearn />
-          </>
+          </div >
         );
       
       case 'leaderboard':
         return (
-          <>
+          <div className="ml-10">
             <div className="mb-8">
               <h1 className="text-2xl font-bold">Leaderboard</h1>
               <p className="text-gray-600">See how you rank against other players</p>
@@ -73,18 +79,18 @@ const Dashboard = () => {
             <div className="bg-white rounded-lg shadow-md">
               <Leaderboard fullPledge="true" />
             </div>
-          </>
+          </div >
         );
       
       case 'createQuiz':
         return (
-          <>
+          <div className="ml-10">
             <div className="mb-8">
               <h1 className="text-2xl font-bold">Create Quiz</h1>
               <p className="text-gray-600">Design your own quiz</p>
             </div>
             <CreateQuiz />
-          </>
+          </div >
         );
       
       case 'settings':
@@ -104,23 +110,23 @@ const Dashboard = () => {
         );
       case 'SavedQuizzes':
         return (
-          <>
+          <div className="ml-10">
             <div className="mb-8">
               <h1 className="text-2xl font-bold">Saved Quizzes</h1>
               <p className="text-gray-600">Your saved quizzes for later</p>
             </div>
             <SavedQuizzes fullPledge="true" />
-          </>
+          </div >
         );
       case 'achievements':
         return (
-          <>
+          <div className="ml-10">
             <div className="mb-8">
               <h1 className="text-2xl font-bold">Achievements</h1>
               <p className="text-gray-600">Your earned achievements and badges</p>
             </div>
             <Achievements fullPledge="true" />
-          </>
+          </div >
         );
       
       default:

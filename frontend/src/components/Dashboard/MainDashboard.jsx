@@ -4,7 +4,6 @@ import RecentQuizzes from "./RecentQuizzes";
 import Leaderboard from "./LeaderBoard";
 import SavedQuizzes from "./SavedQuizzes";
 import Achievements from "./Acheivements";
-import QuizTakenChart from "./Chart";
 
 
 const MainDashboard = () => {
@@ -36,11 +35,7 @@ const MainDashboard = () => {
             </div>
             
           </div>
-
-          
-         
-
-         <QuizTakenChart/>
+       
         </div>
       </div>
     

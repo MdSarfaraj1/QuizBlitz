@@ -5,6 +5,7 @@ import {
   Award,
   BarChart2, 
   Lightbulb,
+  TrendingUp,
   Settings,
   Menu,
   X,
@@ -22,12 +23,13 @@ const Sidebar = ({ activeItem, onItemSelect }) => {
 
   const menuItems = [
     { icon: Home, label: 'Dashboard', key: 'dashboard' },
-    { icon: BookOpen, label: 'My Quizzes', key: 'quizzes' },
-    { icon: Lightbulb, label: 'Things To Learn', key: 'Things To Learn' },
     { icon: InboxIcon, label: 'Saved Quizzes', key: 'SavedQuizzes' },
+    { icon: TrendingUp, label: 'Progress', key: 'progress' },
+    { icon: Lightbulb, label: 'Things To Learn', key: 'Things To Learn' },
     { icon: BarChart2, label: 'Leaderboard', key: 'leaderboard' },
     { icon: Medal, label: 'Achievements', key: 'achievements' },
-    { icon: Award, label: 'Create Quiz', key: 'createQuiz' },
+    // { icon: Award, label: 'Create Quiz', key: 'createQuiz' },
+    // { icon: Award, label: 'My Quizzes', key: 'quizzes' },
     { icon: Settings, label: 'Settings', key: 'settings' },
     { icon: LogOut, label: 'Sign Out', key: 'signout' },
   ];
