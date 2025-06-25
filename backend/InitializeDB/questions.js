@@ -1962,6 +1962,566 @@ const questions = [
     level: 'medium',
     marks: 2,
     category: ['Data Structures and Algorithms', 'Algorithms']
+  },
+  {
+    "questionText": "What is the main difference between a Mutex and Semaphore in process synchronization?",
+    "options": [
+      "Mutex allows multiple threads, Semaphore allows only one",
+      "Mutex allows only one thread, Semaphore can allow multiple threads",
+      "Mutex is faster than Semaphore",
+      "Mutex works only between processes, Semaphore works only between threads"
+    ],
+    "correctAnswer": "Mutex allows only one thread, Semaphore can allow multiple threads",
+    "hint": "Think about the number of resources each mechanism can control.",
+    "level": "medium",
+    "marks": 2,
+    "category": ["Operating Systems", "Process Synchronization", "Concurrency"]
+  },
+  {
+    "questionText": "Which condition is NOT necessary for a deadlock to occur?",
+    "options": [
+      "Mutual Exclusion",
+      "Hold and Wait",
+      "Process Priority",
+      "Circular Wait"
+    ],
+    "correctAnswer": "Process Priority",
+    "hint": "Deadlock requires four conditions, and process priority is not one of them.",
+    "level": "medium",
+    "marks": 2,
+    "category": ["Operating Systems", "Deadlock", "Process Management"]
+  },
+  {
+    "questionText": "What is the main advantage of the Round Robin scheduling algorithm?",
+    "options": [
+      "It has the shortest average waiting time",
+      "It provides fair CPU time distribution",
+      "It minimizes context switches",
+      "It prioritizes I/O bound processes"
+    ],
+    "correctAnswer": "It provides fair CPU time distribution",
+    "hint": "Think about how time quantum affects process execution.",
+    "level": "medium",
+    "marks": 2,
+    "category": ["Operating Systems", "CPU Scheduling", "Process Management"]
+  },
+  {
+    "questionText": "In virtual memory management, what causes thrashing?",
+    "options": [
+      "Too much RAM available",
+      "Too many page faults occurring",
+      "Too few running processes",
+      "Too much cache memory"
+    ],
+    "correctAnswer": "Too many page faults occurring",
+    "hint": "Consider what happens when a system spends more time paging than executing.",
+    "level": "medium",
+    "marks": 2,
+    "category": ["Operating Systems", "Memory Management", "Virtual Memory"]
+  },
+  {
+    "questionText": "What is the primary purpose of journaling in a file system?",
+    "options": [
+      "To increase file access speed",
+      "To maintain system logs",
+      "To recover from system crashes",
+      "To compress file data"
+    ],
+    "correctAnswer": "To recover from system crashes",
+    "hint": "Think about maintaining file system consistency after unexpected shutdowns.",
+    "level": "medium",
+    "marks": 2,
+    "category": ["Operating Systems", "File Systems", "Data Recovery"]
+  },
+  {
+    "questionText": "Which page replacement algorithm is most likely to suffer from Belady's Anomaly?",
+    "options": [
+      "LRU (Least Recently Used)",
+      "FIFO (First In First Out)",
+      "Optimal",
+      "Clock Algorithm"
+    ],
+    "correctAnswer": "FIFO (First In First Out)",
+    "hint": "Consider which algorithm might perform worse with more frames.",
+    "level": "medium",
+    "marks": 2,
+    "category": ["Operating Systems", "Memory Management", "Page Replacement"]
+  },
+  {
+    "questionText": "What is the main advantage of the C-SCAN disk scheduling algorithm over SCAN?",
+    "options": [
+      "Lower seek time",
+      "More uniform wait times",
+      "Less head movement",
+      "Better throughput"
+    ],
+    "correctAnswer": "More uniform wait times",
+    "hint": "Think about how the head movement pattern affects request service time.",
+    "level": "medium",
+    "marks": 2,
+    "category": ["Operating Systems", "Disk Scheduling", "I/O Management"]
+  },
+  {
+    "questionText": "Which IPC mechanism is typically faster once established?",
+    "options": [
+      "Message Passing",
+      "Shared Memory",
+      "Pipes",
+      "Signals"
+    ],
+    "correctAnswer": "Shared Memory",
+    "hint": "Consider which mechanism requires less kernel intervention during data transfer.",
+    "level": "medium",
+    "marks": 2,
+    "category": ["Operating Systems", "Inter-Process Communication", "Process Management"]
+  },
+  {
+    "questionText": "What is the main difference between internal and external fragmentation?",
+    "options": [
+      "Internal occurs in RAM, external in disk",
+      "Internal is wasted space within allocated blocks, external is wasted space between blocks",
+      "Internal affects large files, external affects small files",
+      "Internal is temporary, external is permanent"
+    ],
+    "correctAnswer": "Internal is wasted space within allocated blocks, external is wasted space between blocks",
+    "hint": "Think about where the unused space exists relative to allocated memory blocks.",
+    "level": "medium",
+    "marks": 2,
+    "category": ["Operating Systems", "Memory Management", "Fragmentation"]
+  },
+  {
+    "questionText": "Which scheduling algorithm is most likely to cause starvation?",
+    "options": [
+      "Round Robin",
+      "First Come First Served",
+      "Priority Scheduling",
+      "Shortest Job First"
+    ],
+    "correctAnswer": "Priority Scheduling",
+    "hint": "Consider what happens to low-priority processes when high-priority processes keep arriving.",
+    "level": "medium",
+    "marks": 2,
+    "category": ["Operating Systems", "CPU Scheduling", "Process Management"]
+  },
+  {
+    "questionText": "In TCP's congestion control mechanism, how does the Multiplicative Decrease aspect of AIMD affect the congestion window size when packet loss is detected through triple duplicate ACKs versus when it's detected through a timeout?",
+    "options": [
+      "Both cases reduce cwnd to 1 MSS",
+      "Triple duplicate ACKs reduce cwnd by half, timeout reduces to 1 MSS",
+      "Timeout reduces cwnd by half, triple duplicate ACKs reduce to 1 MSS",
+      "Both cases reduce cwnd by 75%"
+    ],
+    "correctAnswer": "Triple duplicate ACKs reduce cwnd by half, timeout reduces to 1 MSS",
+    "hint": "TCP treats different types of packet loss differently - timeout indicates more severe congestion than duplicate ACKs.",
+    "level": "hard",
+    "marks": 3,
+    "category": ["Computer Networks", "TCP", "Congestion Control"]
+  },
+  {
+    "questionText": "A network uses VLSM (Variable Length Subnet Masking) with base network 192.168.0.0/24. If you need to create four subnets with 60, 28, 12, and 8 hosts respectively, what would be the subnet mask for the subnet requiring 28 hosts?",
+    "options": [
+      "255.255.255.224 (/27)",
+      "255.255.255.192 (/26)",
+      "255.255.255.240 (/28)",
+      "255.255.255.248 (/29)"
+    ],
+    "correctAnswer": "255.255.255.224 (/27)",
+    "hint": "Calculate 2^n-2 >= required hosts, where n is the number of host bits. Consider the next power of 2 above 28.",
+    "level": "hard",
+    "marks": 3,
+    "category": ["Computer Networks", "Subnetting", "IP Addressing"]
+  },
+  {
+    "questionText": "In BGP (Border Gateway Protocol), what is the significance and potential security implications of AS_PATH prepending?",
+    "options": [
+      "It only affects inbound traffic and has no security implications",
+      "It artificially makes routes appear longer to influence path selection and can be exploited for traffic hijacking",
+      "It speeds up route convergence and improves security",
+      "It only works within a single autonomous system"
+    ],
+    "correctAnswer": "It artificially makes routes appear longer to influence path selection and can be exploited for traffic hijacking",
+    "hint": "Consider how manipulating path length affects BGP's decision process and potential malicious uses.",
+    "level": "hard",
+    "marks": 3,
+    "category": ["Computer Networks", "BGP", "Network Security"]
+  },
+  {
+    "questionText": "In the context of IPsec's ESP (Encapsulating Security Payload) in tunnel mode, if an attacker performs a replay attack, how does the receiving end detect and prevent it using the sequence number field?",
+    "options": [
+      "By checking if the sequence number is even or odd",
+      "By maintaining a sliding window of received sequence numbers and using anti-replay bitmask",
+      "By comparing sequence numbers with a fixed threshold",
+      "By encrypting the sequence numbers with a different key"
+    ],
+    "correctAnswer": "By maintaining a sliding window of received sequence numbers and using anti-replay bitmask",
+    "hint": "Think about how a system can track previously received packets while allowing for out-of-order delivery.",
+    "level": "hard",
+    "marks": 3,
+    "category": ["Computer Networks", "Network Security", "IPsec"]
+  },
+  {
+    "questionText": "When implementing Weighted Fair Queuing (WFQ), what happens to a packet's finish number calculation if it arrives when the current round number is 1000, has a length of 100 bytes, and its flow has a weight of 0.25?",
+    "options": [
+      "Finish number = 1000 + (100 × 0.25)",
+      "Finish number = 1000 + (100 ÷ 0.25)",
+      "Finish number = 1000 × (100 × 0.25)",
+      "Finish number = 1000 × (100 ÷ 0.25)"
+    ],
+    "correctAnswer": "Finish number = 1000 + (100 ÷ 0.25)",
+    "hint": "Consider how packet length and flow weight affect service time in WFQ scheduling.",
+    "level": "hard",
+    "marks": 3,
+    "category": ["Computer Networks", "QoS", "Network Scheduling"]
+  },
+  {
+    "questionText": "In a QUIC (Quick UDP Internet Connections) implementation, how does the protocol handle head-of-line blocking differently from TCP when multiple streams are being transmitted?",
+    "options": [
+      "QUIC doesn't support multiple streams",
+      "QUIC uses the same method as TCP for all streams",
+      "QUIC allows independent delivery of streams, with loss in one stream not affecting others",
+      "QUIC combines all streams into a single connection"
+    ],
+    "correctAnswer": "QUIC allows independent delivery of streams, with loss in one stream not affecting others",
+    "hint": "Think about how QUIC's stream multiplexing differs from TCP's byte-stream abstraction.",
+    "level": "hard",
+    "marks": 3,
+    "category": ["Computer Networks", "Transport Layer", "QUIC Protocol"]
+  },
+  {
+    "questionText": "In the context of SDN (Software Defined Networking), what security vulnerability might arise if an attacker manipulates the flow table memory of an OpenFlow switch through a buffer overflow attack?",
+    "options": [
+      "Only affects switch performance, no security impact",
+      "Can redirect or modify traffic flows, potentially creating man-in-the-middle scenarios",
+      "Only impacts the control plane communication",
+      "Can only cause denial of service"
+    ],
+    "correctAnswer": "Can redirect or modify traffic flows, potentially creating man-in-the-middle scenarios",
+    "hint": "Consider the role of flow tables in SDN and the implications of unauthorized modifications.",
+    "level": "hard",
+    "marks": 3,
+    "category": ["Computer Networks", "SDN", "Network Security"]
+  },
+  {
+    "questionText": "When implementing MPLS Traffic Engineering, what happens to the Label Distribution Protocol (LDP) sessions if the Interior Gateway Protocol (IGP) is temporarily down but the physical links are still up?",
+    "options": [
+      "LDP sessions remain active indefinitely",
+      "LDP sessions immediately terminate",
+      "LDP sessions persist for a holdtime period, then terminate if IGP isn't restored",
+      "LDP automatically switches to a backup IGP"
+    ],
+    "correctAnswer": "LDP sessions persist for a holdtime period, then terminate if IGP isn't restored",
+    "hint": "Consider the relationship between LDP and IGP, and how LDP handles IGP failures.",
+    "level": "hard",
+    "marks": 3,
+    "category": ["Computer Networks", "MPLS", "Network Protocols"]
+  },
+  {
+    "questionText": "In a complex IPv6 network using DHCPv6 and SLAAC simultaneously, how does a client determine whether to use DHCPv6 for DNS server configuration if both M and O flags are set in the Router Advertisement message?",
+    "options": [
+      "Always uses DHCPv6 when either flag is set",
+      "Uses SLAAC for address and DHCPv6 for DNS if O flag is set, regardless of M flag",
+      "Only uses DHCPv6 if both flags are set",
+      "Ignores both flags and uses SLAAC exclusively"
+    ],
+    "correctAnswer": "Uses SLAAC for address and DHCPv6 for DNS if O flag is set, regardless of M flag",
+    "hint": "Consider the specific purposes of M (Managed) and O (Other) flags in RA messages.",
+    "level": "hard",
+    "marks": 3,
+    "category": ["Computer Networks", "IPv6", "Network Configuration"]
+  },
+  {
+    "questionText": "In a network using PIM-SM (Protocol Independent Multicast - Sparse Mode), what happens to the multicast routing when the RP (Rendezvous Point) fails and there are multiple Anycast RP addresses configured using MSDP (Multicast Source Discovery Protocol)?",
+    "options": [
+      "All multicast traffic immediately stops",
+      "Traffic continues through alternate RPs after MSDP state synchronization",
+      "Network must wait for PIM-SM to restart completely",
+      "Only new multicast groups are affected"
+    ],
+    "correctAnswer": "Traffic continues through alternate RPs after MSDP state synchronization",
+    "hint": "Think about how Anycast RP with MSDP provides redundancy in PIM-SM networks.",
+    "level": "hard",
+    "marks": 3,
+    "category": ["Computer Networks", "Multicast", "Network Protocols"]
+  },
+  {
+    "questionText": "In a Deep Q-Network (DQN) implementation, how does the Double DQN architecture solve the overestimation bias problem of standard Q-learning?",
+    "options": [
+      "By using two identical networks that train simultaneously",
+      "By using a target network for action selection and a separate network for value estimation",
+      "By averaging the Q-values of multiple networks",
+      "By implementing a discount factor in the Q-value calculation"
+    ],
+    "correctAnswer": "By using a target network for action selection and a separate network for value estimation",
+    "hint": "Consider how separating action selection from value estimation reduces the impact of overoptimistic value estimates.",
+    "level": "hard",
+    "marks": 3,
+    "category": ["Artificial Intelligence", "Reinforcement Learning", "Deep Learning"]
+  },
+  {
+    "questionText": "In a transformer architecture implementing self-attention, what mathematical problem arises with very long sequences, and how does the Reformer architecture address this?",
+    "options": [
+      "Memory usage scales linearly, solved by using smaller batch sizes",
+      "Memory usage scales quadratically, solved by using LSH attention and reversible layers",
+      "Memory usage scales exponentially, solved by using sparse attention",
+      "Memory usage is constant, no solution needed"
+    ],
+    "correctAnswer": "Memory usage scales quadratically, solved by using LSH attention and reversible layers",
+    "hint": "Think about the attention matrix size in relation to sequence length and how locality-sensitive hashing can help.",
+    "level": "hard",
+    "marks": 3,
+    "category": ["Artificial Intelligence", "Natural Language Processing", "Transformers"]
+  },
+  {
+    "questionText": "When implementing a variational autoencoder (VAE), what is the significance of the reparameterization trick, and how does it enable backpropagation through a stochastic node?",
+    "options": [
+      "It removes the need for stochastic sampling completely",
+      "It separates the deterministic and stochastic components, allowing gradients to flow through the deterministic part",
+      "It replaces the encoder with a deterministic function",
+      "It eliminates the need for the KL divergence term"
+    ],
+    "correctAnswer": "It separates the deterministic and stochastic components, allowing gradients to flow through the deterministic part",
+    "hint": "Consider how sampling from a distribution can be reformulated as a deterministic function of random noise.",
+    "level": "hard",
+    "marks": 3,
+    "category": ["Artificial Intelligence", "Deep Learning", "Generative Models"]
+  },
+  {
+    "questionText": "In a Monte Carlo Tree Search implementation for AlphaGo-style algorithms, how does the PUCT (Predictor + UCT) formula balance exploration versus exploitation?",
+    "options": [
+      "By using only the prior probability from the neural network",
+      "By combining visit count statistics with neural network predictions using a weighted sum",
+      "By randomly selecting between exploration and exploitation",
+      "By always choosing the most visited node"
+    ],
+    "correctAnswer": "By combining visit count statistics with neural network predictions using a weighted sum",
+    "hint": "Think about how PUCT incorporates both the neural network's prior probability and the traditional UCT formula.",
+    "level": "hard",
+    "marks": 3,
+    "category": ["Artificial Intelligence", "Game Theory", "Search Algorithms"]
+  },
+  {
+    "questionText": "When implementing adversarial training for robust neural networks, what is the significance of the Projected Gradient Descent (PGD) attack compared to Fast Gradient Sign Method (FGSM)?",
+    "options": [
+      "PGD is faster but less effective",
+      "PGD performs multiple iterations of FGSM with random restarts, finding stronger adversarial examples",
+      "PGD only works on classification tasks",
+      "PGD requires less memory than FGSM"
+    ],
+    "correctAnswer": "PGD performs multiple iterations of FGSM with random restarts, finding stronger adversarial examples",
+    "hint": "Consider how iterative optimization with constraints differs from a single-step perturbation.",
+    "level": "hard",
+    "marks": 3,
+    "category": ["Artificial Intelligence", "Adversarial Machine Learning", "Neural Networks"]
+  },
+  {
+    "questionText": "In a graph neural network using message passing, how does the over-smoothing problem manifest as the network depth increases, and what architectural solution does JKNet provide?",
+    "options": [
+      "Over-smoothing never occurs in GNNs",
+      "Node features become too similar, solved by dense connections between all layers",
+      "Node features become too similar, solved by selectively aggregating features from different depths",
+      "Node features become random, solved by adding skip connections"
+    ],
+    "correctAnswer": "Node features become too similar, solved by selectively aggregating features from different depths",
+    "hint": "Think about how repeated aggregation affects node representations and how maintaining information from different layers helps.",
+    "level": "hard",
+    "marks": 3,
+    "category": ["Artificial Intelligence", "Graph Neural Networks", "Deep Learning"]
+  },
+  {
+    "questionText": "When implementing meta-learning using Model-Agnostic Meta-Learning (MAML), what distinguishes the inner loop optimization from the outer loop optimization?",
+    "options": [
+      "Inner loop uses SGD, outer loop uses Adam",
+      "Inner loop adapts to specific tasks, outer loop optimizes for quick adaptation",
+      "Inner loop trains on validation data, outer loop trains on training data",
+      "Inner loop uses higher learning rate, outer loop uses lower learning rate"
+    ],
+    "correctAnswer": "Inner loop adapts to specific tasks, outer loop optimizes for quick adaptation",
+    "hint": "Consider the different objectives of task-specific adaptation versus meta-optimization.",
+    "level": "hard",
+    "marks": 3,
+    "category": ["Artificial Intelligence", "Meta-Learning", "Optimization"]
+  },
+  {
+    "questionText": "In a Normalizing Flow model, what is the significance of the bijective transformation requirement, and how does it relate to the change of variables formula?",
+    "options": [
+      "It ensures the model is reversible but doesn't affect probability computation",
+      "It allows exact likelihood computation through the determinant of the Jacobian",
+      "It only affects the training speed",
+      "It ensures the model converges to a normal distribution"
+    ],
+    "correctAnswer": "It allows exact likelihood computation through the determinant of the Jacobian",
+    "hint": "Think about how probability density changes under invertible transformations.",
+    "level": "hard",
+    "marks": 3,
+    "category": ["Artificial Intelligence", "Generative Models", "Probability Theory"]
+  },
+  {
+    "questionText": "When implementing attention mechanisms in a neural network, how does Sparse Attention differ from Full Attention in terms of computational complexity and information flow?",
+    "options": [
+      "Sparse attention only reduces memory usage but not computation time",
+      "Sparse attention reduces complexity from O(n²) to O(n√n) by attending to selected tokens",
+      "Sparse attention increases computational complexity but improves accuracy",
+      "Sparse attention and full attention have the same complexity"
+    ],
+    "correctAnswer": "Sparse attention reduces complexity from O(n²) to O(n√n) by attending to selected tokens",
+    "hint": "Consider how limiting attention to a subset of tokens affects the computational requirements.",
+    "level": "hard",
+    "marks": 3,
+    "category": ["Artificial Intelligence", "Deep Learning", "Attention Mechanisms"]
+  },
+  {
+    "questionText": "In a Hierarchical Reinforcement Learning implementation, how does the Option-Critic architecture learn both the options and their policies simultaneously?",
+    "options": [
+      "By treating options as independent agents",
+      "By learning option policies and termination conditions through end-to-end training",
+      "By manually defining options and learning only their policies",
+      "By using separate networks for options and policies"
+    ],
+    "correctAnswer": "By learning option policies and termination conditions through end-to-end training",
+    "hint": "Think about how policy gradients can be applied to both option selection and option policies.",
+    "level": "hard",
+    "marks": 3,
+    "category": ["Artificial Intelligence", "Reinforcement Learning", "Hierarchical Learning"]
+  },
+  {
+    "questionText": "In the context of web security headers, what is the primary purpose of the Content-Security-Policy (CSP) header's 'nonce' attribute?",
+    "options": [
+      "To encrypt inline scripts",
+      "To allow specific inline scripts while maintaining a strict CSP",
+      "To prevent all inline scripts from executing",
+      "To validate external scripts only"
+    ],
+    "correctAnswer": "To allow specific inline scripts while maintaining a strict CSP",
+    "hint": "Think about how nonce provides a way to whitelist trusted inline scripts in a page.",
+    "level": "medium",
+    "marks": 2,
+    "category": ["Cybersecurity", "Web Security", "Security Headers"]
+  },
+  {
+    "questionText": "How does a Pass-the-Hash attack differ from traditional password theft, and why can't it be prevented by regular password changes?",
+    "options": [
+      "It only works on encrypted passwords",
+      "It uses the password hash directly for authentication without needing the original password",
+      "It only affects administrator accounts",
+      "It requires physical access to the system"
+    ],
+    "correctAnswer": "It uses the password hash directly for authentication without needing the original password",
+    "hint": "Consider how Windows authentication can use password hashes stored in memory.",
+    "level": "medium",
+    "marks": 2,
+    "category": ["Cybersecurity", "Network Security", "Authentication"]
+  },
+  {
+    "questionText": "In the context of SQL injection prevention, what security vulnerability might still exist when using parameterized queries if the table or column names are constructed from user input?",
+    "options": [
+      "None, parameterized queries prevent all SQL injection",
+      "Only numeric values can be injected",
+      "Table and column names cannot be parameterized, allowing for potential injection",
+      "Only affects stored procedures"
+    ],
+    "correctAnswer": "Table and column names cannot be parameterized, allowing for potential injection",
+    "hint": "Consider which parts of an SQL query can be parameterized and which cannot.",
+    "level": "medium",
+    "marks": 2,
+    "category": ["Cybersecurity", "Application Security", "SQL Injection"]
+  },
+  {
+    "questionText": "What is the primary security concern with using CBC mode encryption without authentication, and how does an attack exploit this?",
+    "options": [
+      "It's too slow for practical use",
+      "It allows bit-flipping attacks that can modify the plaintext in predictable ways",
+      "It only encrypts fixed-size blocks",
+      "It requires more processing power"
+    ],
+    "correctAnswer": "It allows bit-flipping attacks that can modify the plaintext in predictable ways",
+    "hint": "Think about how changes in the ciphertext affect the decrypted plaintext in CBC mode.",
+    "level": "medium",
+    "marks": 2,
+    "category": ["Cybersecurity", "Cryptography", "Encryption Modes"]
+  },
+  {
+    "questionText": "In a properly implemented OAuth 2.0 flow, what security issue can arise if the state parameter is not properly validated?",
+    "options": [
+      "Token expiration",
+      "Cross-Site Request Forgery (CSRF) attacks",
+      "Man-in-the-middle attacks",
+      "Password brute force attempts"
+    ],
+    "correctAnswer": "Cross-Site Request Forgery (CSRF) attacks",
+    "hint": "Consider how the state parameter helps maintain session state and prevent request forgery.",
+    "level": "medium",
+    "marks": 2,
+    "category": ["Cybersecurity", "Authentication", "OAuth"]
+  },
+  {
+    "questionText": "When implementing certificate pinning in a mobile application, what security trade-off exists between pinning the leaf certificate versus pinning the intermediate or root certificate?",
+    "options": [
+      "There is no difference in security",
+      "Leaf pinning is more secure but requires more frequent updates, intermediate/root pinning is more flexible but less secure",
+      "Root pinning is always more secure",
+      "Leaf pinning only works on Android"
+    ],
+    "correctAnswer": "Leaf pinning is more secure but requires more frequent updates, intermediate/root pinning is more flexible but less secure",
+    "hint": "Consider the balance between security and maintenance when certificates expire or need to be rotated.",
+    "level": "medium",
+    "marks": 2,
+    "category": ["Cybersecurity", "Mobile Security", "Certificate Pinning"]
+  },
+  {
+    "questionText": "In the context of XSS protection, how does the httpOnly flag on cookies help mitigate attacks, and what type of XSS attack does it NOT protect against?",
+    "options": [
+      "It prevents all XSS attacks",
+      "It prevents cookie theft via JavaScript but doesn't protect against other XSS payloads",
+      "It only protects against reflected XSS",
+      "It only works in modern browsers"
+    ],
+    "correctAnswer": "It prevents cookie theft via JavaScript but doesn't protect against other XSS payloads",
+    "hint": "Think about what httpOnly prevents JavaScript from doing and what other XSS capabilities exist.",
+    "level": "medium",
+    "marks": 2,
+    "category": ["Cybersecurity", "Web Security", "XSS"]
+  },
+  {
+    "questionText": "What security vulnerability can arise from improper implementation of user session timeout in a web application?",
+    "options": [
+      "Only affects mobile users",
+      "Session fixation attacks become possible",
+      "Sessions might remain valid after logout, allowing session hijacking",
+      "Only impacts remembered passwords"
+    ],
+    "correctAnswer": "Sessions might remain valid after logout, allowing session hijacking",
+    "hint": "Consider what happens to active sessions when timeout logic isn't properly implemented.",
+    "level": "medium",
+    "marks": 2,
+    "category": ["Cybersecurity", "Web Security", "Session Management"]
+  },
+  {
+    "questionText": "In the context of secure password storage, what is the purpose of using a work factor in password hashing algorithms like bcrypt?",
+    "options": [
+      "To make passwords longer",
+      "To make hash computation deliberately slower, protecting against brute force attacks",
+      "To reduce database size",
+      "To ensure compatibility across platforms"
+    ],
+    "correctAnswer": "To make hash computation deliberately slower, protecting against brute force attacks",
+    "hint": "Think about how computational cost affects both legitimate users and attackers.",
+    "level": "medium",
+    "marks": 2,
+    "category": ["Cybersecurity", "Authentication", "Password Security"]
+  },
+  {
+    "questionText": "When implementing API security, what vulnerability might exist if JWT tokens are accepted without validating the 'alg' header?",
+    "options": [
+      "Tokens will expire faster",
+      "Attacker can force 'none' algorithm or switch to a weaker algorithm",
+      "Only affects refresh tokens",
+      "Tokens become larger in size"
+    ],
+    "correctAnswer": "Attacker can force 'none' algorithm or switch to a weaker algorithm",
+    "hint": "Consider how the algorithm header affects token verification process.",
+    "level": "medium",
+    "marks": 2,
+    "category": ["Cybersecurity", "API Security", "JWT"]
   }
 
 ]

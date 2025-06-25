@@ -6,17 +6,18 @@ const { isLoggedIn } = require('../middleware/middleware');
 
 // Public quiz endpoints
 router.get('/allCategories', quizController.getCategories);//done
-router.get('/getRandomQuizSets',quizController.getRandomQuizSets)//done
-router.get('/startRandomQuiz/:id',quizController.startRandomQuizSet)//done
+router.get('/getQuizSets',quizController.getQuizSets)//done
+router.get('/startPredefinedQuiz/:id',quizController.startPredefinedQuiz)//done
 router.post('/startQuiz/:id', quizController.startQuiz);//done
+router.post('/startQuiz/guest/:id', quizController.startGuestQuiz);//done
 router.post('/submitQuizResult',isLoggedIn(),quizController.submitQuizResult); //done
  
 // //endpoints , used by user to deal with quiz
 // router.get('/userCreatedQuiz',isLoggedIn, quizController.getMyCreatedQuizzes);
 router.get('/userAttemptedQuizzes',isLoggedIn('quizzesTaken'),quizController.getMyAttemptedQuizzes);//done
-// router.get('/userSavedQuiz', isLoggedIn, quizController.getMySavedQuizzes);
+ router.get('/userSavedQuiz', isLoggedIn, quizController.getUserSavedQuizzes);
 // router.get('/learnLater/:id',quizController.learnLater)
-router.delete('/unsave', isLoggedIn,quizController.unsaveQuiz);
+router.delete('/saveUnsaveQuiz', isLoggedIn,quizController.saveUnsaveQuiz);
 
 // Quiz creation and management (creator/admin)
 router.post('/create', isLoggedIn,quizController.createQuiz);

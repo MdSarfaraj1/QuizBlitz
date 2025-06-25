@@ -5,7 +5,7 @@ module.exports.initialRandomQuizSet= [
     title: "Data Structures & Algorithms",
     description: "Arrays, linked lists, trees, graphs, sorting and searching algorithms",
     category: "Algorithms",
-    difficulty: "Hard",
+    difficulty: "hard",
     duration: 25,
      
     totalQuestions: 20,
@@ -19,7 +19,7 @@ module.exports.initialRandomQuizSet= [
     title: "JavaScript Fundamentals",
     description: "ES6+, closures, promises, async/await, and modern JavaScript concepts",
     category: "JavaScript",
-    difficulty: "Medium",
+    difficulty: "medium",
     duration: 20,
      
     totalQuestions: 15,
@@ -33,7 +33,7 @@ module.exports.initialRandomQuizSet= [
     title: "React Development",
     description: "Hooks, components, state management, and React ecosystem",
     category: "React",
-    difficulty: "Medium",
+    difficulty: "medium",
     duration: 18,
      
     totalQuestions: 12,
@@ -47,7 +47,7 @@ module.exports.initialRandomQuizSet= [
     title: "Python Mastery",
     description: "Intermediate Python quiz focusing on data structures and algorithms.",
     category: "Python",
-    difficulty: "Medium",
+    difficulty: "medium",
     duration: 22,
      
     totalQuestions: 16,
@@ -61,7 +61,7 @@ module.exports.initialRandomQuizSet= [
     title: "MySQL Essentials",
     description: "Intermediate MySQL quiz covering queries, joins, and database design.",
     category: "MySQL",
-    difficulty: "Medium",
+    difficulty: "medium",
     duration: 18,
      
     totalQuestions: 14,
@@ -75,7 +75,7 @@ module.exports.initialRandomQuizSet= [
     title: "MongoDB Basics",
     description: "Quiz on MongoDB basics, aggregation framework, and NoSQL concepts.",
     category: "MongoDB",
-    difficulty: "Medium",
+    difficulty: "medium",
     duration: 16,
      
     totalQuestions: 12,
@@ -89,7 +89,7 @@ module.exports.initialRandomQuizSet= [
     title: "Linux Power User",
     description: "Advanced Linux quiz about shell scripting and system administration.",
     category: "Linux",
-    difficulty: "Hard",
+    difficulty: "hard",
     duration: 20,
      
     totalQuestions: 15,
@@ -103,7 +103,7 @@ module.exports.initialRandomQuizSet= [
     title: "Operating Systems",
     description: "Introduction to OS concepts like processes, threads, and memory management.",
     category: "Operating Systems",
-    difficulty: "Medium",
+    difficulty: "medium",
     duration: 19,
      
     totalQuestions: 13,
@@ -117,7 +117,7 @@ module.exports.initialRandomQuizSet= [
     title: "Computer Networks",
     description: "Advanced quiz on networking concepts like TCP/IP, DNS, routing protocols, and security.",
     category: "Computer Networks",
-    difficulty: "Hard",
+    difficulty: "hard",
     duration: 23,
      
     totalQuestions: 18,
@@ -131,7 +131,7 @@ module.exports.initialRandomQuizSet= [
     title: "Artificial Intelligence",
     description: "Advanced AI quiz focusing on machine learning, neural networks, and deep learning.",
     category: "Artificial Intelligence",
-    difficulty: "Hard",
+    difficulty: "hard",
     duration: 24,
      
     totalQuestions: 17,
@@ -145,7 +145,7 @@ module.exports.initialRandomQuizSet= [
     title: "Cybersecurity Essentials",
     description: "Intermediate quiz on security protocols, encryption, and ethical hacking.",
     category: "Cybersecurity",
-    difficulty: "Medium",
+    difficulty: "medium",
     duration: 17,
      
     totalQuestions: 13,

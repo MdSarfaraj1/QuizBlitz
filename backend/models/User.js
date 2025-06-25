@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
     default: 'user',
   },
   quizzesCreated: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Quiz' }],
+  savedQuizzes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Quiz' }],
   quizzesTaken: [{
     quizId: { type: mongoose.Schema.Types.ObjectId, ref: 'Quiz', required: true }, 
     userScore: { type: Number, required: true }, 
@@ -28,6 +29,7 @@ const userSchema = new mongoose.Schema({
     },
     category:String
   }],
+
   learnLater: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }],
   totalScore: { type: Number, default: 0 },        
   achievements: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Achievement' }],
