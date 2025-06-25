@@ -20,19 +20,36 @@ exports.getCategories=async (req,res)=>{
     }
 }
 
-exports.getQuizSets=async (req,res)=>{ 
-  try{
-       const randomSets= await QuizSet.find({},{questions:0}).populate('category')
-         res.status(200).json({
-            quiz:randomSets
-        })
-  }catch(e){
-        console.log("SOme error occured while fetchin the sets",e)
-        res.status(500).json({ message: "Failed to fetch category" });
+exports.getQuizSets = async (req, res) => {
+  const { userId } = req.query;
+console.log("Fetching quiz sets for userId:", userId);
+  try {
+    let user = null;
+    let savedQuizIds = [];
+
+    // If userId is passed, fetch user and saved quiz IDs
+    if (userId && userId !== "undefined") {
+      user = await User.findById(userId).select('savedQuizzes');
+      if (user && user.savedQuizzes) {
+        savedQuizIds = user.savedQuizzes;
+      }
+      console.log("User found:", userId, "Saved quizzes:", savedQuizIds);
     }
-   
-}
- 
+
+    // Fetch random quiz sets without questions
+    const randomSets = await QuizSet.find({}, { questions: 0 }).populate('category');
+
+    // Return combined response
+    res.status(200).json({
+      quiz: randomSets,
+      quizIds: savedQuizIds,
+    });
+  } catch (e) {
+    console.log("Some error occurred while fetching the sets", e);
+    res.status(500).json({ message: "Failed to fetch quiz sets" });
+  }
+};
+
 exports.startPredefinedQuiz = async (req, res) => {
   try {
    
@@ -49,9 +66,6 @@ exports.startPredefinedQuiz = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch quizzes of this category" });
   }
 };
-
-
-
 
 exports.startQuiz = async (req, res) => {
   try {
@@ -132,64 +146,16 @@ exports.startGuestQuiz = async (req, res) => {
   try {
     const { id: categoryId } = req.params;
     const { difficulty, numberOfQuestions } = req.body;
-
-    // 1. Fetch all quiz sets for category and difficulty
-    let allQuizSets = await QuizSet.find({
-      category: categoryId,
-      difficulty: difficulty,
-    });
-
-    // 2. Just pick the first available set (guests don't track history)
-    let availableQuizSet = allQuizSets[0];
-
-    // 3. If no set found, generate a new one
-    if (!availableQuizSet) {
-      console.log("No available sets — generating for guest...");
-
-      const generatedQuestions = await generateQuestions(
+      let generatedQuestions = await generateQuestions(
         categoryId,
         difficulty,
         numberOfQuestions
       );
-
-      const newQuizSet = new QuizSet({
-        title: `Guest - Auto Generated - ${difficulty} Quiz`,
-        description: "This quiz was generated for a guest user.",
-        category: categoryId,
-        difficulty: difficulty.charAt(0).toUpperCase() + difficulty.slice(1),
-        duration: Math.ceil(numberOfQuestions * 0.5),
-        questions: generatedQuestions.map((q) => q._id),
-        totalQuestions: generatedQuestions.length,
-        createdBy: undefined, // no user
-      });
-
-      await newQuizSet.save();
-      availableQuizSet = newQuizSet;
-    }
-
-    // 4. Populate and shuffle questions
-    const populatedQuiz = await QuizSet.findById(availableQuizSet._id).populate("questions");
-
-    let selectedQuestions = populatedQuiz.questions
-      .filter((q) => q.level === difficulty)
-      .sort(() => 0.5 - Math.random())
-      .slice(0, numberOfQuestions);
-
-    if (selectedQuestions.length < numberOfQuestions) {
-      const remaining = numberOfQuestions - selectedQuestions.length;
-      const fallbackQuestions = populatedQuiz.questions
-        .filter((q) => q.level !== difficulty)
-        .sort(() => 0.5 - Math.random())
-        .slice(0, remaining);
-
-      selectedQuestions = [...selectedQuestions, ...fallbackQuestions];
-    }
-
+  
     console.log("Guest quiz started successfully.");
 
     return res.status(200).json({
-      quizId: populatedQuiz._id,
-      questions: selectedQuestions,
+      questions: generatedQuestions,
       difficulty,
     });
   } catch (error) {
@@ -197,8 +163,47 @@ exports.startGuestQuiz = async (req, res) => {
     return res.status(500).json({ message: "Failed to start guest quiz" });
   }
 };
+exports.getUserSavedQuizzes= async (req, res) => {
+  try {
+const user = await User.findById(req.user.id)
+  .select('savedQuizzes')
+  .populate({
+    path: 'savedQuizzes',
+    populate: {
+      path: 'category',
+      select: 'title'
+    }
+  });
 
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
+    // Transform the data to match your frontend format
+    const savedQuizzes = user.savedQuizzes.map(quiz => {
+      return {
+        id: quiz._id,
+        title: quiz.title,
+        description: quiz.description,
+        difficulty: quiz.difficulty,
+        questions: quiz.totalQuestions,
+        duration: quiz.duration,
+        participants: quiz.participants || 0, // Assuming you have this field
+      };
+    });
+console.log("Fetched saved quizzes for user:", req.user.id, "Quizzes:", savedQuizzes);
+    res.status(200).json({
+      savedQuizzes:savedQuizzes
+    });
+
+  } catch (error) {
+    console.error('Error fetching saved quizzes:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Server error while fetching saved quizzes' 
+    });
+  }
+}
 exports.getMyCreatedQuizzes = async (req, res) => {
   try {
     const userId = req.user._id; 
@@ -220,7 +225,6 @@ exports.getMyCreatedQuizzes = async (req, res) => {
     });
   }
 };
-
 
 exports.getMyAttemptedQuizzes = async (req, res) => {
   try {
@@ -307,10 +311,6 @@ exports.submitQuizResult = async (req, res) => {
     res.status(500).json({ message: 'Error submitting quiz results', error });
   }
 };
-
-
-
-
 
 exports.createQuiz = async (req, res) => {
   try {
@@ -495,123 +495,42 @@ exports.getLeaderboard = async (req, res) => {
   }
 };
 
-exports.getUserSavedQuizzes= async (req, res) => {
+
+
+exports.saveUnsaveQuiz = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id)
-      .populate({
-        path: 'savedQuizzes',
-        populate: {
-          path: 'createdBy',
-          select: 'username'
-        }
-      });
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    // Transform the data to match your frontend format
-    const savedQuizzes = user.savedQuizzes.map(quiz => {
-      // Find user's best score for this quiz
-      const userQuizAttempts = user.quizzesTaken.filter(
-        attempt => attempt.quizId.toString() === quiz._id.toString()
-      );
-      
-      const bestScore = userQuizAttempts.length > 0 
-        ? Math.max(...userQuizAttempts.map(attempt => 
-            Math.round((attempt.userScore / attempt.maxQuizScore) * 100)
-          ))
-        : 0;
-
-      // Find last played date
-      const lastAttempt = userQuizAttempts.length > 0 
-        ? userQuizAttempts.sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate))[0]
-        : null;
-
-      const lastPlayed = lastAttempt 
-        ? getTimeAgo(lastAttempt.submissionDate)
-        : 'Never played';
-
-      return {
-        id: quiz._id,
-        title: quiz.title,
-        category: quiz.category,
-        questions: quiz.questionCount || quiz.questions.length,
-        timeEstimate: quiz.timeEstimate,
-        difficulty: quiz.difficulty,
-        lastPlayed,
-        bestScore,
-        favorite: true // All saved quizzes are considered favorites
-      };
-    });
-
-    res.json({
-      success: true,
-      savedQuizzes
-    });
-
-  } catch (error) {
-    console.error('Error fetching saved quizzes:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Server error while fetching saved quizzes' 
-    });
-  }
-}
-
-exports.saveUnsaveQuiz= async (req, res) => {
-  try {
-    const { quizId } = req.params;
+    const { quizIds } = req.body;
     const userId = req.user.id;
-
-    // Verify quiz exists
-    const quiz = await Quiz.findById(quizId);
-    if (!quiz) {
-      return res.status(404).json({ 
-        success: false, 
-        message: 'Quiz not found' 
+console.log("Saving/unsaving quizzes for user:", userId, "with quizIds:", quizIds);
+    if (!Array.isArray(quizIds)) {
+      return res.status(400).json({
+        success: false,
+        message: "quizIds must be an array.",
       });
     }
+
 
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ 
-        success: false, 
-        message: 'User not found' 
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
       });
     }
 
-    const isAlreadySaved = user.savedQuizzes.includes(quizId);
+    user.savedQuizzes = quizIds;
+    await user.save();
 
-    if (isAlreadySaved) {
-      // Remove from saved quizzes
-      user.savedQuizzes = user.savedQuizzes.filter(
-        id => id.toString() !== quizId.toString()
-      );
-      await user.save();
-
-      res.json({
-        success: true,
-        message: 'Quiz removed from saved quizzes',
-        isSaved: false
-      });
-    } else {
-      // Add to saved quizzes
-      user.savedQuizzes.push(quizId);
-      await user.save();
-
-      res.json({
-        success: true,
-        message: 'Quiz saved successfully',
-        isSaved: true
-      });
-    }
-
+    res.status(200).json({
+      success: true,
+      message: "Saved quizzes updated.",
+      savedQuizzes: user.savedQuizzes,
+    });
   } catch (error) {
-    console.error('Error saving/unsaving quiz:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Server error while saving quiz' 
+    console.error("Error updating saved quizzes:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while saving quizzes.",
     });
   }
-}
+};

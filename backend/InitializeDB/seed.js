@@ -98,7 +98,7 @@ async function seedDatabase() {
     const uncoveredCategories = insertedCategories.filter(cat => !coveredCategories.includes(cat.title));
 
     for (const category of uncoveredCategories.slice(0, 10)) { // Limit to avoid too many
-      const difficulties = ['Easy', 'Medium', 'Hard'];
+      const difficulties = ['easy', 'medium', 'hard'];
       
       for (const difficulty of difficulties) {
         const categoryQuestions = await Question.find({
@@ -112,7 +112,7 @@ async function seedDatabase() {
             description: `${difficulty} level quiz for ${category.description}`,
             category: category._id,
             difficulty: difficulty,
-            duration: difficulty === 'Easy' ? 15 : difficulty === 'Medium' ? 20 : 25,
+            duration: difficulty === 'easy' ? 15 : difficulty === 'medium' ? 20 : 25,
             questions: categoryQuestions.map(q => q._id),
             totalQuestions: categoryQuestions.length,
             image: category.icon,

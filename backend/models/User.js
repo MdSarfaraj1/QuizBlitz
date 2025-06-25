@@ -13,10 +13,10 @@ const userSchema = new mongoose.Schema({
     enum: ['user', 'admin'],
     default: 'user',
   },
-  quizzesCreated: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Quiz' }],
-  savedQuizzes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Quiz' }],
+  quizzesCreated: [{ type: mongoose.Schema.Types.ObjectId, ref: 'QuizSet' }],
+  savedQuizzes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'QuizSet' }],
   quizzesTaken: [{
-    quizId: { type: mongoose.Schema.Types.ObjectId, ref: 'Quiz', required: true }, 
+    quizId: { type: mongoose.Schema.Types.ObjectId, ref: 'QuizSet', required: true }, 
     userScore: { type: Number, required: true }, 
     maxQuizScore: { type: Number, required: true }, 
     submissionDate: { type: Date, default: Date.now } ,
@@ -40,8 +40,9 @@ const userSchema = new mongoose.Schema({
   resetPasswordExpires: Date
 });
 userSchema.virtual('totalQuizzes').get(function () {
-  return this.quizzesTaken.length;
+  return this.quizzesTaken ? this.quizzesTaken.length : 0;
 });
+
 userSchema.set('toJSON', { virtuals: true });
 userSchema.set('toObject', { virtuals: true });
 module.exports = mongoose.model('User', userSchema);

@@ -15,9 +15,9 @@ router.post('/submitQuizResult',isLoggedIn(),quizController.submitQuizResult); /
 // //endpoints , used by user to deal with quiz
 // router.get('/userCreatedQuiz',isLoggedIn, quizController.getMyCreatedQuizzes);
 router.get('/userAttemptedQuizzes',isLoggedIn('quizzesTaken'),quizController.getMyAttemptedQuizzes);//done
- router.get('/userSavedQuiz', isLoggedIn, quizController.getUserSavedQuizzes);
+ router.get('/userSavedQuiz', isLoggedIn(), quizController.getUserSavedQuizzes);//done
 // router.get('/learnLater/:id',quizController.learnLater)
-router.delete('/saveUnsaveQuiz', isLoggedIn,quizController.saveUnsaveQuiz);
+router.post('/saveUnsaveQuiz', isLoggedIn(),quizController.saveUnsaveQuiz);//done
 
 // Quiz creation and management (creator/admin)
 router.post('/create', isLoggedIn,quizController.createQuiz);
