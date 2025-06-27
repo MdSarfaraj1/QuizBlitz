@@ -3,7 +3,7 @@ import { ProfileSection } from "./Profile";
 import { SecuritySection } from "./Security";
 import { NotificationsSection } from "./Notifications";
 import  DeleteAccount  from "./DeleteAccount";
-import { Sidebar } from "./Sidebar"; 
+import { Sidebar } from "./Navigation"; 
 
 
 export default function UserSettings() {

@@ -40,27 +40,33 @@ export const UserContextProvider=({children})=>{
         
     };
 
-    // useEffect(() => {
-    //     async function checkSession() {
-    //       try {
-    //         const res = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}/User/verify-token`, {
-    //           withCredentials: true,
-    //         });
-      
-    //         if (res.status === 200) {
-    //           console.log("Token present");
-              
-    //         }
-    //       } catch (err) {
-    //         console.log("Token invalid or error:", err);
-    //         localStorage.removeItem("userId");
-    //         localStorage.removeItem("username");
-    //         localStorage.removeItem("profilePicture");
-    //       }
-    //     }
-      
-    //     checkSession();
-    //   }, []);
+const clearAuth = () => {
+    localStorage.removeItem("userId");
+    localStorage.removeItem("username");
+    localStorage.removeItem("profilePicture");
+    updateUserId(null);
+  };
+
+  useEffect(() => {
+    async function checkSession() {
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_APP_BACKEND_URL}/User/verify-token`,
+          { withCredentials: true }
+        );
+
+        if (res.status === 200) {
+          console.log("✅ Token is valid");
+          // Optional: setUser again with backend data
+        }
+      } catch (err) {
+        console.warn("⚠️ Token invalid or expired, clearing localStorage");
+        clearAuth();
+      }
+    }
+
+    checkSession();
+  }, []);
       
     return(
         <UserContext.Provider value={{userId,username,setUser:updateUserId,flashMessage,setFlashMessage,profilePicture}}>

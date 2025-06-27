@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom'; 
 import { Toast } from "../UI/toast";
 import { X} from "lucide-react";
 import { useRef } from 'react';
-
+import { useAuth } from '../../Context/UserContextProvider'; 
 
 const RunningQuiz = () => {
   const navigate = useNavigate();
     const location = useLocation();
+    const {userId}=useAuth()
   const quizData = location.state?.quizData;
-  const category=location.state?.category
-  console.log(quizData,category)
+  const category =location.state?.category||""
  const usedHintQuestions = useRef(new Set());
-
+console.log("running Quiz data",quizData)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
-  const [timeLeft, setTimeLeft] = useState(600);
+  const [timeLeft, setTimeLeft] = useState(quizData?.duration*60 || 600); 
   const [markedForRevisit, setMarkedForRevisit] = useState([]);
   const [learnLater, setLearnLater] = useState([]); // Re-introducing learnLater state
   const [showHint, setShowHint] = useState(false);
@@ -51,8 +51,6 @@ const handleHintUsage = (currentQuestionIndex) => {
 
   setShowHint((prev) => !prev);
 };
-
-
 
   const handleAnswerSelect = (option) => {
     setSelectedAnswers({
@@ -110,8 +108,8 @@ const handleLearnLater = (itemIndex) => {
         learnLater, 
         quizData,
         hintsUsed:usedHintQuestions.current.size,
-        timeTaken: 600 - timeLeft, 
-        category
+        timeTaken: (quizData?.duration * 60 || 600) - timeLeft, 
+        category:quizData.category||category
 
        
       },
@@ -236,7 +234,7 @@ const handleLearnLater = (itemIndex) => {
         </div>
 
         <Link
-          to={"/StartQuiz"}
+          to={userId?"/startQuiz":"/StartQuiz"}
           onClick={handleSubmit}
           className="w-full mt-6 px-6 py-3 bg-red-600 text-white text-lg font-bold rounded-lg hover:bg-red-500 transition-colors duration-200 shadow-xl flex items-center justify-center"
         >
@@ -286,8 +284,7 @@ const handleLearnLater = (itemIndex) => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap gap-4 justify-center md:justify-end mt-auto pt-6 border-t border-gray-700 flex-shrink-0">
-        
+        <div className="flex flex-wrap gap-4 justify-center md:justify-end mt-auto pt-6 border-t        border-gray-700 flex-shrink-0">
           <button
             onClick={handlePrevious}
             disabled={currentQuestionIndex === 0}
@@ -316,11 +313,22 @@ const handleLearnLater = (itemIndex) => {
             <span className="mr-2 text-xl">🚩</span> Mark for Revisit
           </button>
           <button
+            disabled={!userId}
             onClick={handleLearnLater}
-            className={`runningQuiz-button bg-orange-600 hover:bg-orange-500`}
+            className="runningQuiz-button bg-orange-600 hover:bg-orange-500"
           >
             <span className="mr-2 text-xl">📚</span> Learn Later
           </button>
+
+        {/* show hint */}
+           {showHint && (
+          <div className="p-2 w-auto flex align-baseline bg-yellow-100 text-gray-900 rounded-lg shadow-inner text-base border border-yellow-300">
+            <h4 className="font-bold text-lg  mr-2">Hint:</h4>
+            <p className="mt-1">
+              {currentQuestion.hint || "No hint available for this question."}
+            </p>
+          </div>
+        )}
           {currentQuestionIndex === totalQuestions - 1 && (
             <button
               onClick={handleSubmit}
@@ -329,16 +337,10 @@ const handleLearnLater = (itemIndex) => {
               <span className="mr-2 text-xl">✅</span> Final Submit
             </button>
           )}
+         
         </div>
 
-        {showHint && (
-          <div className="mt-4 p-2 w-72 flex align-baseline bg-yellow-100 text-gray-900 rounded-lg shadow-inner text-base border border-yellow-300">
-            <h4 className="font-bold text-lg  mr-2">Hint:</h4>
-            <p className="mt-1">
-              {currentQuestion.hint || "No hint available for this question."}
-            </p>
-          </div>
-        )}
+      
       </div>
       {toast && (
         <Toast

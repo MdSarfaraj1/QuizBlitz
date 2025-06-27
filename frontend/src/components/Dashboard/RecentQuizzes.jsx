@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "../UI/card";
-import { Check, X, Clock, Trophy, Timer, Target, Play, Activity } from 'lucide-react';
+import { Check,Calendar ,X, Clock, Timer, Play, Activity } from 'lucide-react';
 import axios from 'axios';
 
 const RecentQuizzes = ({ className, fullPledge = false }) => {
@@ -26,7 +26,7 @@ const RecentQuizzes = ({ className, fullPledge = false }) => {
             date: formatDate(quiz.submissionDate),
             time: formatTime(quiz.submissionDate),
             color: getCategoryColor(quiz.category),
-            difficulty: quiz.difficulty,
+            difficulty: quiz.difficulty||'loading',
             timeTaken: formatTimeTaken(quiz.timeTaken),
           }));
           console.log(transformedQuizzes);
@@ -44,21 +44,23 @@ const RecentQuizzes = ({ className, fullPledge = false }) => {
   }, []);
 
   // Helper functions for data formatting
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffTime = Math.abs(now - date);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+function formatDate(dateString) {
+  return new Date(dateString).toLocaleDateString('en-IN', {
+    timeZone: 'Asia/Kolkata', // or your time zone
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
+}
 
-    if (diffDays === 0) return 'Today';
-    if (diffDays === 1) return 'Yesterday';
-    if (diffDays <= 7) return `${diffDays} days ago`;
-    return date.toLocaleDateString();
-  };
 
-  const formatTime = (dateString) => {
-    return new Date(dateString).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  };
+function formatTime(dateString) {
+  return new Date(dateString).toLocaleTimeString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
 
   const formatTimeTaken = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -96,9 +98,12 @@ const RecentQuizzes = ({ className, fullPledge = false }) => {
   if (loading) {
     return (
       <Card className={`${className || 'shadow-md'} ${fullPledge ? 'h-full w-full' : ''}`}>
-        <CardHeader className={`pb-2 border-b ${fullPledge ? 'p-6' : ''}`}>
-          <CardTitle className={`font-bold text-gray-800 ${fullPledge ? 'text-3xl' : 'text-2xl'}`}>
-            Recent Quizzes
+        <CardHeader className={`pb-2 border-b ${fullPledge ? 'p-6' : ''} bg-gradient-to-r from-blue-50 to-blue-100 rounded-t-xl flex items-center`}>
+          <CardTitle className={`font-bold text-gray-800 ${fullPledge ? 'text-3xl' : 'text-xl'} flex items-start gap-3`}>
+            <span className="bg-blue-100 rounded-full p-2 flex items-start justify-center shadow-sm">
+              <Calendar className="w-5 h-5 text-blue-500" />
+            </span>
+            <span className="tracking-wide">Recent Quizzes</span>
           </CardTitle>
         </CardHeader>
         <CardContent className={`${fullPledge ? 'p-6' : ''} flex items-center justify-center`}>
@@ -114,9 +119,12 @@ const RecentQuizzes = ({ className, fullPledge = false }) => {
   if (error) {
     return (
       <Card className={`${className || 'shadow-md'} ${fullPledge ? 'h-full w-full' : ''}`}>
-        <CardHeader className={`pb-2 border-b ${fullPledge ? 'p-6' : ''}`}>
-          <CardTitle className={`font-bold text-gray-800 ${fullPledge ? 'text-3xl' : 'text-2xl'}`}>
-            Recent Quizzes
+        <CardHeader className={`pb-2 border-b ${fullPledge ? 'p-6' : ''} bg-gradient-to-r from-blue-50 to-blue-100 rounded-t-xl flex `}>
+          <CardTitle className={`font-bold text-gray-800 ${fullPledge ? 'text-3xl' : 'text-2xl'} flex items-center gap-3`}>
+            <span className="bg-blue-100 rounded-full p-2 flex items-start justify-center shadow-sm">
+              <Calendar className="w-6 h-6 text-blue-500" />
+            </span>
+            <span className="tracking-wide">Recent Quizzes</span>
           </CardTitle>
         </CardHeader>
         <CardContent className={`${fullPledge ? 'p-6' : ''} flex items-center justify-center`}>
@@ -141,19 +149,22 @@ const RecentQuizzes = ({ className, fullPledge = false }) => {
           fullPledge ? "h-full w-full" : ""
         }`}
       >
-        <CardHeader className={`pb-2 border-b ${fullPledge ? "p-6" : ""}`}>
+        <CardHeader className={`pb-2 border-b ${fullPledge ? "p-6" : ""} bg-gradient-to-r from-blue-50 to-blue-100 rounded-t-xl flex `}>
           <CardTitle
             className={`font-bold text-gray-800 ${
               fullPledge ? "text-3xl" : "text-2xl"
-            }`}
+            } flex items-center gap-3`}
           >
-            Recent Quizzes
+            <span className="bg-blue-100 rounded-full p-2 flex items-start justify-center shadow-sm">
+              <Calendar className="w-6 h-6 text-blue-500" />
+            </span>
+            <span className="tracking-wide">Recent Quizzes</span>
           </CardTitle>
         </CardHeader>
         <CardContent className={fullPledge ? "p-6" : ""}>
           {/* Show existing quizzes if any */}
            <div
-    className={`grid gap-4 grid-cols-1 mt-2 sm:grid-cols-2`}
+    className={`grid gap-4 grid-cols-1 mt-4 sm:grid-cols-2`}
   >
     {quizzes.map((quiz) => (
       <div
@@ -162,14 +173,14 @@ const RecentQuizzes = ({ className, fullPledge = false }) => {
       >
         {/* Category + difficulty */}
         <div>
-          <div className="flex flex-wrap gap-2 mb-4">
+          <div className="flex  gap-2 mb-4">
             <span
               className={`inline-flex items-center rounded-full border px-3 py-1 text-xl font-semibold ${quiz.color}`}
             >
               {quiz.category}
             </span>
             <span
-              className={`inline-flex items-center rounded-full border px-3 py-1 text-md font-medium ${getDifficultyColor(
+              className={`rounded-full border py-1 px-2 inline-flex font-medium ${getDifficultyColor(
                 quiz.difficulty
               )}`}
             >
@@ -238,9 +249,13 @@ const RecentQuizzes = ({ className, fullPledge = false }) => {
 // If we reach here, it means we have quizzes to display
   return (
     <Card className={`${className || 'shadow-md'} ${fullPledge ? 'h-full w-full' : ''}`}>
-      <CardHeader className={`pb-2 border-b ${fullPledge ? 'p-6' : ''}`}>
-        <CardTitle className={`font-bold text-gray-800 ${fullPledge ? 'text-3xl' : 'text-2xl'}`}>
-          Recent Quizzes
+      <CardHeader className={`pb-1 border-b ${fullPledge ? 'p-6' : ''} bg-gradient-to-r from-sky-500 to-blue-600
+rounded-t-lg flex`}>
+        <CardTitle className={`font-bold text-gray-800 ${fullPledge ? 'text-3xl' : 'text-2xl'} flex items-center gap-3`}>
+          <span className="bg-blue-100 rounded-full p-2 flex items-start justify-center shadow-sm">
+            <Calendar className="w-6 h-6 text-blue-500" />
+          </span>
+          <span className="tracking-wide text-white">Recent Quizzes</span>
         </CardTitle>
       </CardHeader>
    <CardContent className={fullPledge ? "p-6" : "p-4"}>
@@ -297,7 +312,7 @@ const RecentQuizzes = ({ className, fullPledge = false }) => {
         {/* Footer Info */}
         <div className="mt-3 flex justify-between text-xs text-gray-500">
           <div className="flex items-center">
-            <Clock size={12} className="mr-1" />
+            <Calendar size={12} className="mr-1" />
             {quiz.date}
           </div>
           <div className="flex items-center">

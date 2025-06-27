@@ -41,10 +41,7 @@ const Dashboard = () => {
       case 'progress':
         return (
           <div className="ml-10">
-            <div className="mb-8">
-              <h1 className="text-2xl font-bold">Progress Overview</h1>
-              <p className="text-gray-600">Track your quiz progress and achievements</p>
-            </div>
+          
               <QuizProgressDashboard />
             </div>)
       case 'quizzes':
@@ -61,10 +58,6 @@ const Dashboard = () => {
       case 'Things To Learn':
         return (
           <div className="ml-10">
-            <div className="mb-8">
-              <h1 className="text-2xl font-bold">Favorite Quizzes</h1>
-              <p className="text-gray-600">Your starred and favorite quizzes</p>
-            </div>
             <ThingsToLearn />
           </div >
         );

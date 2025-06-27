@@ -4,14 +4,17 @@ import {
   BookOpen, 
   Brain, 
   MessageCircle, 
-  X, 
   Send, 
   Trash2, 
   Loader2,
   ChevronDown,
   ChevronUp,
-  Sparkles
+  Sparkles,
+  List,
+  Clock,
+  Target
 } from 'lucide-react';
+import axios from 'axios';
 
 const ThingsToLearn = ({ className }) => {
   const [questions, setQuestions] = useState([]);
@@ -22,54 +25,18 @@ const ThingsToLearn = ({ className }) => {
   const [followUpInput, setFollowUpInput] = useState({});
   const [loadingStates, setLoadingStates] = useState({});
 
-  // Mock data - replace with actual API call
-  const mockQuestions = [
-    {
-      id: 1,
-      question: "What is the greenhouse effect and how does it contribute to global warming?",
-      category: "Science",
-      difficulty: "Medium",
-      dateAdded: "2025-05-28",
-      quizTitle: "Environmental Science Quiz"
-    },
-    {
-      id: 2,
-      question: "Explain the difference between mitosis and meiosis.",
-      category: "Biology",
-      difficulty: "Hard",
-      dateAdded: "2025-05-27",
-      quizTitle: "Cell Biology Fundamentals"
-    },
-    {
-      id: 3,
-      question: "What were the main causes of World War I?",
-      category: "History",
-      difficulty: "Medium",
-      dateAdded: "2025-05-26",
-      quizTitle: "20th Century History"
-    },
-    {
-      id: 4,
-      question: "How do neural networks learn and adapt?",
-      category: "Technology",
-      difficulty: "Hard",
-      dateAdded: "2025-05-25",
-      quizTitle: "AI and Machine Learning Basics"
-    }
-  ];
-
-  // Simulate fetching data from backend
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
         setLoading(true);
-        // Replace with actual API call
-        // const response = await fetch('/api/things-to-learn');
-        // const data = await response.json();
-        
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        setQuestions(mockQuestions);
+        const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}/Quiz/allLearnLaterQuestions`,{withCredentials: true}); 
+        console.log("response is:", response.data);
+        if(response.status === 200 && response.data.questions.length > 0)
+        {
+            setQuestions(response.data.questions)
+            setLoading(false);
+        }
+        console.log("working")
       } catch (error) {
         console.error('Error fetching questions:', error);
       } finally {
@@ -81,15 +48,11 @@ const ThingsToLearn = ({ className }) => {
   }, []);
 
   // Generate AI explanation
-  const generateExplanation = async (questionId, questionText) => {
+  const generateExplanation = async ( questionText,correctAnswer) => {
     setLoadingStates(prev => ({ ...prev, [questionId]: true }));
-    
     try {
       // Simulate AI API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Mock AI response - replace with actual AI API call
-      const mockExplanation = `This is a comprehensive explanation for: "${questionText}"\n\nKey points:\n• Detailed analysis of the concept\n• Important background information\n• Real-world applications and examples\n• Common misconceptions to avoid\n\nThis explanation covers the fundamental aspects you need to understand.`;
+      await new Promise(resolve => setTimeout(resolve, 2500));
       
       setExplanations(prev => ({
         ...prev,
@@ -130,11 +93,20 @@ const ThingsToLearn = ({ className }) => {
 
     try {
       // Simulate AI response delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 1800));
       
       const aiResponse = {
         type: 'ai',
-        content: `Great follow-up question! Here's more detail about "${message}": This builds upon the previous explanation and provides additional context that should help clarify your understanding.`,
+        content: `That's an excellent follow-up question about "${message}"! 
+
+Let me elaborate: This connects directly to the main concept we discussed. Here are some additional insights:
+
+• This aspect is particularly important because...
+• You can think of it like this analogy...
+• In practical terms, this means...
+• A common way to remember this is...
+
+Would you like me to clarify any specific part of this explanation?`,
         timestamp: new Date()
       };
 
@@ -150,68 +122,75 @@ const ThingsToLearn = ({ className }) => {
   };
 
   // Remove question from list
-  const removeQuestion = async (questionId) => {
+  const removeQuestion = async (learnLaterId) => {
     try {
-      // Replace with actual API call
-      // await fetch(`/api/things-to-learn/${questionId}`, { method: 'DELETE' });
-      
-      setQuestions(prev => prev.filter(q => q.id !== questionId));
-      
+      const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/Quiz/removeLearnLater/:${learnLaterId}`, {}, { withCredentials: true });
+      if (response.status === 200) {
+      setQuestions(prev => prev.filter(q => q._id !== learnLaterId));
       // Clean up related states
-      setExplanations(prev => {
-        const newState = { ...prev };
-        delete newState[questionId];
-        return newState;
-      });
-      setFollowUpMessages(prev => {
-        const newState = { ...prev };
-        delete newState[questionId];
-        return newState;
-      });
-      setFollowUpInput(prev => {
-        const newState = { ...prev };
-        delete newState[questionId];
-        return newState;
-      });
-    } catch (error) {
+      // setExplanations(prev => {
+      //   const newState = { ...prev };
+      //   delete newState[questionId];
+      //   return newState;
+      // });
+      // setFollowUpMessages(prev => {
+      //   const newState = { ...prev };
+      //   delete newState[questionId];
+      //   return newState;
+      // });
+      // setFollowUpInput(prev => {
+      //   const newState = { ...prev };
+      //   delete newState[questionId];
+      //   return newState;
+      // });
+    } 
+  }catch (error) {
       console.error('Error removing question:', error);
     }
   };
 
   const getDifficultyColor = (difficulty) => {
     switch (difficulty.toLowerCase()) {
-      case 'easy': return 'bg-green-100 text-green-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'hard': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'easy': return 'bg-green-100 text-green-700 border-green-200';
+      case 'medium': return 'bg-yellow-100 text-yellow-700 border-yellow-200';
+      case 'hard': return 'bg-red-100 text-red-700 border-red-200';
+      default: return 'bg-gray-100 text-gray-700 border-gray-200';
     }
   };
-
-  const getCategoryColor = (category) => {
-    const colors = {
-      'Science': 'bg-blue-100 text-blue-800',
-      'Biology': 'bg-green-100 text-green-800',
-      'History': 'bg-amber-100 text-amber-800',
-      'Technology': 'bg-purple-100 text-purple-800',
-      'Mathematics': 'bg-red-100 text-red-800',
-      'Literature': 'bg-pink-100 text-pink-800'
-    };
-    return colors[category] || 'bg-gray-100 text-gray-800';
+  function getCategoryColor() {
+      const colors = [
+    'bg-blue-100 text-blue-700 border-blue-200',
+    'bg-green-100 text-green-700 border-green-200',
+    'bg-amber-100 text-amber-700 border-amber-200',
+      'bg-purple-100 text-purple-700 border-purple-200',
+       'bg-red-100 text-red-700 border-red-200',
+      'bg-pink-100 text-pink-700 border-pink-200'
+      ];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+  const getDifficultyIcon = (difficulty) => {
+    switch (difficulty.toLowerCase()) {
+      case 'easy': return <Target className="h-3 w-3" />;
+      case 'medium': return <Clock className="h-3 w-3" />;
+      case 'hard': return <Brain className="h-3 w-3" />;
+      default: return <Target className="h-3 w-3" />;
+    }
   };
 
   if (loading) {
     return (
       <Card className={className}>
-        <CardHeader>
+        <CardHeader className="bg-gradient-to-r from-purple-50 to-blue-50">
           <CardTitle className="flex items-center text-2xl font-bold text-gray-800">
-            <BookOpen className="h-6 w-6 mr-2 text-purple-600" />
+            <BookOpen className="h-6 w-6 mr-3 text-purple-600" />
             Things to Learn
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-center py-8">
-            <Loader2 className="h-8 w-8 animate-spin text-purple-600" />
-            <span className="ml-2 text-gray-600">Loading your learning list...</span>
+        <CardContent className="p-8">
+          <div className="flex flex-col items-center justify-center py-12">
+            <Loader2 className="h-10 w-10 animate-spin text-purple-600 mb-4" />
+            <span className="text-gray-600 font-medium">Loading your learning queue...</span>
+            <span className="text-sm text-gray-500 mt-2">Preparing personalized content</span>
           </div>
         </CardContent>
       </Card>
@@ -220,96 +199,148 @@ const ThingsToLearn = ({ className }) => {
 
   return (
     <Card className={className}>
-      <CardHeader className="pb-3 border-b">
+      <CardHeader className="bg-gradient-to-r from-purple-50 to-blue-50 border-b border-gray-100">
         <CardTitle className="flex items-center justify-between text-2xl font-bold text-gray-800">
           <div className="flex items-center">
-            <BookOpen className="h-6 w-6 mr-2 text-purple-600" />
+            <BookOpen className="h-6 w-6 mr-3 text-purple-600" />
             Things to Learn
           </div>
-          <span className="text-sm font-normal text-gray-500 bg-purple-100 px-3 py-1 rounded-full">
-            {questions.length} questions
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-normal text-purple-700 bg-purple-100 px-3 py-1 rounded-full border border-purple-200">
+              {questions.length} questions
+            </span>
+          </div>
         </CardTitle>
       </CardHeader>
-      
-      <CardContent className="pt-4">
+
+      <CardContent className="p-6">
         {questions.length === 0 ? (
-          <div className="text-center py-8">
-            <Brain className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-600">No questions to learn yet!</p>
-            <p className="text-sm text-gray-500 mt-2">
+          <div className="text-center py-16">
+            <div className="bg-gray-50 rounded-full p-6 w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+              <Brain className="h-12 w-12 text-gray-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              No questions to learn yet!
+            </h3>
+            <p className="text-gray-600 mb-2">
               Mark questions during quizzes to add them here.
+            </p>
+            <p className="text-sm text-gray-500">
+              Build your personalized learning queue by saving challenging
+              questions.
             </p>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-6">
             {questions.map((item, index) => (
               <div
-                key={item.id}
-                className="border border-gray-200 rounded-lg p-4 bg-white shadow-sm hover:shadow-md transition-shadow duration-200"
-                style={{ animationDelay: `${index * 100}ms` }}
+                key={item.question._id}
+                className="border border-gray-200 rounded-xl p-6 bg-white shadow-sm hover:shadow-lg transition-all duration-300 hover:border-purple-200"
+                style={{
+                  animation: `fadeInUp 0.6s ease-out ${index * 150}ms both`,
+                }}
               >
                 {/* Question Header */}
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-gray-800 mb-2">
-                      {item.question}
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex-1 mr-4">
+                    <h3 className="font-semibold text-gray-900 text-lg mb-3 leading-relaxed">
+                      {item.question.questionText}
                     </h3>
-                    <div className="flex flex-wrap gap-2 mb-2">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getCategoryColor(item.category)}`}>
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold border ${getCategoryColor(
+                          item.category
+                        )}`}
+                      >
                         {item.category}
                       </span>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(item.difficulty)}`}>
-                        {item.difficulty}
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold border flex items-center gap-1 ${getDifficultyColor(
+                          item.question.level
+                        )}`}
+                      >
+                        {getDifficultyIcon(item.question.level)}
+                        {item.question.level}
                       </span>
                     </div>
-                    <p className="text-xs text-gray-500">
-                      From: {item.quizTitle} • Added: {new Date(item.dateAdded).toLocaleDateString()}
-                    </p>
                   </div>
                   <button
-                    onClick={() => removeQuestion(item.id)}
-                    className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors"
-                    title="Remove from list"
+                    onClick={() => removeQuestion(item._id)}
+                    className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0"
+                    title="Remove from learning queue"
                   >
-                    <Trash2 size={16} />
+                    <Trash2 size={18} />
                   </button>
                 </div>
 
+                {/* Multiple Choice Options Preview */}
+                <div className="mb-4 p-4 bg-gray-100 rounded-lg">
+                  <div className="flex items-center gap-2 mb-2">
+                    <List className="h-4 w-4 text-gray-600" />
+                    <span className="text-sm font-medium text-gray-700">
+                      Answer Options:
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {item.question.options &&
+                      item.question.options.map((option, idx) => (
+                        <div
+                          key={idx}
+                          className={`text-sm text-gray-600 px-3 py-2 rounded border ${
+                            item.question.correctAnswer && option === item.question.correctAnswer
+                              ? "bg-green-200 border-green-300 text-green-800"
+                              : "bg-white"
+                          }`}
+                        >
+                          <span className="font-medium text-gray-800">
+                            {String.fromCharCode(65 + idx)}.
+                          </span>{" "}
+                          {option}
+                        </div>
+                      ))}
+                  </div>
+                </div>
+
                 {/* Action Buttons */}
-                <div className="flex gap-2 mb-3">
+                <div className="flex gap-3 mb-4">
                   <button
-                    onClick={() => generateExplanation(item.id, item.question)}
-                    disabled={loadingStates[item.id]}
-                    className="flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    onClick={() =>
+                      generateExplanation( item.question.questionText, item.question.correctAnswer)
+                    }
+                    disabled={loadingStates[item.question._id]}
+                    className="flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium shadow-sm"
                   >
-                    {loadingStates[item.id] ? (
+                    {loadingStates[item.question._id] ? (
                       <>
-                        <Loader2 size={16} className="mr-2 animate-spin" />
+                        <Loader2 size={18} className="mr-2 animate-spin" />
                         Generating...
                       </>
                     ) : (
                       <>
-                        <Sparkles size={16} className="mr-2" />
-                        Explain
+                        <Sparkles size={18} className="mr-2" />
+                        Get Explanation
                       </>
                     )}
                   </button>
-                  
-                  {explanations[item.id] && (
+
+                  {explanations[item.question._id] && (
                     <button
-                      onClick={() => setExpandedQuestion(expandedQuestion === item.id ? null : item.id)}
-                      className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                      onClick={() =>
+                        setExpandedQuestion(
+                          expandedQuestion === item.question._id ? null : item.question._id
+                        )
+                      }
+                      className="flex items-center px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
                     >
-                      {expandedQuestion === item.id ? (
+                      {expandedQuestion === item.question._id ? (
                         <>
-                          <ChevronUp size={16} className="mr-2" />
-                          Hide Details
+                          <ChevronUp size={18} className="mr-2" />
+                          Hide Explanation
                         </>
                       ) : (
                         <>
-                          <ChevronDown size={16} className="mr-2" />
-                          Show Details
+                          <ChevronDown size={18} className="mr-2" />
+                          Show Explanation
                         </>
                       )}
                     </button>
@@ -317,75 +348,98 @@ const ThingsToLearn = ({ className }) => {
                 </div>
 
                 {/* Expanded Content */}
-                {expandedQuestion === item.id && explanations[item.id] && (
-                  <div className="border-t pt-4 space-y-4">
+                {expandedQuestion === item.question._id && explanations[item.question._id] && (
+                  <div className="border-t border-gray-100 pt-6 space-y-6">
                     {/* AI Explanation */}
-                    <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
-                      <div className="flex items-center mb-2">
-                        <Brain className="h-5 w-5 text-blue-600 mr-2" />
-                        <span className="font-semibold text-blue-800">AI Explanation</span>
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-500 p-6 rounded-r-xl">
+                      <div className="flex items-center mb-4">
+                        <Brain className="h-6 w-6 text-blue-600 mr-3" />
+                        <span className="font-bold text-blue-800 text-lg">
+                          AI Learning Assistant
+                        </span>
                       </div>
-                      <div className="text-gray-700 whitespace-pre-line">
-                        {explanations[item.id]}
+                      <div className="text-gray-800 whitespace-pre-line leading-relaxed">
+                        {explanations[item.question._id]}
                       </div>
                     </div>
 
                     {/* Follow-up Messages */}
-                    {followUpMessages[item.id] && followUpMessages[item.id].length > 0 && (
-                      <div className="space-y-3">
-                        <h4 className="font-semibold text-gray-800 flex items-center">
-                          <MessageCircle size={16} className="mr-2" />
-                          Follow-up Discussion
-                        </h4>
-                        {followUpMessages[item.id].map((message, msgIndex) => (
-                          <div
-                            key={msgIndex}
-                            className={`p-3 rounded-lg ${
-                              message.type === 'user'
-                                ? 'bg-purple-100 ml-8 text-purple-800'
-                                : 'bg-gray-100 mr-8 text-gray-800'
-                            }`}
-                          >
-                            <div className="text-sm font-medium mb-1">
-                              {message.type === 'user' ? 'You:' : 'AI:'}
-                            </div>
-                            <div>{message.content}</div>
-                            <div className="text-xs text-gray-500 mt-1">
-                              {message.timestamp.toLocaleTimeString()}
-                            </div>
+                    {followUpMessages[item.question._id] &&
+                      followUpMessages[item.question._id].length > 0 && (
+                        <div className="space-y-4">
+                          <h4 className="font-bold text-gray-800 flex items-center text-lg">
+                            <MessageCircle
+                              size={20}
+                              className="mr-3 text-purple-600"
+                            />
+                            Discussion Thread
+                          </h4>
+                          <div className="space-y-3">
+                            {followUpMessages[item.question._id].map(
+                              (message, msgIndex) => (
+                                <div
+                                  key={msgIndex}
+                                  className={`p-4 rounded-xl ${
+                                    message.type === "user"
+                                      ? "bg-purple-100 ml-8 border-l-4 border-purple-500"
+                                      : "bg-gray-100 mr-8 border-l-4 border-blue-500"
+                                  }`}
+                                >
+                                  <div className="flex items-center justify-between mb-2">
+                                    <span className="text-sm font-bold">
+                                      {message.type === "user"
+                                        ? "👤 You:"
+                                        : "🤖 AI Assistant:"}
+                                    </span>
+                                    <span className="text-xs text-gray-500">
+                                      {message.timestamp.toLocaleTimeString()}
+                                    </span>
+                                  </div>
+                                  <div className="text-gray-800">
+                                    {message.content}
+                                  </div>
+                                </div>
+                              )
+                            )}
                           </div>
-                        ))}
-                      </div>
-                    )}
+                        </div>
+                      )}
 
                     {/* Follow-up Input */}
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        placeholder="Ask a follow-up question..."
-                        value={followUpInput[item.id] || ''}
-                        onChange={(e) => setFollowUpInput(prev => ({
-                          ...prev,
-                          [item.id]: e.target.value
-                        }))}
-                        onKeyPress={(e) => {
-                          if (e.key === 'Enter') {
-                            handleFollowUp(item.id);
+                    <div className="bg-gray-50 p-4 rounded-xl">
+                      <div className="flex gap-3">
+                        <input
+                          type="text"
+                          placeholder="Ask a follow-up question or request clarification..."
+                          value={followUpInput[item.question._id] || ""}
+                          onChange={(e) =>
+                            setFollowUpInput((prev) => ({
+                              ...prev,
+                              [item.question._id]: e.target.value,
+                            }))
                           }
-                        }}
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      />
-                      <button
-                        onClick={() => handleFollowUp(item.id)}
-                        disabled={loadingStates[`followup-${item.id}`] || !followUpInput[item.id]?.trim()}
-                        className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                      >
-                        {loadingStates[`followup-${item.id}`] ? (
-                          <Loader2 size={16} className="animate-spin" />
-                        ) : (
-                          <Send size={16} />
-                        )}
-                      </button>
+                          onKeyPress={(e) => {
+                            if (e.key === "Enter") {
+                              handleFollowUp(item.question._id);
+                            }
+                          }}
+                          className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white"
+                        />
+                        <button
+                          onClick={() => handleFollowUp(item.question._id)}
+                          disabled={
+                            loadingStates[`followup-${item.question._id}`] ||
+                            !followUpInput[item.question._id]?.trim()
+                          }
+                          className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium shadow-sm"
+                        >
+                          {loadingStates[`followup-${item.question._id}`] ? (
+                            <Loader2 size={18} className="animate-spin" />
+                          ) : (
+                            <Send size={18} />
+                          )}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 )}

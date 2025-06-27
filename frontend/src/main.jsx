@@ -15,6 +15,22 @@ import NotFound from './pages/NoFoundPage';
 import { UserContextProvider } from './Context/UserContextProvider';
 import ResetPassword from './components/ResetPassword/ResetPassword';
 import ExploreQuizzes from './components/Home/ExploreQuizzes';
+import axios from "axios";
+axios.interceptors.response.use(
+  response => response,
+  error => {
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      !window.location.pathname.startsWith("/login")
+    ) {
+      alert("Session expired. Please log in again.");
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
+);
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>

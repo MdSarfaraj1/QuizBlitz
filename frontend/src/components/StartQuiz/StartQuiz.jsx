@@ -4,26 +4,49 @@ import { Link, useNavigate } from 'react-router-dom';
  // Assuming this path is correct
 import CategorySelection from './Categories'; // Import the new component
 import axios from 'axios';
-
+import { useAuth } from '../../Context/UserContextProvider'; 
 const StartQuiz = () => {
+  const {userId}=useAuth()
   const navigate=useNavigate();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedDifficulty, setSelectedDifficulty] = useState('');
   const [numberOfQuestions, setNumberOfQuestions] = useState(10);
+  const [isLoading, setIsLoading] = useState(false);
+
 
 const handleStartQuiz = async () => {
+    const endpoint = userId? `/Quiz/startQuiz/${selectedCategory._id}`: `/Quiz/startQuiz/guest/${selectedCategory._id}`;
+   if (!userId) {
+    // Check localStorage if user already played
+    const hasPlayed = localStorage.getItem('guestQuizPlayed');
+
+    if (hasPlayed) {
+      alert(" You've already played once as a guest. Please log in to play again.");
+      navigate('/login');
+      return;
+    }
+    else
+    localStorage.setItem('guestQuizPlayed', 'true');
+  }
   try{
-    const response=await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/Quiz/startQuiz/${selectedCategory._id}`, {
-      difficulty: selectedDifficulty,
-      numberOfQuestions: numberOfQuestions
-    }, { withCredentials: true });
+    setIsLoading(true);
+   const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}${endpoint}`,
+  {
+    difficulty: selectedDifficulty,
+    numberOfQuestions,
+    image: selectedCategory.icon,
+    ...(userId && { userId }) // if userId exists, include it in the request
+  },
+  { withCredentials: true }
+);
   
     if(response.status===200){
       const quizData = response.data
-     
+      console.log('testing before starting quiz',quizData)
       navigate('/runQuiz', {state:{ quizData,category:selectedCategory.title }} );
   }
 }catch(error){
+  setIsLoading(false);
     console.error("Error starting quiz:", error);
   }
 }
@@ -34,7 +57,7 @@ const handleStartQuiz = async () => {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-10">
-          <Link to="/dashboard" className="flex items-center space-x-2 hover:text-purple-400 transition">
+          <Link to={userId ? "/dashboard" : "/"} className="flex items-center space-x-2 hover:text-purple-400 transition">
             <ArrowLeft className="w-5 h-5" />
             <span>Back</span>
           </Link>
@@ -115,7 +138,7 @@ const handleStartQuiz = async () => {
 
               {/* Start Button */}
               <button
-                disabled={!canStartQuiz}
+                disabled={!canStartQuiz || isLoading}
                 onClick={ handleStartQuiz}
                 className={`w-full py-3 rounded-xl font-semibold transition-all text-lg ${
                   canStartQuiz
@@ -124,11 +147,16 @@ const handleStartQuiz = async () => {
                 }`}
               >
                 {canStartQuiz ? '🚀 Start Quiz!' : '⚠️ Select Category & Difficulty'}
+     {isLoading && (
+  <div className="ml-2 inline-block h-5 w-5 border-2 border-t-transparent border-white-500 rounded-full animate-spin"></div>
+)}
+
+
               </button>
 
               {/* Quiz Info */}
               <div className="mt-3 text-sm text-purple-300 space-y-1">
-                <p>⏱️ Timer: 10 minutes</p>
+                <p>⏱️ Timer: According To No. Of Questions</p>
                 <p>💡 Maximum questions have hints</p>
                 <p>❌ Each hints reduces 1/2 marks</p>
               </div>

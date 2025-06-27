@@ -15,7 +15,12 @@ useEffect(() => {
           console.log("Quiz of the day response:", response.data);
            if (response.data && response.status==200) {
              setQuizData(response.data.quiz)
-             setPresent(true)}
+             setPresent(true)
+            }
+            else
+            setPresent(false)
+            
+              
              
         } catch (error) {
             console.error("Error fetching quiz of the day:", error);

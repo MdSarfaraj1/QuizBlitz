@@ -22,7 +22,6 @@ export function ProfileSection() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
     try {
       await new Promise((resolve) => setTimeout(resolve, 800));
       setUserData({ name, email, avatar: avatarUrl });

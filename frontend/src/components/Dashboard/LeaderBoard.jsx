@@ -12,7 +12,7 @@ const [currentUser, setCurrentUser] = useState({rank: 0,
         username: "Loading...",
         totalScore: 0,
         quizzesTaken: 0,
-        avatar: "https://cdn-icons-png.flaticon.com/512/10337/10337609.png",
+        avatar: "https://cdn-icons-png.flaticon.com/512/10337/10337609.png"||"",
         achievements: 0,});
  useEffect(() => {
   const fetchLeaderboardData = async () => {
@@ -59,16 +59,16 @@ const [currentUser, setCurrentUser] = useState({rank: 0,
       "leaderboard-card",
       fullPledge ? "h-full w-full" : ""
     )}>
-      <CardHeader className={cn(
-        "pb-3 border-b",
+      <CardHeader className={cn( 
+        "pb-3 border-b from-amber-400 to-yellow-500 bg-gradient-to-r rounded-t-lg",
         fullPledge ? "p-6" : ""
       )}>
         <CardTitle className={cn(
-          "font-bold text-gray-800 flex items-center",
+          "font-bold text-slate-500 flex items-center",
           fullPledge ? "text-3xl" : "text-xl"
         )}>
           <BarChart className={cn(
-            "mr-2 text-quizDashboard-primary",
+            "mr-2",
             fullPledge ? "h-8 w-8" : "h-5 w-5"
           )} />
           Leaderboard
@@ -110,7 +110,7 @@ const [currentUser, setCurrentUser] = useState({rank: 0,
             </div>
             }
             <div className={cn(
-              "mr-4 relative flex shrink-0 overflow-hidden rounded-full border-2 border-white shadow-lg",
+              "mr-4 relative flex shrink-0 overflow-hidden rounded-full border-2 border-pink-400 shadow-lg",
               fullPledge ? "h-16 w-16" : "h-12 w-12"
             )}>
               {currentUser.avatar ? (
@@ -225,7 +225,7 @@ const [currentUser, setCurrentUser] = useState({rank: 0,
             "space-y-3",
             fullPledge ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4 space-y-0" : ""
           )}>
-            {topUsers.slice(0,4).map((user) => {
+            {topUsers.length>0 && topUsers.slice(0,4).map((user) => {
               const PositionIcon = getPositionIcon(user.rank);
               
               return (
@@ -389,3 +389,5 @@ const [currentUser, setCurrentUser] = useState({rank: 0,
 };
 
 export default Leaderboard;
+
+

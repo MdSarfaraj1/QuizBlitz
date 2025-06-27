@@ -17,7 +17,6 @@ const [totalScore, setTotalScore] = useState(0);
   const [expandedSection, setExpandedSection] = useState(null);
   const [incorrectAnswers,setIncorrectAnswer]=useState([])
   const totalQuestions = quizData.questions.length;
- 
  useEffect(() => {
   const calculateScore = async () => {
     let correct = 0;
@@ -71,19 +70,23 @@ const [totalScore, setTotalScore] = useState(0);
       try {
         const result = {
           userId,
-          quizId: quizData.quizId,
+          quizId: quizData.Id || quizData.quizId,
           userScore: finalScore,
-          totalScore:total,
+          totalScore: total,
           correctAnswers: correct,
           wrongAnswers: wrong,
-          learnLaterQuestions: learnLater.map((q) => q.id||q.question),
+          learnLaterQuestions: learnLater.map((q) => ({
+            questionId: q.id,
+            category: category,
+          })),
+
           timeTaken: timeTaken,
           submissionDate: new Date(),
-          category:category,
+          category: category,
           difficulty: quizData.difficulty,
         };
 
-        console.log("result is:", result);
+        console.log("quiz result is:", result);
 
         const response = await axios.post(
           `${import.meta.env.VITE_APP_BACKEND_URL}/Quiz/submitQuizResult`,
@@ -170,7 +173,7 @@ return (
      {userId ?(
        <div className="flex justify-center gap-4">
       <button
-        onClick={() => navigate('/startQuiz')}
+        onClick={() => navigate('/runQuiz', { state: { quizData} })}
         className="bg-gradient-to-r from-fuchsia-600 to-pink-500 hover:from-fuchsia-700 hover:to-pink-600 text-white font-semibold px-6 py-2.5 rounded-full shadow-md transition duration-200"
       >
         🔄 Start Again
