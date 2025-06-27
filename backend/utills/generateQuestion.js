@@ -11,31 +11,43 @@ module.exports.generateQuestions = async ( categoryId, difficulty, numberOfQuest
         }
 
         // Prepare prompt for the AI
-        const prompt = `Generate ${numberOfQuestions} multiple choice questions about ${category.title} at ${difficulty} difficulty level.
+                const prompt = `
+            Generate ${numberOfQuestions} multiple choice questions about ${category.title} at ${difficulty} difficulty level.
+
             For each question, provide:
             1. The question text
             2. Four possible answers (ensure only one is correct)
             3. The correct answer
             4. A brief hint
-            
-            Format the response as a array with objects containing:
-            {
-                "questionText": "...",
-                "options": ["a", "b", "c", "d"],
-                "correctAnswer": "...",
-                "hint": "..."
-            }`;
 
+            Then provide:
+            - A suitable title for the quiz (e.g. "JavaScript Fundamentals")
+            - A very short description for the quiz (e.g. "ES6+, closures, promises, async/await, and modern JavaScript concepts")
+
+            Return the entire response strictly as a single JSON object in the following format:
+
+            {
+            "title": "string",
+            "description": "string",
+            "questions": [
+                {
+                "questionText": "string",
+                "options": ["string", "string", "string", "string"],
+                "correctAnswer": "string",
+                "hint": "string"
+                }
+            ]
+            }
+            `;
 
         // Generate questions using Gemini AI
         const result = await model.generateContent(prompt);
         const response = await result.response;
         let text = response.text();
-// Remove Markdown code block markers like ```json and ```
+     // Remove Markdown code block markers like ```json and ```
         text = text.replace(/```json|```/g, '').trim();
-        // Parse the AI response
-        const generatedQuestions = JSON.parse(text);
-        console.log("generated questions by ai ",generatedQuestions)
+      const parsedData = JSON.parse(text);
+     const generatedQuestions = parsedData.questions;
         // Create and save questions in the database
         const savedQuestions = await Promise.all(
             generatedQuestions.map(async (q) => {
@@ -52,7 +64,11 @@ module.exports.generateQuestions = async ( categoryId, difficulty, numberOfQuest
             })
         );
 
-        return savedQuestions;
+       return {
+         title: parsedData.title,
+         description: parsedData.description,
+         generatedQuestions: savedQuestions,
+       };
     } catch (error) {
         console.error("Error generating questions:", error);
         throw error;

@@ -13,15 +13,17 @@ router.post('/startQuiz/guest/:id', quizController.startGuestQuiz);//done
 router.post('/submitQuizResult',isLoggedIn(),quizController.submitQuizResult); //done
  
 // //endpoints , used by user to deal with quiz
-// router.get('/userCreatedQuiz',isLoggedIn, quizController.getMyCreatedQuizzes);
 router.get('/userAttemptedQuizzes',isLoggedIn('quizzesTaken'),quizController.getMyAttemptedQuizzes);//done
- router.get('/userSavedQuiz', isLoggedIn(), quizController.getUserSavedQuizzes);//done
-// router.get('/learnLater/:id',quizController.learnLater)
+router.get('/userSavedQuiz', isLoggedIn(), quizController.getUserSavedQuizzes);//done
+router.get('/allLearnLaterQuestions',isLoggedIn("learnLater"),quizController.getUserLearnLaterQuestions);//done
+router.post('/removeLearnLater/:id', isLoggedIn(), quizController.removeLearnLaterQuestion);
 router.post('/saveUnsaveQuiz', isLoggedIn(),quizController.saveUnsaveQuiz);//done
+router.get('/userProgress', isLoggedIn('quizzesTaken'), quizController.getUserProgress);//done
+// router.get('/userCreatedQuiz',isLoggedIn, quizController.getMyCreatedQuizzes);
 
 // Quiz creation and management (creator/admin)
-router.post('/create', isLoggedIn,quizController.createQuiz);
-router.put('/update/:id',  quizController.updateQuiz);
+router.post('/create', isLoggedIn(),quizController.createQuiz);
+router.put('/update/:id',isLoggedIn(),  quizController.updateQuiz);
 
 router.get('/quizOfTheDay',quizController.quizOfTheDay)//done
 router.get('/getLeaderboard/:id', quizController.getLeaderboard);//done

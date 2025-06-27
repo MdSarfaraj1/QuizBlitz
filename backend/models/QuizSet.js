@@ -26,19 +26,35 @@ function getRandomColor() {
   return COLOR_PALETTE[Math.floor(Math.random() * COLOR_PALETTE.length)];
 }
 
-const QuizSetSchema = new mongoose.Schema({
-  title: {type: String, required: true,trim: true},
-  description: {type: String,required: true,trim: true },
-  category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category',required: true},
-  difficulty: { type: String,required: true,enum: ['easy', 'medium', 'hard'], default: 'medium'  },
-  duration: {type: Number,required: true,min: 1 },
-  questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question',required: true}],
-  totalQuestions: {type: Number,required: true,default: 5},
-  image: {type: String, default: '🎯'},
+ const QuizSetSchema = new mongoose.Schema({
+  title: { type: String, required: true, trim: true },
+  description: { type: String, required: true, trim: true },
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category",
+    required: true,
+  },
+  difficulty: {
+    type: String,
+    required: true,
+    enum: ["easy", "medium", "hard"],
+    default: "medium",
+  },
+  duration: { type: Number, required: true, min: 1 },
+  questions: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "Question", required: true },
+  ],
+  totalQuestions: { type: Number, required: true, default: 5 },
+  image: { type: String, default: "🎯" },
   color: String,
-  participants: {type: Number,default: 0, min: 0 },
-  rating: {type: Number, default: 0,min: 0,max: 5},
-  createdBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
+  participants: { type: Number, default: 1, min: 0 },
+  rating: { type: Number, default: 0, min: 0, max: 5 },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+    default: new mongoose.Types.ObjectId("683dfbb4e711d5e46fc227cd"), // Default admin ID
+  },
 });
 
 // Virtual to ensure totalQuestions matches actual questions length
