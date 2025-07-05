@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { Trash2, AlertTriangle, Shield, User, Database } from "lucide-react";
+import { Trash2, AlertTriangle, Shield, User, Database ,ClipboardList, FilePlus2, Award, Star} from "lucide-react";
+
 
 // Mock user context for demonstration
 const mockUser = {
   name: "John Doe",
   email: "john.doe@example.com",
   joinDate: "January 2024",
-  postsCount: 24,
-  commentsCount: 156
+ quizzesTaken:65,
+ quizzesCreated: 10,
+  rank: 5,
+  points: 1200,
 };
 
 export default function DeleteAccount() {
@@ -71,36 +74,60 @@ export default function DeleteAccount() {
     
 
       {/* Account Stats */}
-      <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Account Activity</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-blue-50 rounded-lg p-4">
-            <div className="text-2xl font-bold text-blue-600">{mockUser.postsCount}</div>
-            <div className="text-sm text-blue-700">Posts Created</div>
-          </div>
-          <div className="bg-green-50 rounded-lg p-4">
-            <div className="text-2xl font-bold text-green-600">{mockUser.commentsCount}</div>
-            <div className="text-sm text-green-700">Comments Made</div>
-          </div>
-          <div className="bg-purple-50 rounded-lg p-4">
-            <div className="text-2xl font-bold text-purple-600">5</div>
-            <div className="text-sm text-purple-700">Months Active</div>
-          </div>
+     
+
+<div className="bg-white rounded-2xl shadow-md border border-gray-200 p-6 mb-6">
+  <h3 className="text-xl font-semibold text-gray-800 mb-6">📊 Account Activity</h3>
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+    
+    <div className="group bg-blue-50 rounded-xl p-5 transition hover:shadow-lg hover:bg-blue-100">
+      <div className="flex items-center gap-3 mb-2">
+        <ClipboardList className="w-6 h-6 text-blue-600 group-hover:text-blue-800" />
+        <div className="text-2xl font-extrabold text-blue-700 group-hover:text-blue-900">
+          {mockUser.quizzesTaken}
         </div>
       </div>
+      <div className="text-sm font-medium text-blue-800">Quizzes Taken</div>
+    </div>
+
+    <div className="group bg-green-50 rounded-xl p-5 transition hover:shadow-lg hover:bg-green-100">
+      <div className="flex items-center gap-3 mb-2">
+        <FilePlus2 className="w-6 h-6 text-green-600 group-hover:text-green-800" />
+        <div className="text-2xl font-extrabold text-green-700 group-hover:text-green-900">
+          {mockUser.quizzesCreated}
+        </div>
+      </div>
+      <div className="text-sm font-medium text-green-800">Quizzes Created</div>
+    </div>
+
+    <div className="group bg-purple-50 rounded-xl p-5 transition hover:shadow-lg hover:bg-purple-100">
+      <div className="flex items-center gap-3 mb-2">
+        <Award className="w-6 h-6 text-purple-600 group-hover:text-purple-800" />
+        <div className="text-2xl font-extrabold text-purple-700 group-hover:text-purple-900">
+          #{mockUser.rank}
+        </div>
+      </div>
+      <div className="text-sm font-medium text-purple-800">Rank</div>
+    </div>
+
+    <div className="group bg-yellow-50 rounded-xl p-5 transition hover:shadow-lg hover:bg-yellow-100">
+      <div className="flex items-center gap-3 mb-2">
+        <Star className="w-6 h-6 text-yellow-600 group-hover:text-yellow-800" />
+        <div className="text-2xl font-extrabold text-yellow-700 group-hover:text-yellow-900">
+          {mockUser.points}
+        </div>
+      </div>
+      <div className="text-sm font-medium text-yellow-800">Points Obtained</div>
+    </div>
+
+  </div>
+</div>
+
 
       {/* Danger Zone */}
       <div className="bg-white rounded-lg shadow-sm border-2 border-red-200">
         <div className="p-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-10 w-10 bg-red-100 rounded-full flex items-center justify-center">
-              <Trash2 className="h-5 w-5 text-red-600" />
-            </div>
-            <div>
-              <h3 className="text-xl font-bold text-red-700">Danger Zone</h3>
-              <p className="text-sm text-red-600">Irreversible actions</p>
-            </div>
-          </div>
+          
 
           <div className="bg-red-50 rounded-lg p-4 mb-6">
             <div className="flex items-start gap-3">

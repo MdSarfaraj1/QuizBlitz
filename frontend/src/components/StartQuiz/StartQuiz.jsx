@@ -1,109 +1,106 @@
-import { useState} from 'react';
+import { useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
- // Assuming this path is correct
-import CategorySelection from './Categories'; // Import the new component
+import CategorySelection from './Categories'; // Assuming this path is correct
 import axios from 'axios';
-import { useAuth } from '../../Context/UserContextProvider'; 
+import { useAuth } from '../../Context/UserContextProvider';
+
 const StartQuiz = () => {
-  const {userId}=useAuth()
-  const navigate=useNavigate();
+  const { userId } = useAuth();
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedDifficulty, setSelectedDifficulty] = useState('');
   const [numberOfQuestions, setNumberOfQuestions] = useState(10);
   const [isLoading, setIsLoading] = useState(false);
 
+  const handleStartQuiz = async () => {
+    const endpoint = userId ? `/Quiz/startQuiz/${selectedCategory._id}` : `/Quiz/startQuiz/guest/${selectedCategory._id}`;
 
-const handleStartQuiz = async () => {
-    const endpoint = userId? `/Quiz/startQuiz/${selectedCategory._id}`: `/Quiz/startQuiz/guest/${selectedCategory._id}`;
-   if (!userId) {
-    // Check localStorage if user already played
-    const hasPlayed = localStorage.getItem('guestQuizPlayed');
-
-    if (hasPlayed) {
-      alert(" You've already played once as a guest. Please log in to play again.");
-      navigate('/login');
-      return;
+    if (!userId) {
+      const hasPlayed = localStorage.getItem('guestQuizPlayed');
+      if (hasPlayed) {
+        alert("You've already played once as a guest. Please log in to play again.");
+        navigate('/login');
+        return;
+      } else {
+        localStorage.setItem('guestQuizPlayed', 'true');
+      }
     }
-    else
-    localStorage.setItem('guestQuizPlayed', 'true');
-  }
-  try{
-    setIsLoading(true);
-   const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}${endpoint}`,
-  {
-    difficulty: selectedDifficulty,
-    numberOfQuestions,
-    image: selectedCategory.icon,
-    ...(userId && { userId }) // if userId exists, include it in the request
-  },
-  { withCredentials: true }
-);
-  
-    if(response.status===200){
-      const quizData = response.data
-      console.log('testing before starting quiz',quizData)
-      navigate('/runQuiz', {state:{ quizData,category:selectedCategory.title }} );
-  }
-}catch(error){
-  setIsLoading(false);
-    console.error("Error starting quiz:", error);
-  }
-}
+
+    try {
+      setIsLoading(true);
+      const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}${endpoint}`,
+        {
+          difficulty: selectedDifficulty,
+          numberOfQuestions,
+          image: selectedCategory.icon,
+          ...(userId && { userId })
+        },
+        { withCredentials: true }
+      );
+
+      if (response.status === 200) {
+        const quizData = response.data;
+        navigate('/runQuiz', { state: { quizData, category: selectedCategory.title } });
+      }
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Error starting quiz:", error);
+      alert("Failed to start quiz. Please try again.");
+    }
+  };
+
   const canStartQuiz = selectedCategory && selectedDifficulty;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1a1a2e] via-[#1f1f38] to-[#16213e] text-white p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 text-gray-800 p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-10">
-          <Link to={userId ? "/dashboard" : "/"} className="flex items-center space-x-2 hover:text-purple-400 transition">
+          <Link to={userId ? "/dashboard" : "/"} className="flex items-center space-x-2 text-blue-600 hover:text-blue-800 transition-colors duration-300">
             <ArrowLeft className="w-5 h-5" />
             <span>Back</span>
           </Link>
-          <h1 className="text-3xl md:text-4xl font-bold text-center flex-1">🎯 Choose Your Challenge</h1>
-          <div className="w-24" >
-            <a href="#" className="text-2xl font-bold text-primary">
-              <h1 className="text-2xl font-bold text-quizDashboard-primary">
-                Quiz<span className="text-quizDashboard-accent">Blitz</span>
-              </h1>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-center flex-1 text-purple-700">🎯 Choose Your Challenge</h1>
+          <div className="w-24">
+            <a href="#" className="text-2xl font-bold text-purple-700">
+              Quiz<span className="text-pink-500">Blitz</span>
             </a>
           </div>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
-          {/* Left: Categories (now using the new component) */}
+          {/* Left: Categories */}
           <div className="lg:col-span-2">
             <CategorySelection
               selectedCategory={selectedCategory}
               setSelectedCategory={setSelectedCategory}
+              userId={userId} 
             />
           </div>
 
-          {/* Right: Settings (remains the same) */}
+          {/* Right: Settings */}
           <div>
-            <div className="bg-[#2b2b44] rounded-2xl p-6 sticky top-8 border border-purple-800 shadow-lg">
-              <h2 className="text-2xl font-bold mb-3">⚙️ Quiz Settings</h2>
+            <div className="bg-white rounded-2xl p-6 sticky top-8 border border-purple-200 shadow-lg">
+              <h2 className="text-2xl font-bold mb-4 text-purple-700">⚙️ Quiz Settings</h2>
 
               {/* Selected Category */}
               {selectedCategory && (
-                <div className="mb-2 p-2 bg-purple-950/30 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <h3 className="font-semibold mb-2">📂 Selected Topic:</h3>
-                    <span >
-                    <span className="text-2xl">{selectedCategory.icon}</span>
+                <div className="mb-4 p-3 bg-purple-50 rounded-lg border border-purple-200">
+                  <h3 className="font-semibold text-gray-700 mb-2">📂 Selected Topic:</h3>
+                  <div className="flex items-center gap-3 text-lg font-medium text-purple-600">
+                    <span className="text-3xl">{selectedCategory.icon}</span>
                     <span>{selectedCategory.title}</span>
-                    </span>
                   </div>
                 </div>
               )}
 
               {/* Difficulty Selection */}
               <div className="mb-5">
-                <label className="block text-lg font-semibold mb-3">🎚️ Difficulty</label>
+                <label className="block text-lg font-semibold mb-3 text-gray-700">🎚️ Difficulty</label>
                 <div className="grid gap-3">
                   {['easy', 'medium', 'hard'].map((level) => (
-                    <label key={level} className="flex items-center gap-3">
+                    <label key={level} className="flex items-center gap-3 text-gray-600 cursor-pointer">
                       <input
                         type="radio"
                         value={level}
@@ -111,7 +108,7 @@ const handleStartQuiz = async () => {
                         onChange={(e) => setSelectedDifficulty(e.target.value)}
                         className="accent-purple-500 w-5 h-5"
                       />
-                      <span className="text-sm">
+                      <span className="text-base">
                         {level === 'easy' && '🟢 Easy - Basic'}
                         {level === 'medium' && '🟡 Medium - Moderate'}
                         {level === 'hard' && '🔴 Hard - Expert'}
@@ -123,11 +120,11 @@ const handleStartQuiz = async () => {
 
               {/* Number of Questions */}
               <div className="mb-6">
-                <label className="text-lg font-semibold mb-2 block">📋 Questions</label>
+                <label className="text-lg font-semibold mb-2 block text-gray-700">📋 Questions</label>
                 <select
                   value={numberOfQuestions}
                   onChange={(e) => setNumberOfQuestions(parseInt(e.target.value))}
-                  className="w-full bg-[#1f1f38] border border-purple-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full bg-gray-50 border border-purple-300 text-gray-800 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-400 appearance-none"
                 >
                   <option value="5">5 Questions (Quick)</option>
                   <option value="10">10 Questions (Standard)</option>
@@ -139,26 +136,28 @@ const handleStartQuiz = async () => {
               {/* Start Button */}
               <button
                 disabled={!canStartQuiz || isLoading}
-                onClick={ handleStartQuiz}
-                className={`w-full py-3 rounded-xl font-semibold transition-all text-lg ${
+                onClick={handleStartQuiz}
+                className={`w-full py-3 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center gap-2 ${
                   canStartQuiz
-                    ? 'bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 hover:scale-105'
-                    : 'bg-gray-600 cursor-not-allowed'
+                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 hover:scale-[1.02] shadow-lg'
+                    : 'bg-gray-300 text-gray-600 cursor-not-allowed'
                 }`}
               >
-                {canStartQuiz ? '🚀 Start Quiz!' : '⚠️ Select Category & Difficulty'}
-     {isLoading && (
-  <div className="ml-2 inline-block h-5 w-5 border-2 border-t-transparent border-white-500 rounded-full animate-spin"></div>
-)}
-
-
+                {isLoading ? (
+                  <>
+                    <div className="inline-block h-5 w-5 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
+                    Starting Quiz...
+                  </>
+                ) : (
+                  canStartQuiz ? '🚀 Start Quiz!' : '⚠️ Select Category & Difficulty'
+                )}
               </button>
 
               {/* Quiz Info */}
-              <div className="mt-3 text-sm text-purple-300 space-y-1">
+              <div className="mt-4 text-sm text-gray-500 space-y-2">
                 <p>⏱️ Timer: According To No. Of Questions</p>
                 <p>💡 Maximum questions have hints</p>
-                <p>❌ Each hints reduces 1/2 marks</p>
+                <p>❌ Each hint reduces 1/2 marks</p>
               </div>
             </div>
           </div>

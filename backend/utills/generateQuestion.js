@@ -5,7 +5,7 @@ const genAI = new GoogleGenerativeAI(process.env.gemini_api_key);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 module.exports.generateQuestions = async ( categoryId, difficulty, numberOfQuestions) => {
     try {
-        const category = await Category.findById(categoryId).select("title");
+        const category = await Category.findById(categoryId).select("title totalQuizzes");
         if (!category) {
             throw new Error("Category not found");
         }
@@ -63,7 +63,8 @@ module.exports.generateQuestions = async ( categoryId, difficulty, numberOfQuest
                 return await questionObj.save();
             })
         );
-
+        category.totalQuizzes+=1
+        await category.save()
        return {
          title: parsedData.title,
          description: parsedData.description,

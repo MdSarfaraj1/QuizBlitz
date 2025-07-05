@@ -19,6 +19,8 @@ router.get('/allLearnLaterQuestions',isLoggedIn("learnLater"),quizController.get
 router.post('/removeLearnLater/:id', isLoggedIn(), quizController.removeLearnLaterQuestion);
 router.post('/saveUnsaveQuiz', isLoggedIn(),quizController.saveUnsaveQuiz);//done
 router.get('/userProgress', isLoggedIn('quizzesTaken'), quizController.getUserProgress);//done
+router.get('/favoriteCategories',isLoggedIn('favoriteCategories quizzesTaken'), quizController.getUserFavoriteCategories);//done
+router.put('/updateFavoriteCategories', isLoggedIn('favoriteCategories'), quizController.updateUserFavoriteCategories);//done
 // router.get('/userCreatedQuiz',isLoggedIn, quizController.getMyCreatedQuizzes);
 
 // Quiz creation and management (creator/admin)

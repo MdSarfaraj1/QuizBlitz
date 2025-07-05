@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "../UI/card";
 import { Check,Calendar ,X, Clock, Timer, Play, Activity } from 'lucide-react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const RecentQuizzes = ({ className, fullPledge = false }) => {
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+const navigate = useNavigate();
   useEffect(() => {
+    
     const fetchRecentQuizzes = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}/Quiz/userAttemptedQuizzes`, {
@@ -98,7 +100,7 @@ function formatTime(dateString) {
   if (loading) {
     return (
       <Card className={`${className || 'shadow-md'} ${fullPledge ? 'h-full w-full' : ''}`}>
-        <CardHeader className={`pb-2 border-b ${fullPledge ? 'p-6' : ''} bg-gradient-to-r from-blue-50 to-blue-100 rounded-t-xl flex items-center`}>
+        <CardHeader className={`pb-2 border-b ${fullPledge ? 'p-6' : ''}  bg-gradient-to-r from-blue-600 to-indigo-700 rounded-t-xl flex items-center`}>
           <CardTitle className={`font-bold text-gray-800 ${fullPledge ? 'text-3xl' : 'text-xl'} flex items-start gap-3`}>
             <span className="bg-blue-100 rounded-full p-2 flex items-start justify-center shadow-sm">
               <Calendar className="w-5 h-5 text-blue-500" />
@@ -119,8 +121,8 @@ function formatTime(dateString) {
   if (error) {
     return (
       <Card className={`${className || 'shadow-md'} ${fullPledge ? 'h-full w-full' : ''}`}>
-        <CardHeader className={`pb-2 border-b ${fullPledge ? 'p-6' : ''} bg-gradient-to-r from-blue-50 to-blue-100 rounded-t-xl flex `}>
-          <CardTitle className={`font-bold text-gray-800 ${fullPledge ? 'text-3xl' : 'text-2xl'} flex items-center gap-3`}>
+        <CardHeader className={`pb-2 border-b ${fullPledge ? 'p-6' : ''}  bg-gradient-to-r from-blue-600 to-indigo-700 rounded-t-xl flex `}>
+          <CardTitle className={`font-bold text-white ${fullPledge ? 'text-3xl' : 'text-2xl'} flex items-center gap-3`}>
             <span className="bg-blue-100 rounded-full p-2 flex items-start justify-center shadow-sm">
               <Calendar className="w-6 h-6 text-blue-500" />
             </span>
@@ -145,13 +147,13 @@ function formatTime(dateString) {
   if (shouldShowEmptyState) {
     return (
       <Card
-        className={`${className || "shadow-md"} ${
+        className={`${className || "shadow-md hover:shadow-lg hover:-translate-y-1 transition-transform "} ${
           fullPledge ? "h-full w-full" : ""
         }`}
       >
-        <CardHeader className={`pb-2 border-b ${fullPledge ? "p-6" : ""} bg-gradient-to-r from-blue-50 to-blue-100 rounded-t-xl flex `}>
+        <CardHeader className={`pb-2 border-b ${fullPledge ? "p-6" : ""}  bg-gradient-to-r from-blue-600 to-indigo-700 rounded-t-xl flex `}>
           <CardTitle
-            className={`font-bold text-gray-800 ${
+            className={`font-bold text-white ${
               fullPledge ? "text-3xl" : "text-2xl"
             } flex items-center gap-3`}
           >
@@ -236,7 +238,7 @@ function formatTime(dateString) {
                 ? "Take your first quiz to see your recent activity and track your progress here."
                 : "You've taken a few quizzes recently. Keep the momentum going and challenge yourself with more!"}
             </p>
-            <button className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-medium rounded-lg hover:from-blue-600 hover:to-blue-800 transition-all">
+            <button onClick={()=>navigate('/startQuiz')} className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-medium rounded-lg hover:from-blue-600 hover:to-blue-800 transition-all">
               <Play className="w-5 h-5 mr-2" />
               Start New Quiz
             </button>
@@ -249,9 +251,9 @@ function formatTime(dateString) {
 // If we reach here, it means we have quizzes to display
   return (
     <Card className={`${className || 'shadow-md'} ${fullPledge ? 'h-full w-full' : ''}`}>
-      <CardHeader className={`pb-1 border-b ${fullPledge ? 'p-6' : ''} bg-gradient-to-r from-sky-500 to-blue-600
+      <CardHeader className={`pb-1 border-b ${fullPledge ? 'p-6' : ''}  bg-gradient-to-r from-blue-600 to-indigo-700
 rounded-t-lg flex`}>
-        <CardTitle className={`font-bold text-gray-800 ${fullPledge ? 'text-3xl' : 'text-2xl'} flex items-center gap-3`}>
+        <CardTitle className={`font-bold text-white ${fullPledge ? 'text-3xl' : 'text-2xl'} flex items-center gap-3`}>
           <span className="bg-blue-100 rounded-full p-2 flex items-start justify-center shadow-sm">
             <Calendar className="w-6 h-6 text-blue-500" />
           </span>

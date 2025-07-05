@@ -163,29 +163,29 @@ const SavedQuizzes = ({ fullPledge = false }) => {
   if (savedQuizzes.length === 0) {
     return (
       <Card className={cn(
-        "border-0 shadow-lg bg-gradient-to-br from-white to-purple-50",
+        "border-0 hover:shadow-lg hover:-translate-y-1 transition-transform shadow-md bg-gradient-to-br from-white to-purple-50",
         fullPledge ? "h-full w-full" : ""
       )}>
         <CardHeader className={cn(
-          "pb-6 border-b  from-lime-400 to-emerald-500 rounded-t-lg bg-gradient-to-r border-purple-100",
-          fullPledge ? "p-8" : "p-6"
+          "pb-4 border-b  from-lime-400 to-emerald-500 rounded-t-lg bg-gradient-to-r border-purple-100",
+          fullPledge ? "p-8" : "p-4"
         )}>
           <CardTitle className={cn(
             "font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent",
             fullPledge ? "text-4xl" : "text-3xl"
           )}>
                  
-           <span className="bg-sky-200 rounded-full p-2 mr-2  shadow-sm">
-            <Bookmark className="inline-block  w-7 h-7 text-sky-600" />
+           <span className="bg-green-200 rounded-full p-2 mr-2  shadow-sm">
+            <Bookmark className="inline-block  w-7 h-6 text-sky-600" />
           </span>
             Saved Quizzes
           </CardTitle>
         </CardHeader>
         <CardContent className={cn(
           "pt-8",
-          fullPledge ? "p-8 pt-8" : "p-6 pt-8"
+          fullPledge ? "p-8 pt-8" : "p-4"
         )}>
-          <div className="text-center py-16">
+          <div className="text-center py-6">
             <div className="relative mx-auto w-32 h-32 mb-8">
               <div className="absolute inset-0 bg-gradient-to-br from-purple-400 to-indigo-500 rounded-full opacity-20 animate-pulse"></div>
               <div className="relative w-full h-full bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center">

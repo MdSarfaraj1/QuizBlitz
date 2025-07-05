@@ -1,10 +1,9 @@
-import { useState, useCallback } from "react";
+import { useState, } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../UI/card";
-import { Lock, Shield, Eye, EyeOff, Check, AlertTriangle } from "lucide-react";
+import { Lock, Shield, Eye, EyeOff, Check, AlertTriangle, Axe } from "lucide-react";
 import { Toast } from "../UI/toast";
-
+import axios from "axios";
 export function SecuritySection() {
-  const [userPassword, setUserPassword] = useState("abc");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -20,10 +19,6 @@ export function SecuritySection() {
     setToast({ message, type });
   };
 
-  const updatePassword = useCallback(async (currentPassword, newPassword) => {
-    await new Promise((res) => setTimeout(res, 1000));
-    return currentPassword === userPassword;
-  }, [userPassword]);
 
   const togglePasswordVisibility = (field) => {
     setShowPasswords(prev => ({
@@ -34,8 +29,8 @@ export function SecuritySection() {
 
   const getPasswordStrength = (password) => {
     if (password.length < 6) return { strength: 'weak', color: 'red', width: '25%' };
-    if (password.length < 10) return { strength: 'medium', color: 'yellow', width: '50%' };
-    if (password.length >= 12 && /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+    if (password.length < 8) return { strength: 'medium', color: 'yellow', width: '50%' };
+    if (password.length >= 10 && /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
       return { strength: 'strong', color: 'green', width: '100%' };
     }
     return { strength: 'good', color: 'blue', width: '75%' };
@@ -51,32 +46,32 @@ export function SecuritySection() {
       return;
     }
 
-    if (newPassword !== confirmPassword) {
-      showToast("New passwords don't match", "error");
+    if (newPassword.length < 6) {
+      showToast("Password must be at least 6 characters long", "error");
       return;
     }
-
-    if (newPassword.length < 8) {
-      showToast("Password must be at least 8 characters long", "error");
-      return;
-    }
-
     setIsSubmitting(true);
-
     try {
-      const success = await updatePassword(currentPassword, newPassword);
+      const res=await axios.put(`${import.meta.env.VITE_APP_BACKEND_URL}/User/updatePassword`, {
+        oldPassword: currentPassword,
+        newPassword: newPassword,
+      },{withCredentials: true});
 
-      if (success) {
+      if (res.status===200) {
         showToast("Password updated successfully!");
-        setUserPassword(newPassword);
         setCurrentPassword("");
         setNewPassword("");
         setConfirmPassword("");
-      } else {
+      } else if(res.status===400) {
         showToast("Failed to update password. Incorrect current password.", "error");
       }
-    } catch {
-      showToast("An error occurred. Please try again.", "error");
+    } catch(error) {
+      if (error.response && error.response.status === 400) {
+       showToast("Incorrect current password.", "error");
+      } else {
+       showToast("An error occurred. Please try again.", "error");
+       }
+     console.log("Error updating password:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -210,7 +205,7 @@ export function SecuritySection() {
             <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
               <h4 className="font-semibold text-blue-800 mb-2">Password Requirements:</h4>
               <ul className="text-sm text-blue-700 space-y-1">
-                <li>• At least 8 characters long</li>
+                <li>• At least 6 characters long</li>
                 <li>• Mix of uppercase and lowercase letters</li>
                 <li>• Include numbers and special characters</li>
                 <li>• Avoid common words or personal information</li>

@@ -67,10 +67,9 @@ const [currentUser, setCurrentUser] = useState({rank: 0,
           "font-bold text-slate-500 flex items-center",
           fullPledge ? "text-3xl" : "text-xl"
         )}>
-          <BarChart className={cn(
-            "mr-2",
-            fullPledge ? "h-8 w-8" : "h-5 w-5"
-          )} />
+        <span className="bg-yellow-100 rounded-full p-2 mr-2 flex items-start justify-center shadow-sm">
+            <BarChart className="w-6 h-6 text-red-500" />
+          </span>
           Leaderboard
         </CardTitle>
         {fullPledge && (

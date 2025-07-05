@@ -107,6 +107,7 @@ exports.startQuiz = async (req, res) => {
         totalQuestions: generatedQuestions.length,
       });
 
+
       await newQuizSet.save();
       availableQuizSet = newQuizSet;
     }
@@ -412,12 +413,15 @@ exports.updateQuiz = async (req, res) => {
 exports.quizOfTheDay= async (req, res) => {
   try {
     const today = new Date().toISOString().split('T')[0];
-
+ const result = await Category.aggregate([
+      { $sample: { size: 1 } },
+      { $project: { title: 1, _id: 0 } }
+    ]);
     if (cachedQuiz && lastQuizDate === today) {
       return res.json({ quiz: cachedQuiz });
     }
 
-    const question = await generateQuizOfTheDay();
+    const question = await generateQuizOfTheDay(result[0].title);
    if(!question)
     res.status(500).json({ error: "Failed to generate quiz question." });
     cachedQuiz = question;
@@ -588,3 +592,67 @@ exports.getUserProgress = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+exports.getUserFavoriteCategories = async (req, res) => {
+  try {
+    // Populate user's favoriteCategories
+    const user = await req.user.populate({
+      path: 'favoriteCategories',
+      select: 'title  totalQuizzes',
+    });
+
+    const favoriteCategories = user.favoriteCategories || [];
+
+    
+    const categoriesWithStats = favoriteCategories.map((cat) => {
+      const playedQuizzes = user.quizzesTaken?.filter(
+        (quiz) => quiz.category === cat.title
+      ).length || 0;
+
+      return {
+        id: cat._id,
+        title: cat.title,
+        totalQuizzes: cat.totalQuizzes,
+        playedQuizzes,
+      };
+    });
+    res.status(200).json({
+      success: true,
+      categories: categoriesWithStats,
+    });
+  } catch (err) {
+    console.error('Error in getUserFavoriteCategories:', err);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch favorite categories',
+    });
+  }
+};
+exports.updateUserFavoriteCategories = async (req, res) => {
+  try {
+    const { favoriteCategoryIds } = req.body;
+    const user = req.user;
+
+    if (!Array.isArray(favoriteCategoryIds)) {
+      return res.status(400).json({
+        success: false,
+        message: "favoriteCategories must be an array.",
+      });
+    }
+
+    user.favoriteCategories = favoriteCategoryIds;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Favorite categories updated successfully.",
+      favoriteCategoryIds: user.favoriteCategories,
+    });
+  } catch (error) {
+    console.error("Error updating favorite categories:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while updating favorite categories.",
+    });
+  }
+}

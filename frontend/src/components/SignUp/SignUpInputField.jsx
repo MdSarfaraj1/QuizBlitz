@@ -11,7 +11,7 @@ import {
 } from "../../Utills/validation";
 import axios from "axios";
 import { useAuth } from "../../Context/UserContextProvider";
-
+import { generateNewAvatar } from "../../Utills/GenerateAvatar";
 const SignUpInputField = () => {
    const { setUser } = useAuth()
   const [name, setName] = useState("");
@@ -60,17 +60,14 @@ const SignUpInputField = () => {
     setErrors(newErrors);
     return isValid;
   };
-const generateNewAvatar = () => {
-    const seed = Math.random().toString(36).substring(2, 8);
-    const newAvatarUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${seed}`;
-    return newAvatarUrl;
-  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
     setIsLoading(true);
     try {
-      const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/User/register`, {username:name,email,password},{ withCredentials: true });
+      let avatar = generateNewAvatar();
+      const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/User/register`, {username:name,email,password,avatar},{ withCredentials: true });
 
       if (response.status === 201) {
         setMessage({
@@ -78,7 +75,7 @@ const generateNewAvatar = () => {
           type: 'success'
         });
         setTimeout(() => {
-          setUser(response.data.userId, response.data.username)
+          setUser(response.data.userId, response.data.username,response.data.avatar);
           navigate(`/dashboard`);
         }, 1000);
       }

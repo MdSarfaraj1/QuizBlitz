@@ -1,134 +1,140 @@
 import axios from "axios";
-import { Award, TrendingUp, Medal, Pencil } from "lucide-react";
+import { Award, TrendingUp, Medal, Lightbulb } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../Context/UserContextProvider";
 
 const UserProfile = () => {
   const { username } = useAuth();
   const navigate = useNavigate();
   const [user, setUser] = useState({});
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         let response = await axios.get(
           `${import.meta.env.VITE_APP_BACKEND_URL}/User/getProfile`,
-          {
-            withCredentials: true,
-          }
+          { withCredentials: true }
         );
-        if (response.status === 200) {
-          setUser(response.data);
-          console.log("User data fetched successfully:", response);
-        } else {
-          console.error("Failed to fetch user data", response);
-        }
+        if (response.status === 200) setUser(response.data);
+        else console.error("Failed to fetch user data", response);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
-
     fetchUserData();
   }, []);
 
   return (
     <>
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-3">
         <div>
-          <h1 className="text-2xl font-bold">Welcome back, {username}!</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-xl md:text-2xl font-extrabold text-gray-900 leading-tight">
+            Welcome back, <span className="text-blue-600">{username}!</span>
+          </h1>
+          <p className="text-base text-gray-600 mt-1">
             Ready for a new quiz challenge?
           </p>
         </div>
-        <div className="mt-4 md:mt-0 w-full md:w-auto flex justify-center">
+        <div className="mt-4 sm:mt-0 w-full sm:w-auto flex justify-center">
           <button
             onClick={() => navigate("/startQuiz")}
-            className="homepage-button"
-            size="lg"
+            className="homepage-button px-6 py-2 text-base rounded-full shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5"
           >
             Start New Quiz
           </button>
         </div>
       </div>
 
-      <div className=" border-2 rounded-lg bg-white shadow-md p-4 animate-entry">
-        <div className="flex flex-col md:flex-row items-center md:items-start">
-          <div className="relative mb-4 md:mb-0 md:mr-6">
+      {/* Main Profile Card */}
+      <div className="bg-white rounded-xl shadow-md p-5 md:p-6 animate-entry border border-gray-100">
+        <div className="flex flex-col md:flex-row items-center md:items-start space-y-5 md:space-y-0 md:space-x-6">
+          {/* User Avatar Section */}
+          <div className="relative flex-shrink-0">
             <img
               src={user.avatar}
               alt={user.username}
-              className="w-24 h-24 rounded-full object-cover border-4 border-primary-100"
+              className="w-28 h-28 rounded-full object-cover border-green-500 border-2 shadow-sm transform hover:scale-105 transition-transform duration-300"
             />
-            <div className="absolute -bottom-2 -right-2 bg-quizDashboard-primary/80 text-white rounded-full p-1.5">
-              <Medal size={16} />
+            <div className="absolute -bottom-1 -right-1 bg-blue-600 text-white rounded-full p-1.5 text-xs font-semibold flex items-center justify-center border-2 border-white shadow-md">
+              <Medal size={18} />
             </div>
           </div>
 
+          {/* User Info & Stats Grid */}
           <div className="flex-1 text-center md:text-left">
             <div className="mb-4">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
-                <h2 className="text-2xl font-bold">{user.username}</h2>
-                <Link
-                  to="/userSettings"
-                  className="inline-flex items-center gap-1 text-blue-500 hover:text-blue-600 hover:underline mt-1 md:mt-0 text-sm transition-colors"
-                >
-                  <Pencil size={14} />
-                  Edit Profile
-                </Link>
-              </div>
-              <p className="text-gray-500">Quiz enthusiast</p>
+              <h2 className="text-2xl font-bold text-gray-800 flex items-center justify-center md:justify-start space-x-1">
+                <span>{user.username}</span>
+              </h2>
+              <p className="text-gray-500 text-base mt-0.5">Quiz Enthusiast</p>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
               {/* Quizzes Taken */}
-              <div className="bg-gradient-to-br from-sky-50 to-sky-100 p-4 rounded-xl border border-sky-200 shadow-sm hover:shadow-md transition-shadow duration-200">
-                <div className="flex items-center justify-center md:justify-start text-sky-600 mb-2">
-                  <div className="bg-sky-100 p-2 rounded-lg mr-2">
-                    <Award size={18} className="text-sky-600" />
-                  </div>
-                  <span className="font-semibold text-sm">Quizzes</span>
+              <div className="bg-gradient-to-br from-sky-50 to-sky-100 p-4 border-sky-200 dashboard-stats-card">
+                <div className="bg-sky-100 p-2.5 rounded-full mb-2">
+                  <Award size={20} className="text-sky-600" />
                 </div>
-                <p className="text-2xl font-bold text-sky-700">
-                  {user.totalQuizzesTaken}
+                <span className="font-semibold text-sky-700 text-xs uppercase tracking-wider">
+                  Quizzes Taken
+                </span>
+                <p className="text-2xl font-extrabold text-sky-800 mt-0.5">
+                  {user.totalQuizzesTaken || 0}
                 </p>
               </div>
 
               {/* Average Score */}
-              <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 rounded-xl border border-emerald-200 shadow-sm hover:shadow-md transition-shadow duration-200">
-                <div className="flex items-center justify-center md:justify-start text-emerald-700 mb-2">
-                  <div className="bg-emerald-100 p-2 rounded-lg mr-2">
-                    <TrendingUp size={18} className="text-emerald-700" />
-                  </div>
-                  <span className="font-semibold text-sm">Avg Score</span>
+              <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 border-emerald-200 dashboard-stats-card">
+                <div className="bg-emerald-100 p-2.5 rounded-full mb-2">
+                  <TrendingUp size={20} className="text-emerald-700" />
                 </div>
-                <p className="text-2xl font-bold text-emerald-800">
-                  {user.averageScore}%
+                <span className="font-semibold text-emerald-800 text-xs uppercase tracking-wider">
+                  Avg Score
+                </span>
+                <p className="text-2xl font-extrabold text-emerald-900 mt-0.5">
+                  {user.averageScore ? `${user.averageScore}%` : "N/A"}
                 </p>
               </div>
 
               {/* Global Rank */}
-              <div className="bg-gradient-to-br from-amber-50 to-amber-100 p-4 rounded-xl border border-amber-200 shadow-sm hover:shadow-md transition-shadow duration-200">
-                <div className="flex items-center justify-center md:justify-start text-amber-700 mb-2">
-                  <div className="bg-amber-100 p-2 rounded-lg mr-2">
-                    <Medal size={18} className="text-amber-700" />
-                  </div>
-                  <span className="font-semibold text-sm">Rank</span>
+              <div className="bg-gradient-to-br from-amber-50 to-amber-100 p-4 border-amber-200 dashboard-stats-card">
+                <div className="bg-amber-100 p-2.5 rounded-full mb-2">
+                  <Medal size={20} className="text-amber-700" />
                 </div>
-                <p className="text-2xl font-bold text-amber-800">
-                  #{user.rank}
+                <span className="font-semibold text-amber-800 text-xs uppercase tracking-wider">
+                  Global Rank
+                </span>
+                <p className="text-2xl font-extrabold text-amber-900 mt-0.5">
+                  {user.rank ? `#${user.rank}` : "N/A"}
                 </p>
               </div>
 
               {/* Total Points */}
-              <div className="bg-gradient-to-br from-violet-50 to-violet-100 p-4 rounded-xl border border-violet-200 shadow-sm hover:shadow-md transition-shadow duration-200">
-                <div className="flex items-center justify-center md:justify-start text-violet-700 mb-2">
-                  <div className="bg-violet-100 p-2 rounded-lg mr-2">
-                    <Award size={18} className="text-violet-700" />
-                  </div>
-                  <span className="font-semibold text-sm">Points</span>
+              <div className="bg-gradient-to-br from-violet-50 to-violet-100 p-4 border-violet-200 dashboard-stats-card">
+                <div className="bg-violet-100 p-2.5 rounded-full mb-2">
+                  <Award size={20} className="text-violet-700" />
                 </div>
-                <p className="text-2xl font-bold text-violet-800">
-                  {user.totalScore}
+                <span className="font-semibold text-violet-800 text-xs uppercase tracking-wider">
+                  Total Points
+                </span>
+                <p className="text-2xl font-extrabold text-violet-900 mt-0.5">
+                  {user.totalScore || 0}
+                </p>
+              </div>
+
+              {/* User Created Quizzes */}
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 border-blue-200 dashboard-stats-card">
+                <div className="bg-blue-100 p-2.5 rounded-full mb-2">
+                  <Lightbulb size={20} className="text-blue-600" />
+                </div>
+                <span className="font-semibold text-blue-700 text-xs uppercase tracking-wider">
+                  Quizzes Created
+                </span>
+                <p className="text-2xl font-extrabold text-blue-800 mt-0.5">
+                  {user.totalCreatedQuizzes }
                 </p>
               </div>
             </div>

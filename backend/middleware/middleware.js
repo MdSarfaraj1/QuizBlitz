@@ -5,6 +5,7 @@ module.exports.isLoggedIn = (fields = "") => {
     return async (req, res, next) => {
         const token = req.cookies.sessionToken;
         if (!token) {
+            console.log("No token found in loggedIn middleware");
             return res.status(401).json({ message: "Please login first" });
         }
 

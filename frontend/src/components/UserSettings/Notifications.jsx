@@ -10,13 +10,10 @@ export function NotificationsSection() {
     notifications: {
       email: true,
       push: false,
-      marketing: false,
       reminders: true,
-      sound: true
     }
   });
   const [toast, setToast] = useState(null);
-
   const showToast = (message, type = "success") => {
     setToast({ message, type });
   };
@@ -55,29 +52,14 @@ export function NotificationsSection() {
       checked: userData.notifications.push
     },
     {
-      id: 'marketing',
-      title: 'Marketing Emails',
-      description: 'Receive newsletters, tips, and promotional content',
-      icon: MessageSquare,
-      color: 'purple',
-      checked: userData.notifications.marketing
-    },
-    {
       id: 'reminders',
       title: 'Study Reminders',
       description: 'Get reminded about upcoming quizzes and study sessions',
       icon: Calendar,
-      color: 'orange',
+      color: 'purple',
       checked: userData.notifications.reminders
     },
-    {
-      id: 'sound',
-      title: 'Sound Notifications',
-      description: 'Play sounds when receiving notifications',
-      icon: Volume2,
-      color: 'indigo',
-      checked: userData.notifications.sound
-    }
+
   ];
 
   return (
@@ -147,42 +129,7 @@ export function NotificationsSection() {
             })}
           </div>
 
-          {/* Quick Actions */}
-          <div className="mt-8 p-6 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl border border-purple-100">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <Zap className="w-5 h-5 text-purple-600" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-slate-800">Quick Actions</h4>
-                  <p className="text-sm text-slate-600">Manage all notifications at once</p>
-                </div>
-              </div>
-              <div className="flex gap-3">
-                <button
-                  onClick={() => {
-                    Object.keys(userData.notifications).forEach(key => {
-                      updateNotifications(key, true);
-                    });
-                  }}
-                  className="px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 rounded-lg border border-slate-200 font-medium transition-colors duration-200"
-                >
-                  Enable All
-                </button>
-                <button
-                  onClick={() => {
-                    Object.keys(userData.notifications).forEach(key => {
-                      updateNotifications(key, false);
-                    });
-                  }}
-                  className="px-4 py-2 bg-slate-700 hover:bg-slate-800 text-white rounded-lg font-medium transition-colors duration-200"
-                >
-                  Disable All
-                </button>
-              </div>
-            </div>
-          </div>
+         
         </CardContent>
       </Card>
 

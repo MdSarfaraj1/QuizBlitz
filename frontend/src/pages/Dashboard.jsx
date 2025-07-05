@@ -7,6 +7,11 @@ import MainDashBoard from "../components/Dashboard/MainDashboard";
 import ThingsToLearn from '../components/Dashboard/ThingsToLearn';
 import UserSettings  from '../components/UserSettings/UserSettings';
 import QuizProgressDashboard from '../components/Dashboard/Chart';
+import CreateQuiz from '../components/CreateQuiz/CreateQuiz';
+import AdminPanel from '../components/Dashboard/AdminPanel';
+import axios from 'axios';
+import { useAuth } from '../Context/UserContextProvider';
+import { useNavigate } from 'react-router-dom';
 // Placeholder components for other sections
 const MyQuizzes = () => (
   <div className="bg-white rounded-lg shadow-md p-6">
@@ -15,24 +20,25 @@ const MyQuizzes = () => (
   </div>
 );
 
-
-const CreateQuiz = () => (
-  <div className="bg-white rounded-lg shadow-md p-6">
-    <h2 className="text-2xl font-bold mb-4">Create New Quiz</h2>
-    <p className="text-gray-600">Create a new quiz by adding questions and answers.</p>
-  </div>
-);
-
-const Settings = () => (
-  <div className="bg-white rounded-lg shadow-md p-6">
-    <h2 className="text-2xl font-bold mb-4">Settings</h2>
-    <p className="text-gray-600">Manage your account settings and preferences.</p>
-  </div>
-);
-
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
-
+const { setUser } = useAuth();
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+       await axios.post(
+        `${import.meta.env.VITE_APP_BACKEND_URL}/user/logout`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      setUser(null, null,null); // Clear from context
+      navigate("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
   const renderContent = () => {
     switch (activeSection) {
       case 'dashboard':
@@ -54,7 +60,12 @@ const Dashboard = () => {
             <MyQuizzes />
           </div >
         );
-      
+      case 'adminPanel':
+        return (  
+          <div className="ml-10">
+           <AdminPanel />
+          </div >
+        );
       case 'Things To Learn':
         return (
           <div className="ml-10">
@@ -75,10 +86,6 @@ const Dashboard = () => {
       case 'createQuiz':
         return (
           <div className="ml-10">
-            <div className="mb-8">
-              <h1 className="text-2xl font-bold">Create Quiz</h1>
-              <p className="text-gray-600">Design your own quiz</p>
-            </div>
             <CreateQuiz />
           </div >
         );
@@ -90,10 +97,11 @@ const Dashboard = () => {
       
       case 'signout':
         return (
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-gradient-to-br  transition transform hover:-translate-y-1 hover:shadow-lg from-purple-100 via-white to-pink-100 rounded-lg shadow-md p-6 ml-5">
+
             <h2 className="text-2xl font-bold mb-4">Sign Out</h2>
             <p className="text-gray-600 mb-4">Are you sure you want to sign out?</p>
-            <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+            <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
               Confirm Sign Out
             </button>
           </div>

@@ -129,3 +129,6 @@ disabled:opacity-50
           text-base font-medium transition-colors duration-200 shadow-md flex
           items-center justify-center
 }
+.dashboard-stats-card{
+  @apply shadow-sm hover:shadow-md transition-all duration-200 flex flex-col items-center justify-center text-center rounded-xl border 
+}

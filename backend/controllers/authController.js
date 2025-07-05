@@ -36,6 +36,7 @@ exports.register = async (req, res) => {
               message: "User created successfully!",
               userId: newUser._id,
               username: newUser.username,
+              avatar: newUser.avatar,
             }); 
         } catch (error) {
           console.error("Signup error:", error);
@@ -76,6 +77,7 @@ exports.login = async (req, res) => {
                     message: `Welcome ${user.username}`,
                     userId: user._id,
                     username: user.username,
+                    avatar: user.avatar,
                   });
       }
       res.status(409).json({
@@ -89,7 +91,6 @@ exports.login = async (req, res) => {
 
 exports.logout= (req, res) => {
   try {
-   
     res
       .clearCookie("sessionToken", {
         httpOnly: true,
@@ -105,27 +106,58 @@ exports.logout= (req, res) => {
   }
 }
 exports.updateProfile= async (req, res) => { 
-  data = req.body;
-  console.log(data);
-  const user = await User.findById(data.userId);
-  if (!user || !(await bcrypt.compare(data.oldPassword, user.password))) {
-    return res.status(404).json({ message: "User not found" });
-  } else {
-    user.username = data.username;
-    user.email = data.email;
-    user.password = await bcrypt.hash(data.newPassword, 10);
-    await user.save();
-    res.status(200).json({ message: "Profile Updated Successfully" });
+   try {
+    const { name, email } = req.body;
+    let avatarUrl = req.file ? req.file.path : null;
+console.log("from update user route",req.user._id,req.body,avatarUrl);
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        username: name,
+        email,
+        ...(avatarUrl && { avatar: avatarUrl }),
+      },
+      { new: true }
+    );
+    res.json({
+      message: "Profile updated successfully",
+      avatar: updatedUser.avatar,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Update failed" });
   }
 }
+exports.updatePassword = async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const user = req.user;
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    // Check if old password matches
+    console.log("updating  Password:", oldPassword,newPassword);
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Old password is incorrect" });
+    }
+    // Hash new password
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    // Update password in database
+    user.password = hashedNewPassword;
+    await user.save();
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error("Password update error:", error);
+    res.status(500).json({ message: "Server error during password update" });
+  }
+};
 
 exports.getProfile = async (req, res) => {
   try {
     const userData = req.user;
     if (!userData._id) 
       return res.status(404).json({ message: "User not found" });
-    
-
     // Calculate averageScore
     const totalQuizzesTaken = userData.totalQuizzes;
   const averageScore = totalQuizzesTaken > 0
@@ -142,6 +174,9 @@ exports.getProfile = async (req, res) => {
       totalScore: userData.totalScore,
       averageScore,
       rank,
+      email: userData.email,
+      totalCreatedQuizzes:userData.totalCreatedQuizzes
+
     });
   } catch (error) {
     console.error(error);
