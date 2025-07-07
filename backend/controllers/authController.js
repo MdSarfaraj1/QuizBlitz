@@ -108,7 +108,7 @@ exports.logout= (req, res) => {
 exports.updateProfile= async (req, res) => { 
    try {
     const { name, email } = req.body;
-    let avatarUrl = req.file ? req.file.path : null;
+     const avatarUrl = req.file? req.file.path : req.body.avatarUrl 
 console.log("from update user route",req.user._id,req.body,avatarUrl);
     const updatedUser = await User.findByIdAndUpdate(
       req.user._id,

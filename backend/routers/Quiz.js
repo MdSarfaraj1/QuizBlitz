@@ -24,9 +24,10 @@ router.put('/updateFavoriteCategories', isLoggedIn('favoriteCategories'), quizCo
 // router.get('/userCreatedQuiz',isLoggedIn, quizController.getMyCreatedQuizzes);
 
 // Quiz creation and management (creator/admin)
-router.post('/create', isLoggedIn(),quizController.createQuiz);
+router.post('/createQuiz', isLoggedIn(),quizController.createQuiz);//done
 router.put('/update/:id',isLoggedIn(),  quizController.updateQuiz);
 
 router.get('/quizOfTheDay',quizController.quizOfTheDay)//done
 router.get('/getLeaderboard/:id', quizController.getLeaderboard);//done
+router.post('/submitQuizRating', quizController.submitQuizRating);//done
 module.exports = router;

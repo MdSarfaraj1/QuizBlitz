@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import CategorySelection from './Categories'; // Assuming this path is correct
 import axios from 'axios';
 import { useAuth } from '../../Context/UserContextProvider';
@@ -8,12 +8,23 @@ import { useAuth } from '../../Context/UserContextProvider';
 const StartQuiz = () => {
   const { userId } = useAuth();
   const navigate = useNavigate();
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const location = useLocation();
+  const alreadySelected = location.state?.alreadySelected || null;
+  console.log("Already selected category:", alreadySelected);
+  const [selectedCategory, setSelectedCategory] = useState(alreadySelected);
+  const [categoryError, setCategoryError] = useState('');
   const [selectedDifficulty, setSelectedDifficulty] = useState('');
   const [numberOfQuestions, setNumberOfQuestions] = useState(10);
   const [isLoading, setIsLoading] = useState(false);
 
+
   const handleStartQuiz = async () => {
+    // Defensive: check selectedCategory has required fields
+    if (!selectedCategory || !selectedCategory._id || !selectedCategory.icon || !selectedCategory.title) {
+      setCategoryError('Category data is incomplete. Please re-select a category.');
+      return;
+    }
+
     const endpoint = userId ? `/Quiz/startQuiz/${selectedCategory._id}` : `/Quiz/startQuiz/guest/${selectedCategory._id}`;
 
     if (!userId) {
@@ -29,6 +40,7 @@ const StartQuiz = () => {
 
     try {
       setIsLoading(true);
+      setCategoryError('');
       const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}${endpoint}`,
         {
           difficulty: selectedDifficulty,
@@ -57,10 +69,15 @@ const StartQuiz = () => {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-10">
-          <Link to={userId ? "/dashboard" : "/"} className="flex items-center space-x-2 text-blue-600 hover:text-blue-800 transition-colors duration-300">
-            <ArrowLeft className="w-5 h-5" />
-            <span>Back</span>
-          </Link>
+            <button
+            onClick={() => navigate("/dashboard")}
+            className="absolute top-8 left-16 flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-full shadow hover:bg-gray-100 transition duration-300 group"
+          >
+            <ArrowLeft className="h-5 w-5 text-gray-700 group-hover:text-quizDashboard-accent transition" />
+            <span className="font-semibold text-gray-800 text-base hidden sm:inline group-hover:text-quizDashboard-accent">
+              Back
+            </span>
+          </button>
           <h1 className="text-3xl md:text-4xl font-extrabold text-center flex-1 text-purple-700">🎯 Choose Your Challenge</h1>
           <div className="w-24">
             <a href="#" className="text-2xl font-bold text-purple-700">
@@ -133,6 +150,7 @@ const StartQuiz = () => {
                 </select>
               </div>
 
+
               {/* Start Button */}
               <button
                 disabled={!canStartQuiz || isLoading}
@@ -152,6 +170,9 @@ const StartQuiz = () => {
                   canStartQuiz ? '🚀 Start Quiz!' : '⚠️ Select Category & Difficulty'
                 )}
               </button>
+              {categoryError && (
+                <div className="mt-2 text-red-600 text-sm font-semibold">{categoryError}</div>
+              )}
 
               {/* Quiz Info */}
               <div className="mt-4 text-sm text-gray-500 space-y-2">

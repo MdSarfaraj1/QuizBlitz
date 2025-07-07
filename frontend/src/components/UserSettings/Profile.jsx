@@ -63,9 +63,12 @@ const handleSubmit = async (e) => {
     formData.append("name", name);
     formData.append("email", email);
 
-    if (selectedFile) {
-      formData.append("avatar", selectedFile);
-    }
+   if (selectedFile) {
+     formData.append("avatar", selectedFile);
+   } else {
+     formData.append("avatarUrl", avatar); // send existing or new avatar URL
+   }
+
     const res = await axios.put(
       `${import.meta.env.VITE_APP_BACKEND_URL}/User/updateProfile`,
       formData,

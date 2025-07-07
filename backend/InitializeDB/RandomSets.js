@@ -12,7 +12,8 @@ module.exports.initialRandomQuizSet= [
     image: "🌳",
     color: "from-green-400 to-blue-500",
     participants: 1847,
-    rating: 4.8,
+    rating: 0,
+    ratingCount: 0,
     createdBy: ""
   },
   {
@@ -26,7 +27,8 @@ module.exports.initialRandomQuizSet= [
     image: "🟨",
     color: "from-yellow-400 to-orange-500",
     participants: 2892,
-    rating: 4.9,
+    rating: 0,
+    ratingCount: 0,
     createdBy: ""
   },
   {
@@ -40,7 +42,8 @@ module.exports.initialRandomQuizSet= [
     image: "⚛️",
     color: "from-cyan-400 to-blue-500",
     participants: 2341,
-    rating: 4.7,
+    rating: 0,
+    ratingCount: 0,
     createdBy: ""
   },
   {
@@ -54,7 +57,8 @@ module.exports.initialRandomQuizSet= [
     image: "🐍",
     color: "from-green-400 to-yellow-500",
     participants: 2100,
-    rating: 4.6,
+    rating: 0,
+    ratingCount: 0,
     createdBy: ""
   },
   {
@@ -68,7 +72,8 @@ module.exports.initialRandomQuizSet= [
     image: "🛢️",
     color: "from-blue-400 to-green-500",
     participants: 1200,
-    rating: 4.5,
+    rating: 0,
+    ratingCount: 0,
     createdBy: ""
   },
   {
@@ -82,7 +87,8 @@ module.exports.initialRandomQuizSet= [
     image: "🍃",
     color: "from-purple-400 to-pink-500",
     participants: 950,
-    rating: 4.4,
+    rating: 0,
+    ratingCount: 0,
     createdBy: ""
   },
   {
@@ -96,7 +102,8 @@ module.exports.initialRandomQuizSet= [
     image: "🐧",
     color: "from-red-700 to-purple-600",
     participants: 800,
-    rating: 4.7,
+    rating: 0,
+    ratingCount: 0,
     createdBy: ""
   },
   {
@@ -110,7 +117,8 @@ module.exports.initialRandomQuizSet= [
     image: "🖥️",
     color: "from-red-500 to-orange-700",
     participants: 1100,
-    rating: 4.5,
+    rating: 0,
+    ratingCount: 0,
     createdBy: ""
   },
   {
@@ -124,7 +132,8 @@ module.exports.initialRandomQuizSet= [
     image: "🌐",
     color: "from-green-400 to-teal-500",
     participants: 1300,
-    rating: 4.6,
+    rating: 0,
+    ratingCount: 0,
     createdBy: ""
   },
   {
@@ -138,7 +147,8 @@ module.exports.initialRandomQuizSet= [
     image: "🤖",
     color: "from-green-400 to-lime-500",
     participants: 900,
-    rating: 4.8,
+    rating: 0,
+    ratingCount: 0,
     createdBy: ""
   },
   {
@@ -152,7 +162,8 @@ module.exports.initialRandomQuizSet= [
     image: "🛡️",
     color: "from-indigo-400 to-purple-600",
     participants: 1000,
-    rating: 4.5,
+    rating: 0,
+    ratingCount: 0,
     createdBy: ""
   }
 ];

@@ -1,12 +1,16 @@
-import { useState, useRef, useEffect } from 'react';
+
+  import { useState, useRef, useEffect } from 'react';
 import { Plus, Trash2, Lightbulb, Save, Eye, Clock, BookOpen, Target, Zap, Search, ChevronDown, Wand2 } from 'lucide-react';
+import { sendGeminiRequest } from '../../Utills/getResponseFromAI';
+import axios from 'axios';
 
 export default function CraeteQuiz() {
   const [quizData, setQuizData] = useState({
     title: '',
     category: '',
+    image: '',
     difficulty: '',
-    timeLimit: 30,
+    duration: 5,
     questions: [
       {
         id: 1,
@@ -15,47 +19,27 @@ export default function CraeteQuiz() {
         options: ['', '', ''],
         hint: ''
       }
-    ]
+    ],
   });
 
+  const [categories, setCategories] = useState([]);
   const [categorySearch, setCategorySearch] = useState('');
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const categoryRef = useRef(null);
+  const categoryInputRef = useRef(null);
 
-  const categories = [
-    'Science & Technology',
-    'History',
-    'Geography',
-    'Literature',
-    'Mathematics',
-    'Sports',
-    'Entertainment',
-    'General Knowledge',
-    'Art & Culture',
-    'Business',
-    'Politics',
-    'Philosophy',
-    'Psychology',
-    'Economics',
-    'Medicine',
-    'Biology',
-    'Chemistry',
-    'Physics',
-    'Computer Science',
-    'Engineering',
-    'Music',
-    'Movies & TV',
-    'Food & Cooking',
-    'Travel',
-    'Nature & Environment'
-  ];
-const categoryInputRef = useRef(null);
+  useEffect(() => {
+    axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}/Quiz/allCategories`)
+      .then(response => {
+        setCategories(response.data.categories);
+        console.log('Categories fetched:', response.data);
+      });
+  }, []);
 
   const filteredCategories = categories.filter(cat =>
-    cat.toLowerCase().includes(categorySearch.toLowerCase())
+    cat.title.toLowerCase().includes(categorySearch.toLowerCase())
   );
 
-  // Handle clicks outside category dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (categoryRef.current && !categoryRef.current.contains(event.target)) {
@@ -117,78 +101,55 @@ const categoryInputRef = useRef(null);
 
   const generateAIContent = async (questionId) => {
     const question = quizData.questions.find(q => q.id === questionId);
-    
+
     if (!question.questionText || !question.correctAnswer) {
       alert('Please enter the question text and correct answer first.');
       return;
     }
 
-    // Simulate AI generation with realistic responses
-    const generateDistractors = (correctAnswer, questionText) => {
-      // This would normally call an AI API
-      const commonDistractors = {
-        'mathematics': ['42', 'undefined', '0', 'infinity', '1', '-1'],
-        'science': ['carbon dioxide', 'oxygen', 'hydrogen', 'nitrogen', 'helium'],
-        'history': ['1945', '1776', '1066', '1492', '1939', '1918'],
-        'geography': ['Asia', 'Europe', 'Africa', 'North America', 'Australia'],
-        'general': ['True', 'False', 'Maybe', 'Always', 'Never', 'Sometimes']
-      };
+    const systemInstruction = `You are an intelligent quiz content generator. Your task is to generate:\n      - 3 wrong but plausible options (distractors) for a multiple-choice question.\n      - 1 short relatable hint that helps solve the question.\n    Respond in this JSON format:\n      {\n        \"options\": [\"wrong1\", \"wrong2\", \"wrong3\"],\n        \"hint\": \"your hint here\"\n      }`;
 
-      // Simple logic to generate plausible wrong answers
-      let distractors = [];
-      const category = quizData.category.toLowerCase();
-      
-      if (category.includes('math') || category.includes('science')) {
-        distractors = ['Alternative A', 'Alternative B', 'Alternative C'];
-      } else if (category.includes('history')) {
-        distractors = ['1776', '1945', '1066'].filter(d => d !== correctAnswer);
-      } else {
-        distractors = ['Option A', 'Option B', 'Option C'];
-      }
+    const userPrompt = ` Category: ${quizData.category}\n                          Question: ${question.questionText} \n                          Correct Answer: ${question.correctAnswer}`;
 
-      return distractors.slice(0, 3);
-    };
+    try {
+      const aiResponse = await sendGeminiRequest(systemInstruction, userPrompt);
+      const cleanJSON = aiResponse.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(cleanJSON);
 
-    const generateHint = (questionText, correctAnswer) => {
-      const hints = [
-        `Think about the key concept in "${questionText.split(' ').slice(0, 3).join(' ')}..."`,
-        `The answer relates to the main topic of this question.`,
-        `Consider what you know about ${correctAnswer.split(' ')[0]} in this context.`,
-        `Look for clues in the question that point to the correct answer.`,
-        `Remember the fundamental principles related to this topic.`
-      ];
-      return hints[Math.floor(Math.random() * hints.length)];
-    };
-
-    // Generate distractors and hint
-    const distractors = generateDistractors(question.correctAnswer, question.questionText);
-    const hint = generateHint(question.questionText, question.correctAnswer);
-
-    // Update the question with AI-generated content
-    updateQuestion(questionId, 'options', distractors[0], 0);
-    updateQuestion(questionId, 'options', distractors[1], 1);
-    updateQuestion(questionId, 'options', distractors[2], 2);
-    updateQuestion(questionId, 'hint', hint);
+      updateQuestion(questionId, 'options', parsed.options[0], 0);
+      updateQuestion(questionId, 'options', parsed.options[1], 1);
+      updateQuestion(questionId, 'options', parsed.options[2], 2);
+      updateQuestion(questionId, 'hint', parsed.hint);
+    } catch (error) {
+      console.error('Error parsing AI response:', error);
+      alert('AI failed to generate content. Please try again.');
+    }
   };
 
-  const selectCategory = (category) => {
-    handleQuizInfoChange('category', category);
-    setCategorySearch(category);
-    setShowCategoryDropdown(false);
+  const selectCategory = (title) => {
+    const selected = categories.find(cat => cat.title === title);
+    if (selected) {
+      setQuizData(prev => ({
+        ...prev,
+        category: selected.title,
+        image: selected.icon
+      }));
+      setCategorySearch(title);
+      setShowCategoryDropdown(false);
+    }
   };
 
   const handleQuizInfoChange = (field, value) => {
     setQuizData(prev => ({ ...prev, [field]: value }));
   };
 
-  const saveQuiz = () => {
-    // Validate quiz
+  const saveQuiz = async () => {
     if (!quizData.title || !quizData.category || !quizData.difficulty) {
       alert('Please fill in all quiz information fields.');
       return;
     }
 
-    const incompleteQuestions = quizData.questions.filter(q => 
+    const incompleteQuestions = quizData.questions.filter(q =>
       !q.questionText || !q.correctAnswer || q.options.some(opt => !opt)
     );
 
@@ -202,8 +163,21 @@ const categoryInputRef = useRef(null);
       return;
     }
 
-    console.log('Quiz saved:', quizData);
-    alert('Quiz saved successfully!');
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_APP_BACKEND_URL}/Quiz/createQuiz`,
+        { quizData },
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        alert('Quiz saved successfully!');
+      } else {
+        alert('Failed to save quiz. Please try again later.');
+      }
+    } catch (error) {
+      console.error('Error saving quiz:', error);
+      alert('Failed to save quiz. Please try again later.');
+    }
   };
 
   const previewQuiz = () => {
@@ -211,13 +185,14 @@ const categoryInputRef = useRef(null);
     alert('Quiz preview will open in a new window.');
   };
 
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50 p-4">
+<div className="min-h-screen border-0 hover:shadow-lg hover:-translate-y-1 transition-transform shadow-md bg-gradient-to-br rounded-t-lg from-blue-100  to-green-100 p-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-            Quiz Creator
+         <h1 className="text-4xl font-bold text-gray-800 mb-2 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            Design Your Ultimate Quiz
           </h1>
           <p className="text-gray-600">Create engaging quizzes with custom questions and settings</p>
         </div>
@@ -279,11 +254,11 @@ const categoryInputRef = useRef(null);
         {filteredCategories.length > 0 ? (
           filteredCategories.map((cat) => (
             <button
-              key={cat}
-              onClick={() => selectCategory(cat)}
+              key={cat._id}
+              onClick={() => selectCategory(cat.title)}
               className="w-full text-left px-4 py-3 hover:bg-indigo-50 hover:text-indigo-700 transition-colors duration-150 first:rounded-t-xl last:rounded-b-xl"
             >
-              {cat}
+              {cat.title}
             </button>
           ))
         ) : (
@@ -324,8 +299,8 @@ const categoryInputRef = useRef(null);
               </label>
               <input
                 type="number"
-                value={quizData.timeLimit}
-                onChange={(e) => handleQuizInfoChange('timeLimit', parseInt(e.target.value) || 0)}
+                value={quizData.duration}
+                onChange={(e) => handleQuizInfoChange('duration', parseInt(e.target.value) || 0)}
                 min="1"
                 max="180"
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
@@ -467,7 +442,7 @@ const categoryInputRef = useRef(null);
             <div className="text-sm text-gray-600">Questions</div>
           </div>
           <div className="bg-white rounded-2xl p-4 text-center shadow-lg border border-indigo-100/30">
-            <div className="text-2xl font-bold text-purple-600">{quizData.timeLimit}</div>
+            <div className="text-2xl font-bold text-purple-600">{quizData.duration}</div>
             <div className="text-sm text-gray-600">Minutes</div>
           </div>
           <div className="bg-white rounded-2xl p-4 text-center shadow-lg border border-indigo-100/30">

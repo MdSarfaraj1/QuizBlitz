@@ -24,7 +24,7 @@ const CategorySelection = ({ selectedCategory, setSelectedCategory, userId }) =>
                   const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}/Quiz/favoriteCategories`,
           { withCredentials: true }
         );
-                    const userFavorites = new Set(response.data.categories.map(cat => cat.id));
+                    const userFavorites = new Set(response.data.categories.map(cat => cat._id));
                     setFavoriteCategoryIds(userFavorites);
                     setInitialFavoriteCategoryIds(new Set(userFavorites)); 
                 }

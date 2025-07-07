@@ -15,6 +15,7 @@ import {
   Target
 } from 'lucide-react';
 import axios from 'axios';
+import { sendGeminiRequest } from '../../Utills/getResponseFromAI';
 
 const ThingsToLearn = ({ className }) => {
   const [questions, setQuestions] = useState([]);
@@ -47,84 +48,69 @@ const ThingsToLearn = ({ className }) => {
     fetchQuestions();
   }, []);
 
-  // Generate AI explanation
-  const generateExplanation = async ( questionText,correctAnswer) => {
-    setLoadingStates(prev => ({ ...prev, [questionId]: true }));
-    try {
-      // Simulate AI API call
-      await new Promise(resolve => setTimeout(resolve, 2500));
-      
-      setExplanations(prev => ({
-        ...prev,
-        [questionId]: mockExplanation
-      }));
-      
-      // Initialize follow-up messages array
-      setFollowUpMessages(prev => ({
-        ...prev,
-        [questionId]: []
-      }));
-      
-    } catch (error) {
-      console.error('Error generating explanation:', error);
-      setExplanations(prev => ({
-        ...prev,
-        [questionId]: 'Sorry, there was an error generating the explanation. Please try again.'
-      }));
-    } finally {
-      setLoadingStates(prev => ({ ...prev, [questionId]: false }));
-    }
-  };
 
-  // Handle follow-up question
-  const handleFollowUp = async (questionId) => {
-    const message = followUpInput[questionId]?.trim();
-    if (!message) return;
+const generateExplanation = async (questionText, correctAnswer, questionId) => {
+  setLoadingStates(prev => ({ ...prev, [questionId]: true }));
 
-    const userMessage = { type: 'user', content: message, timestamp: new Date() };
-    
+  try {
+    const explanation = await sendGeminiRequest(
+      "You are a helpful AI that explains quiz questions for students.",
+      `Explain why the answer "${correctAnswer}" is correct for this question:\n\n${questionText}`
+    );
+
+    setExplanations(prev => ({ ...prev, [questionId]: explanation }));
+    setFollowUpMessages(prev => ({ ...prev, [questionId]: [] }));
+  } catch (e) {
+    console.error(e);
+    setExplanations(prev => ({ ...prev, [questionId]: "Something went wrong." }));
+  } finally {
+    setLoadingStates(prev => ({ ...prev, [questionId]: false }));
+  }
+};
+
+const handleFollowUp = async ( questionText, correctAnswer,questionId) => {
+  const message = followUpInput[questionId]?.trim();
+  if (!message) return;
+
+  const userMessage = { type: 'user', content: message, timestamp: new Date() };
+  setFollowUpMessages(prev => ({
+    ...prev,
+    [questionId]: [...(prev[questionId] || []), userMessage]
+  }));
+  setFollowUpInput(prev => ({ ...prev, [questionId]: '' }));
+  setLoadingStates(prev => ({ ...prev, [`followup-${questionId}`]: true }));
+
+  try {
+    // Optional: Include past messages as a threaded summary
+    const pastMessages = followUpMessages[questionId]
+      ?.map(msg => `${msg.type === 'user' ? 'Student' : 'AI'}: ${msg.content}`)
+      .join('\n') || '';
+
+    const prompt = `You are a helpful AI tutor.Here is the original multiple-choice quiz question:"${questionText}"The correct answer is: "${correctAnswer}"${pastMessages ? `Previous conversation:\n${pastMessages}` : ''}The student now asked: "${message}"Please respond clearly and helpfully. If the student's question is not related to the original quiz question or its explanation, politely decline to answer and say something like: 
+    "I'm here to help with this specific quiz question. Let's stay focused on that."`.trim();
+
+  const aiReply = await sendGeminiRequest(
+      "You're a helpful AI tutor that answers student queries clearly.",
+      prompt
+    );
+
     setFollowUpMessages(prev => ({
       ...prev,
-      [questionId]: [...(prev[questionId] || []), userMessage]
+      [questionId]: [...prev[questionId], { type: 'ai', content: aiReply, timestamp: new Date() }]
     }));
+  } catch (error) {
+    console.error("Gemini follow-up error:", error);
+  } finally {
+    setLoadingStates(prev => ({ ...prev, [`followup-${questionId}`]: false }));
+  }
+};
 
-    setFollowUpInput(prev => ({ ...prev, [questionId]: '' }));
-    setLoadingStates(prev => ({ ...prev, [`followup-${questionId}`]: true }));
-
-    try {
-      // Simulate AI response delay
-      await new Promise(resolve => setTimeout(resolve, 1800));
-      
-      const aiResponse = {
-        type: 'ai',
-        content: `That's an excellent follow-up question about "${message}"! 
-
-Let me elaborate: This connects directly to the main concept we discussed. Here are some additional insights:
-
-• This aspect is particularly important because...
-• You can think of it like this analogy...
-• In practical terms, this means...
-• A common way to remember this is...
-
-Would you like me to clarify any specific part of this explanation?`,
-        timestamp: new Date()
-      };
-
-      setFollowUpMessages(prev => ({
-        ...prev,
-        [questionId]: [...prev[questionId], aiResponse]
-      }));
-    } catch (error) {
-      console.error('Error handling follow-up:', error);
-    } finally {
-      setLoadingStates(prev => ({ ...prev, [`followup-${questionId}`]: false }));
-    }
-  };
 
   // Remove question from list
   const removeQuestion = async (learnLaterId) => {
     try {
-      const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/Quiz/removeLearnLater/:${learnLaterId}`, {}, { withCredentials: true });
+       console.log("Removing question with ID:", learnLaterId);
+      const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/Quiz/removeLearnLater/${learnLaterId}`, {}, { withCredentials: true });
       if (response.status === 200) {
       setQuestions(prev => prev.filter(q => q._id !== learnLaterId));
       // Clean up related states
@@ -305,7 +291,7 @@ Would you like me to clarify any specific part of this explanation?`,
                 <div className="flex gap-3 mb-4">
                   <button
                     onClick={() =>
-                      generateExplanation( item.question.questionText, item.question.correctAnswer)
+                      generateExplanation( item.question.questionText, item.question.correctAnswer,item.question._id)
                     }
                     disabled={loadingStates[item.question._id]}
                     className="flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium shadow-sm"
@@ -420,13 +406,13 @@ Would you like me to clarify any specific part of this explanation?`,
                           }
                           onKeyPress={(e) => {
                             if (e.key === "Enter") {
-                              handleFollowUp(item.question._id);
+                              handleFollowUp( item.question.questionText, item.question.correctAnswer,item.question._id);
                             }
                           }}
                           className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white"
                         />
                         <button
-                          onClick={() => handleFollowUp(item.question._id)}
+                          onClick={() => handleFollowUp( item.question.questionText, item.question.correctAnswer,item.question._id)}
                           disabled={
                             loadingStates[`followup-${item.question._id}`] ||
                             !followUpInput[item.question._id]?.trim()

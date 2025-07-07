@@ -133,7 +133,6 @@ exports.startQuiz = async (req, res) => {
 
       selectedQuestions = [...selectedQuestions, ...fallbackQuestions];
     }
-    console.log("sending quiz details to start",populatedQuiz)
     return res.status(200).json({
       quizId: populatedQuiz._id,
       questions: selectedQuestions,
@@ -317,8 +316,9 @@ exports.submitQuizResult = async (req, res) => {
 
 exports.createQuiz = async (req, res) => {
   try {
-    const { category, description, questions, } = req.body;
-
+    const { quizData } = req.body;
+console.log("Creating quiz with data:", quizData);
+    const { category, description, questions } = quizData;
     if (!questions) {
       return res.status(400).json({ error: 'Questions are required.' });
     }
@@ -546,10 +546,11 @@ exports.getUserLearnLaterQuestions = async (req, res) => {
     if (!userId) {
       return res.status(404).json({ message: "User not found" });
     }
-await req.user.populate('learnLater.questionId');
+await req.user.populate('learnLater.questionId'); 
 const questions = req.user.learnLater.map(item => ({
   category: item.category,
-  question: item.questionId
+  question: item.questionId,
+  _id: item._id,
 }));
 
     res.status(200).json({questions: questions});
@@ -560,14 +561,15 @@ const questions = req.user.learnLater.map(item => ({
 }
 exports.removeLearnLaterQuestion = async (req, res) => {
   try {
-    const { id: questionId } = req.params;
+    const { id: learnLaterId } = req.params;
     const user = req.user
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-console.log("Removing question with ID:", user.learnLater);
-    user.learnLater = user.learnLater.filter((item) => item.questionId.toString() !== questionId);
-console.log("Updated learn later list:", user.learnLater);
+console.log("Removing question with ID:", learnLaterId); 
+  user.learnLater = user.learnLater.filter((item) => item._id.toString() !== learnLaterId.toString());
+
+console.log("After filtering:", user.learnLater.map(i => i._id.toString()));
     await user.save();
    
     res.status(200).json({ message: "Question removed from learn later" });
@@ -592,13 +594,13 @@ exports.getUserProgress = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-
+ 
 exports.getUserFavoriteCategories = async (req, res) => {
   try {
     // Populate user's favoriteCategories
     const user = await req.user.populate({
       path: 'favoriteCategories',
-      select: 'title  totalQuizzes',
+      select: 'title  totalQuizzes icon',
     });
 
     const favoriteCategories = user.favoriteCategories || [];
@@ -610,10 +612,11 @@ exports.getUserFavoriteCategories = async (req, res) => {
       ).length || 0;
 
       return {
-        id: cat._id,
+        _id: cat._id,
         title: cat.title,
         totalQuizzes: cat.totalQuizzes,
         playedQuizzes,
+        icon:cat.icon
       };
     });
     res.status(200).json({
@@ -656,3 +659,35 @@ exports.updateUserFavoriteCategories = async (req, res) => {
     });
   }
 }
+exports.submitQuizRating = async (req, res) => {
+  try {
+    const { quizId, rating } = req.body;
+    if (!quizId || !rating) {
+      return res.status(400).json({ message: "Quiz ID and rating are required." });
+    }
+
+    const quizSet = await QuizSet.findById(quizId);
+    if (!quizSet) {
+      return res.status(404).json({ message: "Quiz not found." });
+    }
+
+    // Compute new average rating
+    const totalRating = quizSet.rating * quizSet.ratingCount;
+    const newRatingCount = quizSet.ratingCount + 1;
+    const newAverage = (totalRating + rating) / newRatingCount;
+
+    quizSet.rating = newAverage;
+    quizSet.ratingCount = newRatingCount;
+
+    await quizSet.save();
+
+    res.status(200).json({
+      message: "Rating submitted successfully.",
+      averageRating: quizSet.rating,
+      totalRatings: quizSet.ratingCount
+    });
+  } catch (error) {
+    console.error("Error submitting quiz rating:", error);
+    res.status(500).json({ message: "Failed to submit rating." });
+  }
+};

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Search, Filter, Clock, Users, Star, ArrowRight, BookOpen, Brain, Globe, Calculator, Palette, Music, ChevronDown ,Bookmark, BookmarkCheck ,TrendingUp} from "lucide-react";
+import { Search, Filter, Clock, Users, Star, ArrowRight, BookOpen, Brain, Globe, Calculator, Palette, Music, ChevronDown ,Bookmark, BookmarkCheck ,TrendingUp, ArrowLeft} from "lucide-react"; // Import ArrowLeft
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../Context/UserContextProvider";
@@ -71,7 +71,7 @@ const [toast, setToastMessage] = useState("");
           type: "success",
         });
         console.log("Saved quizzes successfully:", response.data);
-       
+        
       }
     } catch (error) {
        setToastMessage({
@@ -81,7 +81,7 @@ const [toast, setToastMessage] = useState("");
       console.error("Error saving quizzes:", error);
     }
 }
- const handleStartQuiz = async (id) => {
+  const handleStartQuiz = async (id) => {
     try {
       console.log(id)
       const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}/Quiz/startPredefinedQuiz/${id}`, { withCredentials: true });
@@ -132,7 +132,9 @@ const [toast, setToastMessage] = useState("");
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
-        <div className="mx-auto max-w-7xl px-4 pt-8">
+        <div className="mx-auto max-w-7xl px-4 pt-8 pb-4 relative">
+          {" "}
+          {/* Added relative for positioning */}
           <div className="text-center mb-8">
             <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
               Dive into <span className="text-quizDashboard-primary">Quiz</span>
@@ -144,6 +146,16 @@ const [toast, setToastMessage] = useState("");
               Learn faster. Practice smarter.
             </p>
           </div>
+          {/* Back to Dashboard Button */}
+          <button
+            onClick={() => navigate("/startQuiz")}
+            className="absolute top-8 left-6 flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-full shadow hover:bg-gray-100 transition duration-300 group"
+          >
+            <ArrowLeft className="h-5 w-5 text-gray-700 group-hover:text-quizDashboard-accent transition" />
+            <span className="font-semibold text-gray-800 text-base hidden sm:inline group-hover:text-quizDashboard-accent">
+              Back
+            </span>
+          </button>
         </div>
       </div>
 
@@ -267,12 +279,12 @@ const [toast, setToastMessage] = useState("");
             )}
           </div>
           {toast && (
-                  <Toast
-                    message={toast.message}
-                    type={toast.type}
-                    onClose={() => setToastMessage(null)}
-                  />
-                )}
+            <Toast
+              message={toast.message}
+              type={toast.type}
+              onClose={() => setToastMessage(null)}
+            />
+          )}
         </div>
 
         {isLoading ? (
