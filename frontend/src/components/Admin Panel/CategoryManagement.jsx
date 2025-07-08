@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { LayoutList, ChevronDown, ChevronRight, Edit, Save, X, Trash2, PlusCircle, Search } from 'lucide-react'; // Import Search icon
 
 const CategoryManagement = ({ categories, setCategories, expanded, toggleSection }) => {
   const [editCategoryId, setEditCategoryId] = useState(null); // ID of the category currently being edited
   const [editedCategories, setEditedCategories] = useState({}); // Stores changes to categories before saving
-  const [newCategory, setNewCategory] = useState({ name: '', description: '' });
+  const [newCategory, setNewCategory] = useState({ name: '', description: '', icon: '' });
   const [showAddForm, setShowAddForm] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(null); // Stores category ID to confirm deletion
   const [searchTerm, setSearchTerm] = useState(''); // New state for search term
 
-  /**
-   * Handles changes to an input field for a category being edited.
-   */
+
+  //Handles changes to an input field for a category being edited.
   const handleEditChange = (id, field, value) => {
     setEditedCategories((prev) => ({
       ...prev,
@@ -22,45 +22,64 @@ const CategoryManagement = ({ categories, setCategories, expanded, toggleSection
     }));
   };
 
-  /**
-   * Saves changes for a specific category. In a real app, this would hit an API.
-   */
+  // Saves changes for a specific category using backend API
   const saveCategoryEdit = async (categoryId) => {
-    const updatedData = editedCategories[categoryId];
-    if (!updatedData) return;
+    // Find the original category data
+    const originalCategory = categories.find(cat => cat.id === categoryId);
 
-    console.log(`Saving category ${categoryId} with data:`, updatedData);
-    // Simulate API call to update category
-    // try {
-    //   const response = await fetch(`/api/categories/${categoryId}`, {
-    //     method: 'PUT',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify(updatedData),
-    //   });
-    //   if (!response.ok) throw new Error('Failed to update category');
-    //   const updatedCategory = await response.json(); // Assuming API returns the updated category
+    // If the category isn't found or there are no pending edits, return
+    if (!originalCategory) {
+      console.error(`Category with ID ${categoryId} not found.`);
+      return;
+    }
 
-    setCategories((prevCategories) =>
-      prevCategories.map((cat) =>
-        cat.id === categoryId ? { ...cat, ...updatedData } : cat
-      )
-    );
-    setEditedCategories((prev) => {
-      const newState = { ...prev };
-      delete newState[categoryId];
-      return newState;
-    });
-    setEditCategoryId(null); // Exit edit mode for this category
-    console.log(`Category ${categoryId} updated successfully!`);
-    // } catch (error) {
-    //   console.error('Error updating category:', error);
-    //   alert('Failed to update category. Please try again.');
-    // }
+    // Get the edited data (might be partial)
+    const pendingEdits = editedCategories[categoryId] || {};
+
+    const dataToSend = {
+      categoryId: categoryId, // Ensure categoryId is explicitly part of the payload
+      name: pendingEdits.name !== undefined ? pendingEdits.name : originalCategory.name,
+      description: pendingEdits.description !== undefined ? pendingEdits.description : originalCategory.description,
+    };
+
+    console.log("Sending update for category:", dataToSend); // This will show you the full payload
+
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_APP_BACKEND_URL}/Admin/updateCategory`,
+        dataToSend, // Send the complete dataToSend object
+        { withCredentials: true }
+      );
+
+      // Assuming your backend returns the updated category object
+      const updatedCategoryFromServer = response.data;
+
+      if (response.status === 200) {
+        setCategories((prevCategories) =>
+          prevCategories.map((cat) =>
+            cat.id === categoryId ? { ...cat, ...updatedCategoryFromServer } : cat
+          )
+        );
+        setEditedCategories((prev) => {
+          const newState = { ...prev };
+          delete newState[categoryId];
+          return newState;
+        });
+        console.log(`Category ${categoryId} updated successfully!`);
+      } else {
+        console.error('Unexpected response status:', response.status, response.data);
+        alert('Failed to update category. Unexpected server response.');
+      }
+
+      setEditCategoryId(null); // Exit edit mode for this category
+
+    } catch (error) {
+      console.error('Error updating category:', error.response ? error.response.data : error.message);
+      alert('Failed to update category. Please try again.');
+    }
   };
 
-  /**
-   * Cancels edits for a specific category.
-   */
+  // Cancels edits for a specific category.
   const cancelCategoryEdit = (categoryId) => {
     setEditedCategories((prev) => {
       const newState = { ...prev };
@@ -70,60 +89,47 @@ const CategoryManagement = ({ categories, setCategories, expanded, toggleSection
     setEditCategoryId(null); // Exit edit mode for this category
   };
 
-  /**
-   * Adds a new category. In a real app, this would hit an API.
-   */
+  // Adds a new category using backend API
   const addCategory = async () => {
     if (!newCategory.name.trim()) {
       alert('Category name cannot be empty.');
       return;
     }
-
-    console.log('Adding new category:', newCategory);
-    // Simulate API call to add category
-    // try {
-    //   const response = await fetch('/api/categories', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify(newCategory),
-    //   });
-    //   if (!response.ok) throw new Error('Failed to add category');
-    //   const addedCategory = await response.json(); // Assuming API returns the newly added category
-
-    // For simulation, generate a simple ID
-    const addedCategory = {
-      ...newCategory,
-      id: categories.length ? Math.max(...categories.map(c => c.id)) + 1 : 1,
-      quizCount: 0, // New categories start with 0 quizzes
-    };
-
-    setCategories((prev) => [...prev, addedCategory]);
-    setNewCategory({ name: '', description: '' }); // Clear form
-    setShowAddForm(false); // Hide add form
-    console.log('Category added successfully!');
-    // } catch (error) {
-    //   console.error('Error adding category:', error);
-    //   alert('Failed to add category. Please try again.');
-    // }
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_APP_BACKEND_URL}/Admin/addNewCategory`,
+        { newCategory },
+        { withCredentials: true }
+      );
+      if (response.status === 201) {
+        const addedCategory = response.data;
+        setCategories((prev) => [...prev, addedCategory]);
+        setNewCategory({ name: '', description: '', icon: '' }); // Clear form
+        setShowAddForm(false); // Hide add form
+        console.log('Category added successfully!', addedCategory);
+      }
+    } catch (error) {
+      console.error('Error adding category:', error.response ? error.response.data : error.message);
+      alert('Failed to add category. Please try again.');
+    }
   };
 
-  /**
-   * Deletes a category. In a real app, this would hit an API.
-   */
+  // Deletes a category using backend API
   const deleteCategory = async (categoryId) => {
     setShowDeleteConfirm(null); // Hide confirmation dialog
-    console.log(`Deleting category with ID: ${categoryId}`);
-    // Simulate API call to delete category
-    // try {
-    //   const response = await fetch(`/api/categories/${categoryId}`, { method: 'DELETE' });
-    //   if (!response.ok) throw new Error('Failed to delete category');
+    try {
 
-    setCategories((prevCategories) => prevCategories.filter((cat) => cat.id !== categoryId));
-    console.log(`Category ${categoryId} deleted successfully!`);
-    // } catch (error) {
-    //   console.error('Error deleting category:', error);
-    //   alert('Failed to delete category. Please try again.');
-    // }
+     await axios.delete(`${import.meta.env.VITE_APP_BACKEND_URL}/Admin/deleteCategory`, {
+  data: { categoryId: categoryId },
+  withCredentials: true
+});
+
+      setCategories((prevCategories) => prevCategories.filter((cat) => cat.id !== categoryId));
+      console.log(`Category ${categoryId} deleted successfully!`);
+    } catch (error) {
+      console.error('Error deleting category:', error.response ? error.response.data : error.message);
+      alert('Failed to delete category. Please try again.');
+    }
   };
 
   // Filter categories based on search term
@@ -149,35 +155,35 @@ const CategoryManagement = ({ categories, setCategories, expanded, toggleSection
 
       {expanded && (
         <div className="p-6">
-        
-            {/* Add New Category Button and Search Bar in a flex container */}
-            <div className=" flex justify-between items-center"> 
-              {/* search bar */}
-              <div className="relative flex-grow mr-4"> 
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Search className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  type="text"
-                  placeholder="Search categories by name or description..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
-              </div>
-              {/* add category button */}
-              <div > 
-                <button
-                  onClick={() => setShowAddForm(!showAddForm)}
-                  className="flex items-center text-indigo-600 hover:text-indigo-800 font-semibold py-2 px-3 rounded-md border border-indigo-600 hover:border-indigo-800 transition-colors duration-200"
-                >
-                  <PlusCircle className="w-4 h-4 mr-1" />
-                  {showAddForm ? 'Hide Add Category Form' : 'Add New Category'}
-                </button>
-              </div>
-            </div>
 
-            {/* Add Category Form */}
+          {/* Add New Category Button and Search Bar in a flex container */}
+          <div className=" flex justify-between items-center">
+            {/* search bar */}
+            <div className="relative flex-grow mr-4">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="text"
+                placeholder="Search categories by name or description..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+            {/* add category button */}
+            <div >
+              <button
+                onClick={() => setShowAddForm(!showAddForm)}
+                className="flex items-center text-indigo-600 hover:text-indigo-800 font-semibold py-2 px-3 rounded-md border border-indigo-600 hover:border-indigo-800 transition-colors duration-200"
+              >
+                <PlusCircle className="w-4 h-4 mr-1" />
+                {showAddForm ? 'Hide Add Category Form' : 'Add New Category'}
+              </button>
+            </div>
+          </div>
+
+          {/* Add Category Form */}
           <div className="mb-6 pb-4">
             {showAddForm && (
               <div className="bg-gray-50 p-4 rounded-lg shadow-inner">
@@ -191,6 +197,17 @@ const CategoryManagement = ({ categories, setCategories, expanded, toggleSection
                       onChange={(e) => setNewCategory({ ...newCategory, name: e.target.value })}
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       placeholder="e.g., Space Exploration"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Icon (URL or Emoji)</label>
+                    <input
+                      type="text"
+                      value={newCategory.icon}
+                      onChange={(e) => setNewCategory({ ...newCategory, icon: e.target.value })}
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      placeholder="e.g., 🚀 or goto https://emojidb.org/ for help"
                     />
                   </div>
                   <div>
@@ -302,7 +319,7 @@ const CategoryManagement = ({ categories, setCategories, expanded, toggleSection
                           </div>
                         )}
                         {showDeleteConfirm === category.id && (
-                          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-5 rounded-lg shadow-lg border border-red-300 z-10">
+                          <div className="absolute  left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-5 rounded-lg shadow-lg border border-red-300 z-10">
                             <p className="text-red-700 mb-3">Are you sure you want to delete {category.name}?</p>
                             <div className="flex justify-center space-x-3">
                               <button

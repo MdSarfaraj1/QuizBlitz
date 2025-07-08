@@ -3,6 +3,7 @@ const User = require('../models/User');
 const QuizSet = require('../models/QuizSet');
 const Category = require('../models/Category');
 const bcrypt = require('bcryptjs');
+const { mailTransporter }  = require("../utills/mailTransporter"); // adjust path if needed
 
 // Get all users and categories (admin only)
 exports.getAllUsersAndCategories = async (req, res) => {
@@ -129,30 +130,37 @@ exports.deleteUserByAdmin = async (req, res) => {
     res.status(500).json({ message: "Failed to delete user" });
   }
 };
+
 // Add new category (admin only)
 exports.addNewCategory = async (req, res) => {
   try {
     if (!req.user || req.user.role !== 'admin') {
       return res.status(403).json({ message: "Admin access required" });
     }
-    const { name, description } = req.body;
-    if (!name) {
+    const { name:title, description,icon } = req.body.newCategory;
+    console.log("adding new category",title,description,icon)
+    if (!title) {
       return res.status(400).json({ message: "Category name required" });
     }
-    const existing = await Category.findOne({ name });
+    const existing = await Category.findOne({title});
     if (existing) {
       return res.status(409).json({ message: "Category already exists" });
     }
-    const newCategory = new Category({ name, description });
+    const newCategory = new Category({ title, description,icon });
     await newCategory.save();
-    res.status(201).json({ message: "Category created successfully", category: newCategory });
+    res.status(201).json({ 
+       id: newCategory._id,
+  name: newCategory.title,
+  description: newCategory.description,
+  quizCount: newCategory.totalQuizzes
+    });
   } catch (error) {
     console.error("Error adding category:", error);
     res.status(500).json({ message: "Failed to add category" });
   }
 };
 // Update category (admin only)
-exports.updateCategory = async (req, res) => {
+exports.updateCategory = async (req, res) => { 
   try {
     if (!req.user || req.user.role !== 'admin') {
       return res.status(403).json({ message: "Admin access required" });
@@ -161,9 +169,14 @@ exports.updateCategory = async (req, res) => {
     if (!categoryId) {
       return res.status(400).json({ message: "Category ID required" });
     }
-    const updated = await Category.findByIdAndUpdate(categoryId, { name, description }, { new: true });
+    const updated = await Category.findByIdAndUpdate(categoryId, { title:name, description }, { new: true });
     if (!updated) return res.status(404).json({ message: "Category not found" });
-    res.status(200).json({ message: "Category updated", category: updated });
+    res.status(200).json({
+  id: updated._id,
+  name: updated.title,
+  description: updated.description,
+  quizCount: updated.totalQuizzes
+});
   } catch (error) {
     console.error("Error updating category:", error);
     res.status(500).json({ message: "Failed to update category" });
@@ -186,26 +199,47 @@ exports.deleteCategory = async (req, res) => {
     res.status(500).json({ message: "Failed to delete category" });
   }
 };
-// Send notification (admin only)
-exports.sendNotification = async (req, res) => {
+// Send announcement to all users (admin only)
+
+
+exports.sendAnnouncement = async (req, res) => {
   try {
     if (!req.user || req.user.role !== 'admin') {
-      return res.status(403).json({ message: "Admin access required" });
+      return res.status(403).json({ success: false, message: "Admin access required" });
     }
-    const { userIds, notification } = req.body;
-    if (!userIds || !notification) {
-      return res.status(400).json({ message: "User IDs and notification required" });
+
+    const { message } = req.body;
+    if (!message) {
+      return res.status(400).json({ success: false, message: "Announcement message required" });
     }
-    await User.updateMany(
-      { _id: { $in: userIds } },
-      { $push: { notifications: notification } }
-    );
-    res.status(200).json({ message: "Notification sent" });
+
+    // Step 2: Find users with notifications.email === true
+    const targetUsers = await User.find({ "notifications.email": true }, "email");
+
+    // Step 3: Send email to each of them
+    for (const user of targetUsers) {
+      const mailOptions = {
+        from: process.env.email_username,
+        to: user.email,
+        subject: "New Announcement",
+        html: `<p>${message}</p>`,
+      };
+
+      try {
+        await mailTransporter.sendMail(mailOptions);
+      } catch (emailError) {
+        console.error(`Failed to send email to ${user.email}:`, emailError.message);
+      }
+    }
+
+    res.status(200).json({ success: true, message: "Announcement sent to all users via DB and email" });
+
   } catch (error) {
-    console.error("Error sending notification:", error);
-    res.status(500).json({ message: "Failed to send notification" });
+    console.error("Error sending announcement:", error);
+    res.status(500).json({ success: false, message: "Failed to send announcement" });
   }
 };
+
 
 
 // No router export here; use these as controller functions in your routes file

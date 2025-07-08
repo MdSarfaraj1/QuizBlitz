@@ -7,8 +7,8 @@ router.get('/getAllUsersAndCategories', isLoggedIn(), adminControlller.getAllUse
 router.put('/updateUserByAdmin/:userId', isLoggedIn(), adminControlller.updateUserByAdmin); // Update user role
 router.delete('/deleteUserByAdmin/:userId', isLoggedIn(), adminControlller.deleteUserByAdmin); // Delete user
 router.post('/addNewUser', isLoggedIn(), adminControlller.addNewUser); // Add new user
-router.get('/addNewCattegory', isLoggedIn(), adminControlller.addNewCategory); // Add new category
+router.post('/addNewCategory', isLoggedIn(), adminControlller.addNewCategory); // Add new category
 router.put('/updateCategory', isLoggedIn(), adminControlller.updateCategory); // Update category
 router.delete('/deleteCategory', isLoggedIn(), adminControlller.deleteCategory); // Delete category
-router.post('/sendNotification', isLoggedIn(), adminControlller.sendNotification); // Send notification
+router.post('/sendAnnoucement', isLoggedIn(), adminControlller.sendAnnouncement); // Send notification
 module.exports = router;

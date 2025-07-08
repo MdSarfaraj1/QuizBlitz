@@ -81,7 +81,7 @@ const AdminPanel = () => {
         </div>
         {expandedSections.aiQuiz && (
           <div className="p-6">
-            <AIQuizGenerator />
+            <AIQuizGenerator  categories={categories}/>
           </div>
         )}
       </section>

@@ -1,45 +1,26 @@
 import React, { useState } from 'react';
 import { Megaphone, ChevronDown, ChevronRight, Wand2 } from 'lucide-react';
-
+import axios from 'axios'
 const CommunicationPanel = ({ expanded, toggleSection }) => {
   const [announcementMessage, setAnnouncementMessage] = useState('');
-  const [isDraftingAnnouncement, setIsDraftingAnnouncement] = useState(false);
+  // ...existing code...
 
-  const draftAnnouncement = async () => {
+  // Send announcement using backend API
+  const sendAnnouncement = async () => {
     if (!announcementMessage.trim()) return;
-    setIsDraftingAnnouncement(true);
-
     try {
-      let chatHistory = [];
-      const prompt = `Draft a concise and engaging announcement message based on the following key points: "${announcementMessage}". Make it suitable for a quiz app users. Keep it under 100 words.`;
-      chatHistory.push({ role: 'user', parts: [{ text: prompt }] });
-      const payload = { contents: chatHistory };
-      const apiKey = ''; // Canvas will automatically provide the API key
-      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      const result = await response.json();
-      if (
-        result.candidates &&
-        result.candidates.length > 0 &&
-        result.candidates[0].content &&
-        result.candidates[0].content.parts &&
-        result.candidates[0].content.parts.length > 0
-      ) {
-        const text = result.candidates[0].content.parts[0].text;
-        setAnnouncementMessage(text);
+      const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/Admin/sendAnnoucement`, { message: announcementMessage,
+},{withCredentials:true})
+      
+      if (response.status===200) {
+        alert('Announcement sent successfully!');
+        setAnnouncementMessage("");
       } else {
-        console.error('Gemini API response format unexpected:', result);
+        alert('Failed to send announcement.');
       }
     } catch (error) {
-      console.error('Error drafting announcement:', error);
-    } finally {
-      setIsDraftingAnnouncement(false);
+      alert('Error sending announcement.');
+      console.error('Error sending announcement:', error);
     }
   };
 
@@ -69,23 +50,18 @@ const CommunicationPanel = ({ expanded, toggleSection }) => {
                 className="w-full border border-gray-300 p-3 rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-purple-400 text-base"
                 rows="4"
               />
-              <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex justify-center">
+
+                {/* Only Send Announcement button is shown */}
                 <button
-                  onClick={draftAnnouncement}
-                  className="flex-1 flex items-center justify-center bg-indigo-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-indigo-700 transition-all duration-200 font-semibold text-lg"
-                  disabled={isDraftingAnnouncement}
+                  onClick={sendAnnouncement}
+                  className="flex items-center bg-gradient-to-r from-pink-500 to-red-500
+                   text-white px-6 py-3 rounded-lg shadow-md hover:from-pink-400 hover:to-red-400 transition-all duration-200 font-semibold text-lg"
                 >
-                  {isDraftingAnnouncement ? (
-                    'Drafting...'
-                  ) : (
-                    <>
-                      <Wand2 className="inline-block mr-2 w-5 h-5" /> Draft Announcement ✨
-                    </>
-                  )}
+                  <Megaphone className="inline-block mr-2 w-5 h-5" />
+                  Send Announcement
                 </button>
-                <button className="flex-1 flex items-center justify-center bg-purple-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-purple-700 transition-all duration-200 font-semibold text-lg">
-                  <Megaphone className="inline-block mr-2 w-5 h-5" /> Send Announcement
-                </button>
+
               </div>
             </div>
           </div>
