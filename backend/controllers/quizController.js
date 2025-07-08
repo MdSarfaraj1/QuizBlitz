@@ -1,4 +1,6 @@
-const QuizSet = require("../models/QuizSet");
+
+const QuizSet = require('../models/QuizSet');
+const Question = require('../models/Questions');
 const User = require('../models/User');
 const Category=require('../models/Category')
 const { generateQuizOfTheDay }= require('../utills/getQuizOfTheDay');
@@ -208,14 +210,37 @@ const user = await User.findById(req.user.id)
 exports.getMyCreatedQuizzes = async (req, res) => {
   try {
     const userId = req.user._id; 
-    const user = await User.findById(userId).populate('quizzesCreated');
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+    const quizzes = await QuizSet.find({ createdBy: userId }).populate('questions category'); 
+const transformQuizData = quizzes.map((quiz) => {
+  return {
+    _id: quiz._id.toString(), // convert ObjectId to string
+    title: quiz.title,
+    description: quiz.description,
+    category: {
+      _id: quiz.category._id.toString(),
+      name: quiz.category.title,
+    },
+    difficulty: quiz.difficulty,
+    duration: quiz.duration,
+    totalQuestions: quiz.totalQuestions,
+    image: quiz.image,
+    color: quiz.color,
+    participants: quiz.participants,
+    rating: quiz.rating,
+    ratingCount: quiz.ratingCount,
+    createdAt: quiz.createdAt || new Date().toISOString(), // fallback if not present
+    questions: quiz.questions.map((q, index) => ({
+      _id: q._id.toString(),
+      question: q.questionText,
+      type: "multiple-choice", 
+      options: q.options,
+      correctAnswer: q.options.indexOf(q.correctAnswer), // convert answer to index
+    })),
+  };
+})
 
     return res.status(200).json({ 
-      success: true,
-      quizzes: user.quizzesCreated 
+      quizzes: transformQuizData
     });
   } catch (error) {
     console.error('Error fetching created quizzes:', error);
@@ -314,39 +339,53 @@ exports.submitQuizResult = async (req, res) => {
   }
 };
 
+
+
 exports.createQuiz = async (req, res) => {
   try {
     const { quizData } = req.body;
-console.log("Creating quiz with data:", quizData);
-    const { category, description, questions } = quizData;
-    if (!questions) {
+    console.log("Creating quiz with data:", quizData);
+
+    const {
+      description,
+      category,
+      categoryId,
+      difficulty,
+      duration,
+      image,
+      questions
+    } = quizData;
+
+    if (!questions || !Array.isArray(questions) || questions.length === 0) {
       return res.status(400).json({ error: 'Questions are required.' });
     }
 
-    // Initialize an object to hold question IDs by level
-    const questionIds = {
-      easy: [],
-      medium: [],
-      hard: [],
-    };
+    const savedQuestionIds = [];
 
-    // Save each question and push its ID to the correct level
     for (const q of questions) {
       const newQuestion = new Question({
-        ...q,
-        level: q.level, // assuming level is in each question object
-        createdBy: req.user._id,
+        questionText: q.questionText,
+        correctAnswer: q.correctAnswer,
+        options: [...q.options, q.correctAnswer].sort(() => Math.random() - 0.5),
+        hint: q.hint,
+        level: difficulty,
+        category: Array.isArray(category) ? category : [category], // ensure it's an array
       });
+
       const savedQuestion = await newQuestion.save();
-      questionIds[q.level].push(savedQuestion._id);
+      savedQuestionIds.push(savedQuestion._id);
     }
 
-    // Create the quiz
     const newQuiz = new QuizSet({
-      category,
+      title:category,
       description,
-      createdBy: req.user._id,
-      questions: questionIds,
+      category:categoryId,
+      difficulty,
+      duration,
+      image,
+      questions: savedQuestionIds,
+      totalQuestions: savedQuestionIds.length,
+      createdBy: req.user._id
     });
 
     const savedQuiz = await newQuiz.save();
@@ -355,11 +394,14 @@ console.log("Creating quiz with data:", quizData);
       message: 'Quiz created successfully',
       quiz: savedQuiz
     });
+
   } catch (error) {
     console.error('Error creating quiz:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+
 
 exports.updateQuiz = async (req, res) => {
   try {

@@ -1,8 +1,10 @@
+
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { mailTransporter } = require('../utills/mailTransporter');
 const achievements = require('../InitializeDB/achievements');
+const QuizSet=require("../models/QuizSet")
 
 exports.register = async (req, res) => {
   try {
@@ -60,9 +62,8 @@ exports.login = async (req, res) => {
       }
       let data = req.body;
       let user = await User.findOne({ email: data.email });
-  
       if (user && (await bcrypt.compare(data.password, user.password))) {
-        let maximumAge=data.remember?7*24 * 60 * 60 * 1000:24 * 60 * 60 * 1000;
+        let maximumAge=data.rememberMe?7*24 * 60 * 60 * 1000:24 * 60 * 60 * 1000;
         const newToken = jwt.sign({ UserId: user._id }, process.env.secret_key, {
           expiresIn: maximumAge,
         });
@@ -159,6 +160,7 @@ exports.getProfile = async (req, res) => {
     if (!userData._id) 
       return res.status(404).json({ message: "User not found" });
     // Calculate averageScore
+    const quizCount = await QuizSet.countDocuments({ createdBy: userData._id });
     const totalQuizzesTaken = userData.totalQuizzes;
   const averageScore = totalQuizzesTaken > 0
   ? Math.round((userData.totalScore / (totalQuizzesTaken * 10)) * 100)
@@ -175,7 +177,7 @@ exports.getProfile = async (req, res) => {
       averageScore,
       rank,
       email: userData.email,
-      totalCreatedQuizzes:userData.totalCreatedQuizzes
+      totalCreatedQuizzes:quizCount
 
     });
   } catch (error) {
@@ -211,3 +213,95 @@ exports.verifyAuthToken=(req,res)=>{
       return res.status(200).json({message:"token present"})
     }
   }
+const ANONYMOUS_USER_ID = process.env.ANONYMOUS_USER_ID || '60c72b2f9b1d4c001c8e4d1a'; 
+
+exports.deleteAccount = async (req, res) => {
+  try {
+    const userId = req.user._id; // Assuming req.user._id is populated by your authentication middleware
+
+    if (!userId) {
+      return res.status(401).json({ message: "Authentication required: User ID not found in request." });
+    }
+
+    // 1. Find the user to get their username before deletion (optional, for logging/tracking)
+    const user = req.user
+    const username = user.username; // Store username for potential logging 
+
+    // 2. Anonymize quizzes created by this user
+    // Instead of deleting, we update the 'createdBy' field to the ANONYMOUS_USER_ID.
+    const quizAnonymizationResult = await QuizSet.updateMany(
+      { createdBy: userId },
+      { $set: {createdBy: ANONYMOUS_USER_ID, }}
+    );
+    console.log(`Anonymized ${quizAnonymizationResult.modifiedCount} quizzes for user ${username} (${userId}).`);
+
+
+    // 3. Clear user-specific references from the user's own document
+    await User.updateOne(
+      { _id: userId },
+      {
+        $set: {
+          savedQuizzes: [],
+          quizzesTaken: [],
+          achievements: [],
+          favoriteCategories: [],
+          totalScore: 0,
+          lastQuizOfTheDate: null,
+          quizOfTheDayStreak: 0,
+        }
+      }
+    );
+    console.log(`Cleared personal data references for user ${username} (${userId}).`);
+    // 4. Delete the user account itself
+    const deleteResult = await User.findByIdAndDelete(userId);
+    if (!deleteResult) {
+        return res.status(404).json({ message: "User not found for final deletion." });
+    }
+    console.log(`User account ${username} (${userId}) deleted successfully.`);
+    res.status(200).json({ message: "Account deleted successfully, created quizzes anonymized." });
+
+  } catch (error) {
+    console.error("Error deleting account:", error);
+    res.status(500).json({ message: errorMessage });
+  }
+};
+
+
+// Get notification status
+exports.getNotificationStatus = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    if (!userId) return res.status(401).json({ message: "Authentication required" });
+    const user = req.user
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.status(200).json({ notifications: user.notifications });
+  } catch (error) {
+    console.error("Error fetching notification status:", error);
+    res.status(500).json({ message: "Failed to fetch notification status" });
+  }
+};
+
+// Update notification status
+exports.updateNotificationStatus = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    if (!userId) return res.status(401).json({ message: "Authentication required" });
+
+    const { notifications } = req.body;
+    if (!notifications) {
+      return res.status(400).json({ message: "Notifications required" });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: { notifications } }, // directly update full notifications object
+      { new: true, fields: { notifications: 1 } }
+    );
+
+    if (!updatedUser) return res.status(404).json({ message: "User not found" });
+    res.status(200).json({ notifications: updatedUser.notifications });
+  } catch (error) {
+    console.error("Error updating notification status:", error);
+    res.status(500).json({ message: "Failed to update notification status" });
+  }
+};

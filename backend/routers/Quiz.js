@@ -21,7 +21,7 @@ router.post('/saveUnsaveQuiz', isLoggedIn(),quizController.saveUnsaveQuiz);//don
 router.get('/userProgress', isLoggedIn('quizzesTaken'), quizController.getUserProgress);//done
 router.get('/favoriteCategories',isLoggedIn('favoriteCategories quizzesTaken'), quizController.getUserFavoriteCategories);//done
 router.put('/updateFavoriteCategories', isLoggedIn('favoriteCategories'), quizController.updateUserFavoriteCategories);//done
-// router.get('/userCreatedQuiz',isLoggedIn, quizController.getMyCreatedQuizzes);
+router.get('/userCreatedQuiz',isLoggedIn(), quizController.getMyCreatedQuizzes);
 
 // Quiz creation and management (creator/admin)
 router.post('/createQuiz', isLoggedIn(),quizController.createQuiz);//done

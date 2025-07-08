@@ -3,11 +3,12 @@ import {
   Plus, Edit3, Trash2, Users, UserCheck, UserX,
   Megaphone, Bell, Brain, Calendar, Search, Filter, Save, X, ChevronDown, ChevronRight, Mail, Wand2 // Added Wand2 for sparkle effect
 } from 'lucide-react';
+import AIQuizGenerator from './AiQuizGenerator';
 
 const AdminPanel = () => {
   // State to manage the expansion of different sections (categories, users, communication, advanced)
   const [expandedSections, setExpandedSections] = useState({
-    categories: true, users: true, communication: true, advanced: false
+    categories: false, users: false, communication: false, aiQuiz: false, advanced: false
   });
 
   // State for search queries in categories and users sections
@@ -527,47 +528,20 @@ const AdminPanel = () => {
       </section>
 
       {/* Advanced Features - AI Quiz Generator (Commented out as per original) */}
-      {/* <section className="mb-10 bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:shadow-2xl">
-        <div onClick={() => toggleSection('advanced')}
-          className="flex items-center cursor-pointer p-5 bg-gradient-to-r from-pink-600 to-red-700 text-white rounded-t-2xl hover:from-pink-700 hover:to-red-800 transition-all duration-200">
-          {expandedSections.advanced ? <ChevronDown className="w-6 h-6 text-pink-200" /> : <ChevronRight className="w-6 h-6 text-pink-200" />}
+      {/* AI Quiz Generator Section */}
+      <section className="mb-10 bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:shadow-2xl">
+        <div onClick={() => toggleSection('aiQuiz')}
+          className="flex items-center cursor-pointer p-5 bg-gradient-to-r from-indigo-600 to-purple-700 text-white rounded-t-2xl hover:from-indigo-700 hover:to-purple-800 transition-all duration-200">
+          {expandedSections.aiQuiz ? <ChevronDown className="w-6 h-6 text-indigo-200" /> : <ChevronRight className="w-6 h-6 text-indigo-200" />}
           <Brain className="ml-3 w-7 h-7" />
-          <h2 className="ml-4 text-2xl font-bold tracking-wide">Advanced Features (AI Powered)</h2>
+          <h2 className="ml-4 text-2xl font-bold tracking-wide">AI Quiz Generator</h2>
         </div>
-        {expandedSections.advanced && (
-          <div className="p-6 space-y-6">
-            <div>
-              <label className="font-bold text-lg text-gray-700 block mb-3">AI Quiz Topic Generator</label>
-              <p className="text-gray-600 mb-4">Enter a general topic or category, and our AI will suggest new quiz ideas.</p>
-              <div className="flex flex-col sm:flex-row gap-3">
-                <input
-                  type="text"
-                  value={quizTopicPrompt}
-                  onChange={e => setQuizTopicPrompt(e.target.value)}
-                  placeholder="e.g., 'World War II history' or 'Advanced Physics'"
-                  className="flex-1 border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 text-base"
-                />
-                <button onClick={generateQuizTopics}
-                  className="flex-shrink-0 flex items-center justify-center bg-pink-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-pink-700 transition-all duration-200 font-semibold text-lg"
-                  disabled={isGeneratingQuiz}>
-                  {isGeneratingQuiz ? 'Generating...' : <><Brain className="inline-block mr-2 w-5 h-5" /> Generate Topics ✨</>}
-                </button>
-              </div>
-              {quizSuggestions.length > 0 && (
-                <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                  <h4 className="font-semibold text-yellow-800 mb-2">Suggested Quiz Topics:</h4>
-                  <ul className="list-disc list-inside text-yellow-700 space-y-1">
-                    {quizSuggestions.map((suggestion, index) => (
-                      <li key={index}>{suggestion.replace(/^- /, '')}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
+        {expandedSections.aiQuiz && (
+          <div className="p-6">
+            <AIQuizGenerator />
           </div>
         )}
-      </section> */}
-
+      </section>
     </div>
   );
 };

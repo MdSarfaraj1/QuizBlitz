@@ -16,8 +16,11 @@ router.post('/logout', authController.logout);
 router.post('/verify-email', authController.verifyEmail);
 router.post('/resend-verification', authController.verifyEmail);
 router.get('/getProfile', isLoggedIn(), authController.getProfile);
-router.put('/updateProfile', isLoggedIn(),upload.single('avatar'), authController.updateProfile);//pending
+router.put('/updateProfile', isLoggedIn(),upload.single('avatar'), authController.updateProfile);
+router.get('/getNotifications', isLoggedIn('notifications'), authController.getNotificationStatus);
+router.post('/updateNotifications', isLoggedIn(), authController.updateNotificationStatus);
 router.put('/updatePassword', isLoggedIn(), authController.updatePassword);
 router.get('/verify-token', authController.verifyAuthToken);
+router.delete('/deleteAccount', isLoggedIn(), authController.deleteAccount);
 
 module.exports = router;

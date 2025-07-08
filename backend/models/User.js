@@ -6,7 +6,6 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true, minlength: 6 },
   avatar: {type: String,default: "https://cdn-icons-png.flaticon.com/512/10337/10337609.png"},
   role: {type: String,enum: ["user", "admin"],default: "user",},
-  quizzesCreated: [{ type: mongoose.Schema.Types.ObjectId, ref: "QuizSet" }],
   savedQuizzes: [{ type: mongoose.Schema.Types.ObjectId, ref: "QuizSet" }],
   quizzesTaken: [
     {
@@ -27,7 +26,10 @@ const userSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   quizOfTheDayStreak: { type: Number, default: 0 },
   favoriteCategories: [{ type:mongoose.Schema.Types.ObjectId, ref: "Category" }],
-  notifications: {type: Boolean, default: true},
+notifications: {
+  email: { type: Boolean, default: true },
+  remainders: { type: Boolean, default: true }
+},
   resetPasswordToken: String,
   resetPasswordExpires: Date,
 });

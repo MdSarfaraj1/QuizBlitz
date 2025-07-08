@@ -1,19 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Trash2, AlertTriangle, Shield, User, Database ,ClipboardList, FilePlus2, Award, Star} from "lucide-react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../Context/UserContextProvider";
 
 
-// Mock user context for demonstration
-const mockUser = {
-  name: "John Doe",
+
+const fallbackUser = {
+  username: "John Doe",
   email: "john.doe@example.com",
-  joinDate: "January 2024",
- quizzesTaken:65,
- quizzesCreated: 10,
+  totalQuizzesTaken: 65,
+  totalCreatedQuizzes: 10,
   rank: 5,
-  points: 1200,
+  totalScore: 1200,
 };
 
-export default function DeleteAccount() {
+export default function DeleteAccount({ user }) {
+  const { setUser } = useAuth(); 
+ const navigate = useNavigate();
+  // Use real user from props/context, fallback to mock
+  const [currentUser,setCurrentUser] = useState(user || fallbackUser)
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [confirmation, setConfirmation] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -27,6 +33,23 @@ export default function DeleteAccount() {
     setShowToast(true);
     setTimeout(() => setShowToast(false), 3000);
   };
+useEffect(() => {
+  const fetchUserData = async () => {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}/User/getProfile`, {
+        withCredentials: true});
+      if(res.status==200) {
+        const data = res.data;
+      setCurrentUser(data);
+      } else {
+       console.alert("Failed to fetch user data");
+      }
+    } catch (err) {
+      showToastMessage(err.message || "Error fetching user data");
+    }
+  }
+  fetchUserData();
+},[])
 
   const handleDeleteAccount = async () => {
     if (confirmation !== "DELETE") {
@@ -35,14 +58,25 @@ export default function DeleteAccount() {
     }
 
     setIsDeleting(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      showToastMessage("Account successfully deleted!", "success");
-      setIsDialogOpen(false);
-      setConfirmation("");
-      setIsDeleting(false);
-    }, 2000);
+    try {
+      const response = await axios.delete(`${import.meta.env.VITE_APP_BACKEND_URL}/User/deleteAccount`, {
+        withCredentials: true,
+      });
+      if (response.status === 200) {
+        
+        resetDialog();
+        showToastMessage("Account deleted successfully", "success");
+       //logout
+          await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/user/logout`,{},{ withCredentials: true, });
+          setUser(null, null,null); // Clear from context
+          navigate("/");
+       
+      } else {
+        showToastMessage("Failed to delete account");
+      }
+    } catch (err) {
+      showToastMessage(err.message || "Error deleting account");
+    } 
   };
 
   const resetDialog = () => {
@@ -84,7 +118,7 @@ export default function DeleteAccount() {
       <div className="flex items-center gap-3 mb-2">
         <ClipboardList className="w-6 h-6 text-blue-600 group-hover:text-blue-800" />
         <div className="text-2xl font-extrabold text-blue-700 group-hover:text-blue-900">
-          {mockUser.quizzesTaken}
+          {currentUser.totalQuizzesTaken}
         </div>
       </div>
       <div className="text-sm font-medium text-blue-800">Quizzes Taken</div>
@@ -94,7 +128,7 @@ export default function DeleteAccount() {
       <div className="flex items-center gap-3 mb-2">
         <FilePlus2 className="w-6 h-6 text-green-600 group-hover:text-green-800" />
         <div className="text-2xl font-extrabold text-green-700 group-hover:text-green-900">
-          {mockUser.quizzesCreated}
+          {currentUser.totalCreatedQuizzes}
         </div>
       </div>
       <div className="text-sm font-medium text-green-800">Quizzes Created</div>
@@ -104,7 +138,7 @@ export default function DeleteAccount() {
       <div className="flex items-center gap-3 mb-2">
         <Award className="w-6 h-6 text-purple-600 group-hover:text-purple-800" />
         <div className="text-2xl font-extrabold text-purple-700 group-hover:text-purple-900">
-          #{mockUser.rank}
+          #{currentUser.rank}
         </div>
       </div>
       <div className="text-sm font-medium text-purple-800">Rank</div>
@@ -114,7 +148,7 @@ export default function DeleteAccount() {
       <div className="flex items-center gap-3 mb-2">
         <Star className="w-6 h-6 text-yellow-600 group-hover:text-yellow-800" />
         <div className="text-2xl font-extrabold text-yellow-700 group-hover:text-yellow-900">
-          {mockUser.points}
+          {currentUser.totalScore}
         </div>
       </div>
       <div className="text-sm font-medium text-yellow-800">Points Obtained</div>
@@ -178,8 +212,8 @@ export default function DeleteAccount() {
                   <span className="font-medium">Data to be deleted:</span>
                 </div>
                 <ul className="text-sm text-gray-600 space-y-1 ml-6">
-                  <li>• Profile: {mockUser.name} ({mockUser.email})</li>
-                  <li>• {mockUser.postsCount} posts and {mockUser.commentsCount} comments</li>
+                  <li>• Profile: {currentUser.username} ({currentUser.email})</li>
+                  <li>• Participations and Creations</li>
                   <li>• All account settings and preferences</li>
                 </ul>
               </div>

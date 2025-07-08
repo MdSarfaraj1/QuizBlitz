@@ -9,16 +9,10 @@ import UserSettings  from '../components/UserSettings/UserSettings';
 import QuizProgressDashboard from '../components/Dashboard/Chart';
 import CreateQuiz from '../components/CreateQuiz/CreateQuiz';
 import AdminPanel from '../components/Dashboard/AdminPanel';
+import MyQuizzes from '../components/Dashboard/MyQuizzes';
 import axios from 'axios';
 import { useAuth } from '../Context/UserContextProvider';
 import { useNavigate } from 'react-router-dom';
-// Placeholder components for other sections
-const MyQuizzes = () => (
-  <div className="bg-white rounded-lg shadow-md p-6">
-    <h2 className="text-2xl font-bold mb-4">My Quizzes</h2>
-    <p className="text-gray-600">Here you can view and manage all your created quizzes.</p>
-  </div>
-);
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
@@ -53,11 +47,7 @@ const { setUser } = useAuth();
       case 'quizzes':
         return (
           <div className="ml-10">
-            <div className="mb-8">
-              <h1 className="text-2xl font-bold">My Quizzes</h1>
-              <p className="text-gray-600">Manage your created quizzes</p>
-            </div>
-            <MyQuizzes />
+            <MyQuizzes/>
           </div >
         );
       case 'adminPanel':

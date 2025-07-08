@@ -56,6 +56,11 @@ function getRandomColor() {
     required: true,
     default: new mongoose.Types.ObjectId("683dfbb4e711d5e46fc227cd"), // Default admin ID
   },
+  createdAt: {
+  type: Date,
+  default: Date.now,
+}
+
 });
 
 // Virtual to ensure totalQuestions matches actual questions length
