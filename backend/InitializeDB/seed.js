@@ -132,12 +132,12 @@ async function seedDatabase() {
 
     if (additionalQuizSets.length > 0) {
       await QuizSet.insertMany(additionalQuizSets);
-      console.log("➕ Additional QuizSets created:", additionalQuizSets.length);
+      console.log(" Additional QuizSets created:", additionalQuizSets.length);
     }
 
     // Step 7: Insert Achievements
     await Achievement.insertMany(achievementsData);
-    console.log("🏆 Achievements inserted:", achievementsData.length);
+    console.log("Achievements inserted:", achievementsData.length);
 
     // Step 8: Create some mixed-difficulty challenge sets
     const challengeQuizSets = [];
@@ -184,10 +184,19 @@ async function seedDatabase() {
 
     if (challengeQuizSets.length > 0) {
       await QuizSet.insertMany(challengeQuizSets);
-      console.log("🔥 Challenge QuizSets created:", challengeQuizSets.length);
+      console.log(" Challenge QuizSets created:", challengeQuizSets.length);
     }
 
-    console.log("✅ Database seeding completed successfully!");
+    console.log("🔄 Updating totalQuizzes for categories...");
+    for (const category of insertedCategories) {
+      const quizCount = await QuizSet.countDocuments({ category: category._id });
+      await Category.updateOne(
+        { _id: category._id },
+        { $set: { totalQuizzes: quizCount } }
+      );
+      console.log(`- Category "${category.title}" now has ${quizCount} quizzes.`);
+    }
+    console.log("✅Database seeding completed successfully!");
     
     // Summary
     const totalQuizSets = await QuizSet.countDocuments();

@@ -4,7 +4,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { mailTransporter } = require('../utills/mailTransporter');
 const achievements = require('../InitializeDB/achievements');
-const QuizSet=require("../models/QuizSet")
+const QuizSet = require("../models/QuizSet");
+
+
 
 exports.register = async (req, res) => {
   try {

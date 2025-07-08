@@ -389,7 +389,13 @@ exports.createQuiz = async (req, res) => {
     });
 
     const savedQuiz = await newQuiz.save();
-
+   if (categoryId) {
+      await Category.findByIdAndUpdate(
+        categoryId,
+        { $inc: { totalQuizzes: 1 } }, // Increment totalQuizzes by 1
+        { new: true } // Return the updated document (optional, but good practice)
+      );
+    }
     res.status(201).json({
       message: 'Quiz created successfully',
       quiz: savedQuiz

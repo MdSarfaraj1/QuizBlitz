@@ -8,7 +8,7 @@ import ThingsToLearn from '../components/Dashboard/ThingsToLearn';
 import UserSettings  from '../components/UserSettings/UserSettings';
 import QuizProgressDashboard from '../components/Dashboard/Chart';
 import CreateQuiz from '../components/CreateQuiz/CreateQuiz';
-import AdminPanel from '../components/Dashboard/AdminPanel';
+import AdminPanel from '../components/Admin Panel/AdminPanel';
 import MyQuizzes from '../components/Dashboard/MyQuizzes';
 import axios from 'axios';
 import { useAuth } from '../Context/UserContextProvider';

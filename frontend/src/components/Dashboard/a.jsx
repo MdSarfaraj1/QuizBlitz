@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import {
   Plus, Edit3, Trash2, Users, UserCheck, UserX,
-  Megaphone, Bell, Brain, Calendar, Search, Filter, Save, X, ChevronDown, ChevronRight, Mail, Wand2 // Added Wand2 for sparkle effect
+  Megaphone, Brain, Search, Save, X, ChevronDown, ChevronRight, Mail, Wand2 
 } from 'lucide-react';
 import AIQuizGenerator from './AiQuizGenerator';
 
 const AdminPanel = () => {
   // State to manage the expansion of different sections (categories, users, communication, advanced)
   const [expandedSections, setExpandedSections] = useState({
-    categories: false, users: false, communication: false, aiQuiz: false, advanced: false
+    categories: false, users: true, communication: false, aiQuiz: false, advanced: false
   });
 
   // State for search queries in categories and users sections
@@ -237,16 +237,16 @@ const AdminPanel = () => {
     // Main container for the admin panel, with a subtle gradient background and improved font
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8 font-inter text-gray-800 antialiased">
       {/* Page Title */}
-      <h1 className="text-4xl font-extrabold text-blue-900 mb-8 text-center drop-shadow-sm">Admin Dashboard</h1>
+      <h1 className="text-4xl font-extrabold text-indigo-800 mb-8 text-center drop-shadow-md">Admin Dashboard</h1>
 
       {/* Users Section */}
       <section className="mb-10 bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:shadow-2xl">
         <div onClick={() => toggleSection('users')}
-          className="flex items-center cursor-pointer p-5 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-t-2xl hover:from-blue-700 hover:to-indigo-800 transition-all duration-200">
-          {expandedSections.users ? <ChevronDown className="w-6 h-6 text-blue-200" /> : <ChevronRight className="w-6 h-6 text-blue-200" />}
-          <Users className="ml-3 w-7 h-7" />
-          <h2 className="ml-4 text-2xl font-bold tracking-wide">Manage Users</h2>
-        </div>
+        className="flex items-center cursor-pointer p-5 bg-gradient-to-r from-blue-700 to-purple-700 text-white rounded-t-2xl hover:from-blue-800 hover:to-purple-800 transition-all duration-200">
+        {expandedSections.users ? <ChevronDown className="w-6 h-6 text-blue-300" /> : <ChevronRight className="w-6 h-6 text-blue-300" />}
+        <Users className="ml-3 w-7 h-7" />
+        <h2 className="ml-4 text-2xl font-bold tracking-wide">Manage Users</h2>
+      </div>
         {expandedSections.users && (
           <div className="p-6">
             <div className="relative mb-6">
@@ -349,11 +349,11 @@ const AdminPanel = () => {
       {/* Categories Section */}
       <section className="mb-10 bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:shadow-2xl">
         <div onClick={() => toggleSection('categories')}
-          className="flex items-center cursor-pointer p-5 bg-gradient-to-r from-teal-600 to-green-700 text-white rounded-t-2xl hover:from-teal-700 hover:to-green-800 transition-all duration-200">
-          {expandedSections.categories ? <ChevronDown className="w-6 h-6 text-teal-200" /> : <ChevronRight className="w-6 h-6 text-teal-200" />}
-          <Plus className="ml-3 w-7 h-7" />
-          <h2 className="ml-4 text-2xl font-bold tracking-wide">Manage Categories</h2>
-        </div>
+        className="flex items-center cursor-pointer p-5 bg-gradient-to-r from-emerald-600 to-lime-700 text-white rounded-t-2xl hover:from-emerald-700 hover:to-lime-800 transition-all duration-200">
+        {expandedSections.categories ? <ChevronDown className="w-6 h-6 text-emerald-200" /> : <ChevronRight className="w-6 h-6 text-emerald-200" />}
+        <Plus className="ml-3 w-7 h-7" />
+        <h2 className="ml-4 text-2xl font-bold tracking-wide">Manage Categories</h2>
+      </div>
         {expandedSections.categories && (
           <div className="p-6">
             <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
@@ -491,11 +491,11 @@ const AdminPanel = () => {
       {/* Communication & Notification Section */}
       <section className="mb-10 bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:shadow-2xl">
         <div onClick={() => toggleSection('communication')}
-          className="flex items-center cursor-pointer p-5 bg-gradient-to-r from-purple-600 to-pink-700 text-white rounded-t-2xl hover:from-purple-700 hover:to-pink-800 transition-all duration-200">
-          {expandedSections.communication ? <ChevronDown className="w-6 h-6 text-purple-200" /> : <ChevronRight className="w-6 h-6 text-purple-200" />}
-          <Megaphone className="ml-3 w-7 h-7" />
-          <h2 className="ml-4 text-2xl font-bold tracking-wide">Communication & Notifications</h2>
-        </div>
+        className="flex items-center cursor-pointer p-5 bg-gradient-to-r from-rose-600 to-fuchsia-700 text-white rounded-t-2xl hover:from-rose-700 hover:to-fuchsia-800 transition-all duration-200">
+        {expandedSections.communication ? <ChevronDown className="w-6 h-6 text-rose-200" /> : <ChevronRight className="w-6 h-6 text-rose-200" />}
+        <Megaphone className="ml-3 w-7 h-7" />
+        <h2 className="ml-4 text-2xl font-bold tracking-wide">Send Announcements & Notifications</h2>
+      </div>
         {expandedSections.communication && (
           <div className="p-6 space-y-6">
 
@@ -527,15 +527,14 @@ const AdminPanel = () => {
         )}
       </section>
 
-      {/* Advanced Features - AI Quiz Generator (Commented out as per original) */}
       {/* AI Quiz Generator Section */}
       <section className="mb-10 bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:shadow-2xl">
-        <div onClick={() => toggleSection('aiQuiz')}
-          className="flex items-center cursor-pointer p-5 bg-gradient-to-r from-indigo-600 to-purple-700 text-white rounded-t-2xl hover:from-indigo-700 hover:to-purple-800 transition-all duration-200">
-          {expandedSections.aiQuiz ? <ChevronDown className="w-6 h-6 text-indigo-200" /> : <ChevronRight className="w-6 h-6 text-indigo-200" />}
-          <Brain className="ml-3 w-7 h-7" />
-          <h2 className="ml-4 text-2xl font-bold tracking-wide">AI Quiz Generator</h2>
-        </div>
+     <div onClick={() => toggleSection('aiQuiz')}
+  className="flex items-center cursor-pointer p-5 bg-gradient-to-r from-violet-700 to-indigo-800 text-white rounded-t-2xl hover:from-violet-800 hover:to-indigo-900 transition-all duration-200">
+  {expandedSections.aiQuiz ? <ChevronDown className="w-6 h-6 text-violet-300" /> : <ChevronRight className="w-6 h-6 text-violet-300" />}
+  <Brain className="ml-3 w-7 h-7" />
+  <h2 className="ml-4 text-2xl font-bold tracking-wide">AI Quiz Generator</h2>
+</div>
         {expandedSections.aiQuiz && (
           <div className="p-6">
             <AIQuizGenerator />
