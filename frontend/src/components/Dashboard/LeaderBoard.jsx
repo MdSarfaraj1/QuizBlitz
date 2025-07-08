@@ -224,7 +224,7 @@ const [currentUser, setCurrentUser] = useState({rank: 0,
             "space-y-3",
             fullPledge ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4 space-y-0" : ""
           )}>
-            {topUsers.length>0 && topUsers.slice(0,4).map((user) => {
+            {topUsers.length>0 && topUsers.slice(0,2).map((user) => {
               const PositionIcon = getPositionIcon(user.rank);
               
               return (
