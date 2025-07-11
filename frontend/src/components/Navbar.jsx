@@ -115,7 +115,7 @@ const Navbar = () => {
               </span>
             ) : (
               <span
-                className="text-myColour hover:text-transparent hover:bg-gradient-to-r hover:from-pink-600 hover:to-purple-600 hover:bg-clip-text cursor-pointer transition-all duration-300 font-semibold text-lg hover:translate-y-10 transform"
+                className="text-myColour hover:text-transparent hover:bg-gradient-to-r hover:from-pink-600 hover:to-purple-600 hover:bg-clip-text cursor-pointer transition-all duration-300 font-semibold text-lg hover:scale-105 transform"
                 onClick={() => navigate("/login")}
               >
                 Get Started

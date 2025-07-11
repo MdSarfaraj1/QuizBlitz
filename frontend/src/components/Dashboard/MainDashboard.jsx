@@ -3,7 +3,6 @@ import UserProfile from "./UserProfile";
 import RecentQuizzes from "./RecentQuizzes";
 import Leaderboard from "./LeaderBoard";
 import SavedQuizzes from "./SavedQuizzes";
-import Achievements from "./Acheivements";
 import FavoriteQuizCategories from "./FevouriteQuiz";
 
 

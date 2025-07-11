@@ -25,7 +25,8 @@ router.get('/userCreatedQuiz',isLoggedIn(), quizController.getMyCreatedQuizzes);
 
 // Quiz creation and management (creator/admin)
 router.post('/createQuiz', isLoggedIn(),quizController.createQuiz);//done
-router.put('/update/:id',isLoggedIn(),  quizController.updateQuiz);
+router.put('/updateQuiz/:id',isLoggedIn(),  quizController.updateQuiz);
+router.delete('/deleteQuiz/:id',isLoggedIn(),quizController.deleteQuiz)
 
 router.get('/quizOfTheDay',quizController.quizOfTheDay)//done
 router.get('/getLeaderboard/:id', quizController.getLeaderboard);//done

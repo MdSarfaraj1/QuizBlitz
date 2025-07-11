@@ -6,7 +6,7 @@ import { generateNewAvatar } from "../../Utills/GenerateAvatar"; // Assume this 
 import axios from "axios";
 import { useAuth } from "../../Context/UserContextProvider"; 
 export function ProfileSection() {
-  const {setUser ,userId} = useAuth();
+  const {setUser ,userId,role} = useAuth();
 const [name, setName] = useState("");
 const [email, setEmail] = useState("");
 const [avatar, setAvatarUrl] = useState("");
@@ -81,7 +81,7 @@ const handleSubmit = async (e) => {
     );
     if(res.status===200){
       setAvatarUrl(res.data.avatar); 
-      setUser(userId,name,res.data.avatar); // Update user context with new data
+      setUser(userId,name,res.data.avatar,role); // Update user context with new data
     showToast("Profile updated successfully!", "success");
     setSelectedFile(null);
     }

@@ -112,7 +112,7 @@ const handleLearnLater = (itemIndex) => {
         category:quizData.category||category
 
        
-      },
+      }, replace: true,
     });
   };
 
@@ -312,11 +312,12 @@ const handleLearnLater = (itemIndex) => {
           >
             <span className="mr-2 text-xl">🚩</span> Mark for Revisit
           </button>
-          <button
-            disabled={!userId}
-            onClick={handleLearnLater}
-            className="runningQuiz-button bg-orange-600 hover:bg-orange-500"
-          >
+           <button
+    disabled={!userId}
+    onClick={handleLearnLater}
+    className={`runningQuiz-button bg-orange-600 hover:bg-orange-500 
+      ${!userId ? 'opacity-50 cursor-not-allowed' : ''}`}
+  >
             <span className="mr-2 text-xl">📚</span> Learn Later
           </button>
 

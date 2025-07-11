@@ -3,7 +3,6 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { mailTransporter } = require('../utills/mailTransporter');
-const achievements = require('../InitializeDB/achievements');
 const QuizSet = require("../models/QuizSet");
 
 
@@ -41,6 +40,7 @@ exports.register = async (req, res) => {
               userId: newUser._id,
               username: newUser.username,
               avatar: newUser.avatar,
+              role:newUser.role
             }); 
         } catch (error) {
           console.error("Signup error:", error);
@@ -81,6 +81,7 @@ exports.login = async (req, res) => {
                     userId: user._id,
                     username: user.username,
                     avatar: user.avatar,
+                    role:user.role
                   });
       }
       res.status(409).json({

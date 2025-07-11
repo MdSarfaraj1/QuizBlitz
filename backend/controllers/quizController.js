@@ -150,7 +150,7 @@ exports.startGuestQuiz = async (req, res) => {
   try {
     const { id: categoryId } = req.params;
     const { difficulty, numberOfQuestions } = req.body;
-      let generatedQuestions = await generateQuestions(
+      let quizData = await generateQuestions(
         categoryId,
         difficulty,
         numberOfQuestions
@@ -159,7 +159,7 @@ exports.startGuestQuiz = async (req, res) => {
     console.log("Guest quiz started successfully.");
 
     return res.status(200).json({
-      questions: generatedQuestions,
+      questions: quizData.generatedQuestions,
       difficulty,
     });
   } catch (error) {
@@ -408,42 +408,60 @@ exports.createQuiz = async (req, res) => {
 };
 
 
-
 exports.updateQuiz = async (req, res) => {
   try {
     const quizId = req.params.id;
-    const { description, questions } = req.body;
+    const {
+      description,
+      questions,
+      title,
+      difficulty,
+      duration,
+      totalQuestions,
+      image
+    } = req.body;
+
     const quiz = await QuizSet.findById(quizId);
-    if (!quiz) {
-      return res.status(404).json({ error: 'Quiz not found' });
-    }
+    if (!quiz) return res.status(404).json({ error: 'Quiz not found' });
 
-    // Check if the quiz belongs to the logged-in user
-    if (quiz.createdBy.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ error: 'Unauthorized: You do not own this quiz' });
-    }
+    if (quiz.createdBy.toString() !== req.user._id.toString())
+      return res.status(403).json({ error: 'Unauthorized' });
 
-    // Update fields
+    // ✅ Basic field updates
     if (description) quiz.description = description;
-    if (questions) {
-      const questionIds = {
-        easy: [],
-        medium: [],
-        hard: [],
+    if (title) quiz.title = title;
+    if (difficulty) quiz.difficulty = difficulty;
+    if (duration) quiz.duration = duration;
+    if (image) quiz.image = image;
+
+    // ✅ Handle questions: create or update
+    const updatedQuestionIds = [];
+
+    for (const q of questions) {
+      const questionData = {
+        questionText: q.question,
+        options: q.options,
+        correctAnswer: q.options[q.correctAnswer], // convert index to string value
+        level: difficulty,
+        category: [title.toLowerCase()],
+        createdBy: req.user._id,
+        marks: 1,
       };
 
-      for (const q of questions) {
-        const newQuestion = new Question({
-          ...q,
-          level: q.level,
-          createdBy: req.user._id,
-        });
-        const savedQuestion = await newQuestion.save();
-        questionIds[q.level].push(savedQuestion._id);
+      if (q._id) {
+        // Update existing question
+        const updated = await Question.findByIdAndUpdate(q._id, questionData, { new: true });
+        if (updated) updatedQuestionIds.push(updated._id);
+      } else {
+        // Create new question
+        const newQuestion = new Question(questionData);
+        const saved = await newQuestion.save();
+        updatedQuestionIds.push(saved._id);
       }
-
-      quiz.questions = questionIds;
     }
+
+    quiz.questions = updatedQuestionIds;
+    quiz.totalQuestions = updatedQuestionIds.length;
 
     const updatedQuiz = await quiz.save();
 
@@ -456,6 +474,8 @@ exports.updateQuiz = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+
 
 
 exports.quizOfTheDay= async (req, res) => {
@@ -737,5 +757,25 @@ exports.submitQuizRating = async (req, res) => {
   } catch (error) {
     console.error("Error submitting quiz rating:", error);
     res.status(500).json({ message: "Failed to submit rating." });
+  }
+};
+
+exports.deleteQuiz = async (req, res) => {
+  try {
+    const quizId = req.params.id;
+
+    const deletedQuiz = await QuizSet.findOneAndDelete({
+      _id: quizId,
+      createdBy: req.user._id
+    });
+
+    if (!deletedQuiz) {
+      return res.status(403).json({ error: "Unauthorized or Quiz not found" });
+    }
+
+    res.status(200).json({ message: "Quiz deleted successfully", quiz: deletedQuiz });
+  } catch (err) {
+    console.error("Delete quiz error:", err);
+    res.status(500).json({ error: "Internal server error" });
   }
 };

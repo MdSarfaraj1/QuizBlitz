@@ -3,10 +3,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "../UI/card";
 import { BarChart, Trophy, Award, Target, Crown, Medal, Star } from 'lucide-react';
 import { cn } from "../../Utills/cn";
 import { useEffect,useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Context/UserContextProvider';
 import axios from 'axios';
 const Leaderboard = ({ fullPledge = false }) => {
   const {userId}=useAuth()
+  const navigate=useNavigate()
+  if(!userId)
+  navigate("/")
 const [topUsers, setTopUsers] = useState([])
 const [currentUser, setCurrentUser] = useState({rank: 0,
         username: "Loading...",

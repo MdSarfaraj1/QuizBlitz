@@ -15,6 +15,9 @@ export const UserContextProvider=({children})=>{
     const [profilePicture, setProfilePicture] = useState(() => {
       return localStorage.getItem('profilePicture') || null;
   });
+  const [role,setRole]=useState(()=>{
+    return localStorage.getItem('role')|| null
+  })
 
     const [flashMessage,setMessage]=useState("")
 
@@ -24,27 +27,32 @@ export const UserContextProvider=({children})=>{
       };
     
     // Update localStorage whenever userId changes
-    const updateUserId = (newUserId,newUsername,profilePicture) => {
-        if (newUserId) {
-            localStorage.setItem('userId', newUserId);
-            localStorage.setItem('username',newUsername)
-            localStorage.setItem('profilePicture',profilePicture)
-            setUserId(newUserId);
-            setUsername(newUsername);
-            setProfilePicture(profilePicture);
-        } else {
-            localStorage.removeItem('userId');
-            localStorage.removeItem('username');
-            localStorage.removeItem('profilePicture')
-        }
-        
-    };
+   const updateUserId = (newUserId, newUsername, profilePicture,newRole) => {
+  if (newUserId) {
+    localStorage.setItem('userId', newUserId);
+    localStorage.setItem('username', newUsername);
+    localStorage.setItem('profilePicture', profilePicture);
+    localStorage.setItem('role',newRole)
+  } else {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('username');
+    localStorage.removeItem('profilePicture');
+    localStorage.removeItem('role')
+  }
+
+  // Always update state to ensure re-render
+  setUserId(newUserId);
+  setUsername(newUsername);
+  setProfilePicture(profilePicture);
+  setRole(newRole)
+};
+
 
 const clearAuth = () => {
-    localStorage.removeItem("userId");
-    localStorage.removeItem("username");
-    localStorage.removeItem("profilePicture");
-    updateUserId(null);
+    // localStorage.removeItem("userId");
+    // localStorage.removeItem("username");
+    // localStorage.removeItem("profilePicture");
+    updateUserId(null,null,null,null);
   };
 
   useEffect(() => {
@@ -69,7 +77,7 @@ const clearAuth = () => {
   }, []);
       
     return(
-        <UserContext.Provider value={{userId,username,setUser:updateUserId,flashMessage,setFlashMessage,profilePicture}}>
+        <UserContext.Provider value={{userId,role,username,setUser:updateUserId,flashMessage,setFlashMessage,profilePicture}}>
             {children}
         </UserContext.Provider>
     )

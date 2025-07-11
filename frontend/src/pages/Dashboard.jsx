@@ -16,8 +16,10 @@ import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
-const { setUser } = useAuth();
-  const navigate = useNavigate();
+const { setUser} = useAuth();
+const navigate = useNavigate();
+
+  
   const handleLogout = async () => {
     try {
        await axios.post(
@@ -27,7 +29,7 @@ const { setUser } = useAuth();
           withCredentials: true,
         }
       );
-      setUser(null, null,null); // Clear from context
+      setUser(null, null,null,null); // Clear from context
       navigate("/");
     } catch (error) {
       console.error("Logout error:", error);

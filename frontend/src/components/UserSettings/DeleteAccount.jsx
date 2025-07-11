@@ -68,7 +68,7 @@ useEffect(() => {
         showToastMessage("Account deleted successfully", "success");
        //logout
           await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/user/logout`,{},{ withCredentials: true, });
-          setUser(null, null,null); // Clear from context
+          setUser(null, null,null,null); // Clear from context
           navigate("/");
        
       } else {

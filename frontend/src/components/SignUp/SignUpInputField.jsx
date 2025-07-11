@@ -75,7 +75,7 @@ const SignUpInputField = () => {
           type: 'success'
         });
         setTimeout(() => {
-          setUser(response.data.userId, response.data.username,response.data.avatar);
+          setUser(response.data.userId, response.data.username,response.data.avatar,response.data.role);
           navigate(`/dashboard`);
         }, 1000);
       }

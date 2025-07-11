@@ -17,7 +17,7 @@ import { useAuth } from '../../Context/UserContextProvider';
 
 const Sidebar = ({ activeItem, onItemSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { username } = useAuth();
+  const { role,username } = useAuth();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -93,11 +93,11 @@ const Sidebar = ({ activeItem, onItemSelect }) => {
         </nav>
 
         {/* User section */}
-        {username && (
-          <div className="p-1 border-t border-gray-200">
-            <button
-              onClick={() => handleItemClick("adminPanel")}
-              className={`
+       {role === 'admin' && (
+  <div className="p-1 border-t border-gray-200">
+    <button
+      onClick={() => handleItemClick("adminPanel")}
+      className={`
         group w-full flex items-center p-3 rounded-xl transition-all duration-150 ease-in-out
         ${
           activeItem === "admin"
@@ -105,26 +105,23 @@ const Sidebar = ({ activeItem, onItemSelect }) => {
             : "text-gray-600 hover:bg-indigo-50 hover:text-indigo-700"
         }
       `}
-            >
-              <div className="flex items-center space-x-3">
-                <div className="bg-indigo-200 text-indigo-700 p-1 rounded-full">
-                  <Medal className="w-5 h-5" />
-                </div>
-                <div className="text-left">
-                  <p
-                    className={`
-              text-sm font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-transparent bg-clip-text
-              group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2
-            `}
-                  >
-                    Admin Panel
-                  </p>
-                  <p className="text-xs text-gray-500 -mt-0.5">{username}</p>
-                </div>
-              </div>
-            </button>
-          </div>
-        )}
+    >
+      <div className="flex items-center space-x-3">
+        <div className="bg-indigo-200 text-indigo-700 p-1 rounded-full">
+          <Medal className="w-5 h-5" />
+        </div>
+        <div className="text-left">
+          <p className="text-sm font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-transparent bg-clip-text group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2">
+            Admin Panel
+          </p>
+          <p className="text-xs text-gray-500 -mt-0.5">{username}</p>
+        </div>
+      </div>
+    </button>
+  </div>
+
+)}
+
       </div>
 
       {/* Overlay for mobile */}

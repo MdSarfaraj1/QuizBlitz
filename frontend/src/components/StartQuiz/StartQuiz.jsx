@@ -53,10 +53,12 @@ const StartQuiz = () => {
 
       if (response.status === 200) {
         const quizData = response.data;
-        navigate('/runQuiz', { state: { quizData, category: selectedCategory.title } });
+        console.log("playing quiz",quizData)
+        navigate('/runQuiz', { state: { quizData, category: selectedCategory.title }});
       }
     } catch (error) {
       setIsLoading(false);
+      localStorage.setItem('guestQuizPlayed',false);
       console.error("Error starting quiz:", error);
       alert("Failed to start quiz. Please try again.");
     }

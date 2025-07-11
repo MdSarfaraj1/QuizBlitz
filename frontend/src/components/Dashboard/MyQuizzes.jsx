@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import QuizEdit from "./QuizEdit"; // adjust path if needed
+
 import {
   Edit3,
   Trash2,
@@ -10,10 +12,7 @@ import {
   CheckCircle,
   Eye,
   ArrowLeft,
-  Save,
-  X,
-  Plus,
-  Minus,
+ 
   Info,
 } from "lucide-react"; 
 import axios from "axios";
@@ -29,7 +28,6 @@ const MyQuizzes = () => {
   const [quizToDelete, setQuizToDelete] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editForm, setEditForm] = useState({});
-
  const handleView = (quiz) => {
     setSelectedQuiz(quiz);
     setCurrentView("view");
@@ -88,16 +86,16 @@ const MyQuizzes = () => {
     setLoading(true);
     try {
       const response = await axios.delete(
-        `${import.meta.env.VITE_APP_BACKEND_URL}/Quiz/${quizToDelete._id}`,
+        `${import.meta.env.VITE_APP_BACKEND_URL}/Quiz/deleteQuiz/${quizToDelete._id}`,
         { withCredentials: true }
       );
       if (response.status === 200) {
         setQuizzes((prev) => prev.filter((quiz) => quiz._id !== quizToDelete._id));
-        setShowDeleteModal(false);
+        setShowDeleteModal(false);0
         setQuizToDelete(null);
-      } else {
+      } else if(response.status===403){
         // Optionally show error
-        alert("Failed to delete quiz. Please try again.");
+        alert(response.data.error);
       }
     } catch (err) {
       alert("Error deleting quiz. Please try again.");
@@ -130,10 +128,10 @@ const MyQuizzes = () => {
         ...editForm,
         totalQuestions: editForm.questions.length,
       };
-      console.log("from update user route",selectedQuiz._id,editForm);
+      console.log("from update user route",selectedQuiz._id,updatedQuiz);
       const response = await axios.put(
-        `${import.meta.env.VITE_APP_BACKEND_URL}/Quiz/${selectedQuiz._id}`,
-        updatedQuiz,
+        `${import.meta.env.VITE_APP_BACKEND_URL}/Quiz/updateQuiz/${selectedQuiz._id}`,
+      updatedQuiz,
         { withCredentials: true }
       );
       if (response.status === 200) {
@@ -144,6 +142,7 @@ const MyQuizzes = () => {
         );
         setCurrentView("list");
         setSelectedQuiz(null);
+        alert("Quiz updated successfuly!")
       } else {
         alert("Failed to update quiz. Please try again.");
       }
@@ -155,55 +154,7 @@ const MyQuizzes = () => {
     }
   };
 
-  const addQuestion = () => {
-    const newQuestion = {
-      _id: `q${Date.now()}`,
-      question: "",
-      type: "multiple-choice",
-      options: ["", "", "", ""],
-      correctAnswer: 0,
-    };
-    setEditForm((prevForm) => ({
-      ...prevForm,
-      questions: [ newQuestion, ...prevForm.questions],
-    }));
-  };
-
-  const updateQuestion = (index, field, value) => {
-    const updatedQuestions = [...editForm.questions];
-    updatedQuestions[index] = {
-      ...updatedQuestions[index],
-      [field]: value,
-    };
-    setEditForm((prevForm) => ({
-      ...prevForm,
-      questions: updatedQuestions,
-    }));
-  };
-
-  const updateQuestionOption = (questionIndex, optionIndex, value) => {
-  const updatedQuestions = [...editForm.questions];
-  const updatedQuestion = { ...updatedQuestions[questionIndex] }; // clone object
-  const updatedOptions = [...updatedQuestion.options]; // clone options array
-  updatedOptions[optionIndex] = value; // update the value
-
-  updatedQuestion.options = updatedOptions;
-  updatedQuestions[questionIndex] = updatedQuestion;
-
-  setEditForm((prevForm) => ({
-    ...prevForm,
-    questions: updatedQuestions,
-  }));
-};
-
-  const removeQuestion = (index) => {
-    const updatedQuestions = editForm.questions.filter((_, i) => i !== index);
-    setEditForm((prevForm) => ({
-      ...prevForm,
-      questions: updatedQuestions,
-    }));
-  };
-
+ 
   const getDifficultyColor = (difficulty) => {
     switch (difficulty) {
       case "easy":
@@ -591,249 +542,7 @@ const QuizView = () => (
     </div>
   </div>
 );
-  // Quiz Edit Component
-const QuizEdit = () => (
-  <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6 font-sans antialiased">
-    <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl p-8 md:p-10 border border-gray-100">
-      <div className="flex items-center justify-between mb-8 border-b pb-6 border-gray-200">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 flex items-center gap-3">
-          Edit Quiz <span className="text-blue-500 text-4xl">✨</span>
-        </h1>
-        <div className="flex gap-3">
-          <button
-            onClick={() => setCurrentView("list")}
-            className="px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg flex items-center gap-2 font-medium transition-all duration-200 ease-in-out border border-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
-            title="Cancel Editing"
-          >
-            <X size={18} />
-            <span className="hidden sm:inline">Cancel</span>
-          </button>
-          <button
-            onClick={handleSaveEdit}
-            className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center gap-2 font-medium transition-all duration-200 ease-in-out shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            title="Save All Changes"
-          >
-            <Save size={18} />
-            <span className="hidden sm:inline">Save Changes</span>
-          </button>
-        </div>
-      </div>
 
-      <form onSubmit={(e) => e.preventDefault()} className="space-y-10">
-        {/* Quiz Details */}
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-            <Info size={24} className="text-blue-500" /> Quiz Details
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-7 mb-6">
-            {/* title */}
-            <div className="md:col-span-2">
-              <label
-                htmlFor="quiz-title"
-                className="block text-sm font-semibold text-gray-700 mb-2"
-              >
-                Quiz Title
-              </label>
-              <input
-                id="quiz-title"
-                type="text"
-                value={editForm.title || ""}
-                onChange={(e) =>
-                  setEditForm({ ...editForm, title: e.target.value })
-                }
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-gray-800 placeholder-gray-400"
-                placeholder="e.g., JavaScript Fundamentals"
-              />
-            </div>
-            {/* duration */}
-            <div>
-              <label
-                htmlFor="quiz-duration"
-                className="block text-sm font-semibold text-gray-700 mb-2"
-              >
-                Duration (minutes)
-              </label>
-              <input
-                id="quiz-duration"
-                type="number"
-                value={editForm.duration || ""}
-                onChange={(e) =>
-                  setEditForm({
-                    ...editForm,
-                    duration: parseInt(e.target.value) || 0,
-                  })
-                }
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-gray-800 placeholder-gray-400"
-                min="1"
-                placeholder="e.g., 30"
-              />
-            </div>
-            {/* difficulty */}
-            <div > 
-              <label
-                htmlFor="quiz-difficulty"
-                className="block text-sm font-semibold text-gray-700 mb-2"
-              >
-                Difficulty Level
-              </label>
-              <div className="relative">
-                <select
-                  id="quiz-difficulty"
-                  value={editForm.difficulty || "medium"}
-                  onChange={(e) =>
-                    setEditForm({ ...editForm, difficulty: e.target.value })
-                  }
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200 appearance-none bg-white pr-10 text-gray-800"
-                  style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239CA3AF'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "right 1rem center",
-                    backgroundSize: "1.2em",
-                  }}
-                >
-                  <option value="easy">Easy</option>
-                  <option value="medium">Medium</option>
-                  <option value="hard">Hard</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          {/* description */}
-          <label
-            htmlFor="quiz-description"
-            className="block text-sm font-semibold text-gray-700 mb-2"
-          >
-            Description
-          </label>
-          <textarea
-            id="quiz-description"
-            value={editForm.description || ""}
-            onChange={(e) =>
-              setEditForm({ ...editForm, description: e.target.value })
-            }
-            rows={3}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-gray-800 placeholder-gray-400 resize-y"
-            placeholder="Provide a brief description of the quiz content."
-          />
-        </div>
-
-        {/* Questions Section */}
-        <div className="border-t border-gray-200 pt-8">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-              <BookOpen size={24} className="text-green-500" /> Quiz Questions
-              <span className="text-gray-500 text-xl font-normal">
-                ({editForm.questions?.length || 0})
-              </span>
-            </h3>
-            <button
-              type="button"
-              onClick={addQuestion}
-              className="px-5 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg flex items-center gap-2 font-medium transition-all duration-200 ease-in-out shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-            >
-              <Plus size={18} />
-              Add Question
-            </button>
-          </div>
-
-          <div className="space-y-6">
-            {editForm.questions?.map((question, index) => (
-              <div
-                key={question._id}
-                className="border border-gray-200 rounded-xl p-6 bg-gray-50 shadow-sm"
-              >
-                <div className="flex items-center justify-between mb-5 pb-4 border-b border-gray-200">
-                  <span className="bg-blue-100 text-blue-800 text-sm font-bold px-4 py-1.5 rounded-full">
-                    Question {index + 1}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => removeQuestion(index)}
-                    className="text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-300"
-                    title="Remove Question"
-                  >
-                    <Minus size={20} />
-                  </button>
-                </div>
-
-                <div className="mb-6">
-                  <label
-                    htmlFor={`question-text-${index}`}
-                    className="block text-sm font-semibold text-gray-700 mb-2"
-                  >
-                    Question Text
-                  </label>
-                  <textarea
-                    id={`question-text-${index}`}
-                    value={question.question}
-                    onChange={(e) =>
-                      updateQuestion(index, "question", e.target.value)
-                    }
-                    rows={3}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-gray-800 placeholder-gray-400 resize-y"
-                    placeholder="Enter your question here..."
-                  />
-                </div>
-
-                <div className="space-y-4">
-                  <label className="block text-sm font-semibold text-gray-700">
-                    Options (Select the correct one)
-                  </label>
-                  {question.options.map((option, optionIndex) => (
-                    <div
-                      key={optionIndex}
-                      className="flex items-center gap-4 bg-white p-3 rounded-lg border border-gray-200 shadow-sm transition-all duration-150 ease-in-out hover:border-blue-300"
-                    >
-                      <input
-                        type="radio"
-                        name={`correct-answer-${index}`}
-                        checked={question.correctAnswer === optionIndex}
-                        onChange={() =>
-                          updateQuestion(index, "correctAnswer", optionIndex)
-                        }
-                        className="h-5 w-5 text-blue-600 focus:ring-blue-500 cursor-pointer border-gray-300"
-                      />
-                      <span className="font-bold text-gray-700">
-                        {String.fromCharCode(65 + optionIndex)}.
-                      </span>
-                      <input
-                        type="text"
-                        value={option}
-                        onChange={(e) =>
-                          updateQuestionOption(
-                            index,
-                            optionIndex,
-                            e.target.value
-                          )
-                        }
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-gray-800 placeholder-gray-400"
-                        placeholder={`Option ${String.fromCharCode(
-                          65 + optionIndex
-                        )}`}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-            {editForm.questions?.length === 0 && (
-              <div className="text-center py-10 text-gray-600 border-2 border-dashed border-gray-300 rounded-xl bg-gray-50">
-                <p className="mb-4 text-lg">No questions added yet.</p>
-                <button
-                  type="button"
-                  onClick={addQuestion}
-                  className="inline-flex items-center px-6 py-3 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                >
-                  <Plus size={18} className="mr-2" /> Add your first question
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-);
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6 font-sans">
@@ -878,9 +587,17 @@ const QuizEdit = () => (
 
   return (
     <div>
-      {currentView === "list" && <QuizListView />}
-      {currentView === "view" && <QuizView />}
-      {currentView === "edit" && <QuizEdit />}
+    {currentView === "list" && <QuizListView />}
+{currentView === "view" && <QuizView />}
+{currentView === "edit" && (
+  <QuizEdit
+    editForm={editForm}
+    setEditForm={setEditForm}
+    handleSaveEdit={handleSaveEdit}
+    setCurrentView={setCurrentView}
+  />
+)}
+
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (

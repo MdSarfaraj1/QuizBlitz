@@ -166,18 +166,17 @@ const ResultsPage = () => {
           )}
         </p>
 
-       
         {incorrectAnswers.length > 0 && (
           <div>
             <button
-              onClick={() => toggleSection('incorrect')}
+              onClick={() => toggleSection("incorrect")}
               className="w-full flex items-center justify-between text-left bg-rose-700 hover:bg-rose-600 px-4 py-3 rounded-lg font-semibold shadow transition"
             >
               <span>❌ Incorrect Answers ({incorrectAnswers.length})</span>
-              <span>{expandedSection === 'incorrect' ? '▲' : '▼'}</span>
+              <span>{expandedSection === "incorrect" ? "▲" : "▼"}</span>
             </button>
 
-            {expandedSection === 'incorrect' && (
+            {expandedSection === "incorrect" && (
               <div className="mt-2 space-y-4 max-h-80 overflow-y-auto px-1">
                 {incorrectAnswers.map((item) => (
                   <div
@@ -187,8 +186,12 @@ const ResultsPage = () => {
                     <p className="font-semibold text-white">
                       Q{item.index + 1}: {item.question}
                     </p>
-                    <p className="text-red-400">Your Answer: {item.userAnswer}</p>
-                    <p className="text-green-400">Correct: {item.correctAnswer}</p>
+                    <p className="text-red-400">
+                      Your Answer: {item.userAnswer}
+                    </p>
+                    <p className="text-green-400">
+                      Correct: {item.correctAnswer}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -198,14 +201,14 @@ const ResultsPage = () => {
         {userId ? (
           <div className="flex justify-center gap-4">
             <button
-              onClick={() => navigate('/runQuiz', { state: { quizData } })}
+              onClick={() => navigate("/runQuiz", { state: { quizData } })}
               className="bg-gradient-to-r from-fuchsia-600 to-pink-500 hover:from-fuchsia-700 hover:to-pink-600 text-white font-semibold px-6 py-2.5 rounded-full shadow-md transition duration-200"
             >
               🔄 Start Again
             </button>
 
             <button
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate("/dashboard")}
               className="bg-gray-800 hover:bg-gray-700 text-white font-semibold px-6 py-2.5 rounded-full shadow-md transition duration-200"
             >
               🏠 Dashboard
@@ -214,7 +217,7 @@ const ResultsPage = () => {
         ) : (
           <div className="flex justify-center gap-4">
             <button
-              onClick={() => navigate('/login')}
+              onClick={() => navigate("/login")}
               className="bg-gradient-to-r from-fuchsia-600 to-pink-500 hover:from-fuchsia-700 hover:to-pink-600 text-white font-semibold px-6 py-2.5 rounded-full shadow-md transition duration-200"
             >
               🔄 Login For More
@@ -225,7 +228,7 @@ const ResultsPage = () => {
         <p className="text-sm sm:text-base font-medium text-[#c2fb3c]">
           📌 Questions you marked to learn later are saved in your dashboard.
         </p>
-         {/* --- Stylish Rating System --- */}
+        {/* --- Stylish Rating System --- */}
         <div className="text-center mt-8 p-6 bg-white/10 rounded-2xl shadow-xl border border-white/20">
           <h3 className="text-2xl font-extrabold text-yellow-300 mb-4 animate-pulse">
             🌟 Rate this Quiz! 🌟
@@ -255,27 +258,33 @@ const ResultsPage = () => {
                     className={`cursor-pointer transition-all duration-300 transform 
                                 ${
                                   star <= rating
-                                    ? 'text-yellow-400 scale-110 drop-shadow-lg'
-                                    : 'text-gray-400 hover:text-yellow-300 hover:scale-105'
+                                    ? "text-yellow-400 scale-110 drop-shadow-lg"
+                                    : "text-gray-400 hover:text-yellow-300 hover:scale-105"
                                 }`}
                     onClick={() => setRating(star)}
-                    title={`${star} star${star > 1 ? 's' : ''}`}
+                    title={`${star} star${star > 1 ? "s" : ""}`}
                   >
-                    {star <= rating ? '★' : '☆'}
+                    {star <= rating ? "★" : "☆"}
                   </span>
                 ))}
               </div>
 
-              {rating > 0 && (
-                <p className="text-yellow-200 mt-2 text-lg font-medium animate-fade-in">
-                  You rated this quiz: <span className="font-bold">{rating}</span> star
-                  {rating > 1 ? 's' : ''}
-                </p>
-              )}
+              {rating > 0 &&
+                (userId ? (
+                  <p className="text-yellow-200 mt-2 text-lg font-medium animate-fade-in">
+                    You rated this quiz:{" "}
+                    <span className="font-bold">{rating}</span> star
+                    {rating > 1 ? "s" : ""}
+                  </p>
+                ) : (
+                  <p className="text-yellow-200 mt-2 text-lg font-medium animate-fade-in">
+                    Login first to submit your ratings{rating > 1 ? "s" : ""}
+                  </p>
+                ))}
 
               <button
                 onClick={handleSubmitRating}
-                disabled={rating === 0}
+                disabled={rating === 0 || !userId}
                 className="mt-6 px-8 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 ease-out disabled:opacity-50 disabled:cursor-not-allowed disabled:from-gray-500 disabled:to-gray-600"
               >
                 Submit Rating
@@ -284,9 +293,7 @@ const ResultsPage = () => {
           )}
         </div>
         {/* --- End of Stylish Rating System --- */}
-
       </div>
-      
     </div>
   );
 };
