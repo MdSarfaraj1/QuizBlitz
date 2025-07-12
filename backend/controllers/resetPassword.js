@@ -16,17 +16,26 @@ exports.SendOTP=async (req, res) => {
     user.resetPasswordExpires = Date.now() +300000; // 5 mintues
     await user.save();
     //sending mmail
-    const mailOptions = {
-      from: process.env.email_username,
-      to: user.email,
-      subject: "Password Reset Request",
-      html: `
-                 <p>You requested a password reset</p>
-                <p>Here is your otp to reset your password : ${resetToken}</p>
-                <p>This otp will expire in 1 hour</p>
-    
-                 `,
-    };
+  const mailOptions = {
+  from: process.env.email_username,
+  to: user.email,
+  subject: "🔐 Password Reset Request",
+  html: `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px; border-radius: 10px; background-color: #f9f9f9;">
+      <h2 style="color: #2c3e50;">🔐 Password Reset Requested</h2>
+      <p>Hello <strong>${user.name || "User"}</strong>,</p>
+      <p>We received a request to reset your password. Use the OTP below to proceed:</p>
+      <div style="font-size: 22px; font-weight: bold; color: #1a73e8; background: #e8f0fe; padding: 12px 20px; border-radius: 8px; display: inline-block; margin: 15px 0;">
+        ${resetToken}
+      </div>
+      <p><strong>This OTP will expire in 1 hour.</strong></p>
+      <p>If you didn’t request this, please ignore this email or contact our support immediately.</p>
+      <hr style="margin: 30px 0;" />
+      <p style="font-size: 12px; color: #888;">This is an automated message. Please do not reply.</p>
+    </div>
+  `,
+};
+
     await mailTransporter.sendMail(mailOptions);
     res.status(200).json({ message: "Reset link sent to email" });
   } catch (error) {

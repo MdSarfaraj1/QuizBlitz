@@ -27,7 +27,8 @@ exports.getAllUsersAndCategories = async (req, res) => {
       id: c._id,
       name: c.title,
       description: c.description,
-      quizCount: c.totalQuizzes 
+      quizCount: c.totalQuizzes ,
+      icon:c.icon
     }));
     console.log("Fetched users and categories successfully", users.length, "users and", categories.length, "categories");
     res.status(200).json({ users, categories });
@@ -79,18 +80,38 @@ exports.updateUserByAdmin = async (req, res) => {
     if (!req.user || req.user.role !== 'admin') {
       return res.status(403).json({ message: "Admin access required" });
     }
+
     const userId = req.params.userId;
     const { name, email, role } = req.body;
-    console.log("updating user by admin ", userId,name,email,role)
+    console.log("Updating user by admin:", userId, name, email, role);
+
     if (!userId || !name || !email || !role) {
       return res.status(400).json({ message: "User ID, name, email, and role required" });
     }
+
+    // ✅ Check if another user already has the same email
+    const existingEmail = await User.findOne({ email, _id: { $ne: userId } });
+    if (existingEmail) {
+      return res.status(400).json({ message: "Email is already in use by another user." });
+    }
+
+    // ✅ Check if another user already has the same username
+    const existingUsername = await User.findOne({ username: name, _id: { $ne: userId } });
+    if (existingUsername) {
+      return res.status(400).json({ message: "Username is already taken by another user." });
+    }
+
+    // ✅ Proceed to update
     const updated = await User.findByIdAndUpdate(
       userId,
       { username: name, email, role },
       { new: true, runValidators: true }
     );
-    if (!updated) return res.status(404).json({ message: "User not found" });
+
+    if (!updated) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     res.status(200).json({
       message: "User updated successfully",
       user: {
@@ -107,23 +128,54 @@ exports.updateUserByAdmin = async (req, res) => {
   }
 };
 
+
 // Delete any user (admin only) 
 exports.deleteUserByAdmin = async (req, res) => {
   try {
     if (!req.user || req.user.role !== 'admin') {
       return res.status(403).json({ message: "Admin access required" });
     }
+
     const userId = req.params.userId;
     const { reason } = req.body;
-    console.log("deleting the user for the reason ",userId,reason)
-    if (!userId) {
-      return res.status(400).json({ message: "User ID required" });
+
+    if (!userId || !reason) {
+      return res.status(400).json({ message: "User ID and reason both are required" });
     }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Send email before deletion
+    const mailOptions = {
+      from: process.env.email_username,
+      to: user.email,
+      subject: "Account Deletion Notification",
+      html: `
+        <h3>Your account has been deleted by an administrator</h3>
+        <p><strong>Reason:</strong> ${reason}</p>
+        <p>If you believe this was a mistake, please contact to</p>${process.env.email_username}
+      `,
+    };
+
+    try {
+      await mailTransporter.sendMail(mailOptions);
+    } catch (emailError) {
+      console.error(`Failed to send email to ${user.email}:`, emailError.message);
+      // Optional: return error if sending email is mandatory
+    }
+
+    // Reassign quizzes
     await QuizSet.updateMany(
       { createdBy: userId },
       { $set: { createdBy: process.env.ANONYMOUS_USER_ID } }
     );
+
+    // Delete user
     await User.findByIdAndDelete(userId);
+
     res.status(204).send();
   } catch (error) {
     console.error("Error deleting user:", error);

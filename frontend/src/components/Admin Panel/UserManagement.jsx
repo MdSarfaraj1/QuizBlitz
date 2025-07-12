@@ -93,15 +93,15 @@ console.log("going to update user by aadmin",userId)
       }
       cancelEditingUser(userId);
     } catch (err) {
-        alert("Some erro occuerd while updating")
+        if (err.response && err.response.status === 400) {
+    alert(err.response.data.message); 
+ 
+  }else
+     alert("Some error occurred while updating.");
       console.error('Failed to update user:', err);
     }
   };
-
-  /**
-   * Handles user deletion. In a real app, this would hit an API.
-   * Now accepts a reason for deletion.
-   */
+//deleteuser
   const deleteUser = async (userIdToDelete) => {
     if (!userIdToDelete) return;
     try {
@@ -121,9 +121,7 @@ console.log("going to update user by aadmin",userId)
     }
   };
 
-  /**
-   * Handles adding a new user. In a real app, this would hit an API.
-   */
+  // Handles adding a new user. In a real app, this would hit an API.
   const handleAddUser = async () => {
     if (!newUserName || !newUserEmail) {
       console.error("Name and Email are required to add a new user.");
@@ -209,7 +207,7 @@ console.log("going to update user by aadmin",userId)
             </div>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto max-h-[500px] overflow-y-auto">
             <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
               <thead className="bg-gray-100">
                 <tr>

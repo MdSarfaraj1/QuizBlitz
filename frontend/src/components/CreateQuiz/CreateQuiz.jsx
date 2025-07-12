@@ -191,11 +191,6 @@ export default function CraeteQuiz() {
     }
   };
 
-  const previewQuiz = () => {
-    console.log('Quiz preview:', quizData);
-    alert('Quiz preview will open in a new window.');
-  };
-
 
   return (
     <div className="min-h-screen border-0 hover:shadow-lg hover:-translate-y-1 transition-transform shadow-md bg-gradient-to-br rounded-t-lg from-blue-100  to-green-100 p-4">

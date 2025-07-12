@@ -67,65 +67,112 @@ exports.startPredefinedQuiz = async (req, res) => {
   } catch (e) {
     console.log("Error occurred while fetching quizzes:", e);
     res.status(500).json({ message: "Failed to fetch quizzes of this category" });
-  }
-};
+  }};
+
 
 exports.startQuiz = async (req, res) => {
   try {
     const { id: categoryId } = req.params;
-    const { difficulty, numberOfQuestions, userId,image } = req.body;
+    const { difficulty, numberOfQuestions, userId, image } = req.body;
+
     const user = await User.findById(userId);
-    // 1. Fetch all quiz sets for category
+
+    // 1. Fetch all quiz sets for category & difficulty
     let allQuizSets = await QuizSet.find({
       category: categoryId,
       difficulty: difficulty,
     });
-    // 2. Filter out quiz sets already played by user
+
+    // 2. Filter out already played quiz sets
     const playedQuizSetIds =
       user.quizzesTaken.map((q) => q.quizId.toString()) || [];
+
+    // 3. Find available quiz set
     let availableQuizSet = allQuizSets.find(
       (set) => !playedQuizSetIds.includes(set._id.toString())
     );
-    // 3. If no available set, generate new quiz set
+
+    // 4. If no available set, generate a new one
     if (!availableQuizSet) {
       console.log(
-        "No available quiz sets or already played — generating new set...",image
+        "No available quiz sets or already played — generating new set...",
+        image
       );
 
-     const { title, description,  generatedQuestions } = await generateQuestions(
-        categoryId,
-        difficulty,
-        numberOfQuestions
-      );
-      let timeConstant=difficulty === 'easy' ? 0.5 : difficulty === 'medium' ? 0.8 : 1; // seconds per question
-      const newQuizSet = new QuizSet({
-        title: title,
-        description: description,
-        category: categoryId,
-        image:image,
-        difficulty: difficulty,
-        duration: Math.ceil(numberOfQuestions * timeConstant), // e.g., 30 secs/question
-        questions: generatedQuestions.map((q) => q._id),
-        totalQuestions: generatedQuestions.length,
-      });
+      try {
+        const {
+          title,
+          description,
+          generatedQuestions,
+        } = await generateQuestions(categoryId, difficulty, numberOfQuestions);
 
+        if (!generatedQuestions || generatedQuestions.length === 0) {
+          throw new Error("AI returned no questions");
+        }
 
-      await newQuizSet.save();
-      availableQuizSet = newQuizSet;
+        let timeConstant =
+          difficulty === "easy" ? 0.5 : difficulty === "medium" ? 0.8 : 1;
+
+        const newQuizSet = new QuizSet({
+          title,
+          description,
+          category: categoryId,
+          image,
+          difficulty,
+          duration: Math.ceil(numberOfQuestions * timeConstant),
+          questions: generatedQuestions.map((q) => q._id),
+          totalQuestions: generatedQuestions.length,
+        });
+
+        await newQuizSet.save();
+        availableQuizSet = newQuizSet;
+      } catch (err) {
+        console.warn("AI generation failed, using DB fallback:", err.message);
+
+        // Fallback logic: pull from existing DB questions
+        const category=await Category.findById(categoryId).select("title ");
+        const fallbackQuestions = await Question.find({
+          category: category.title,
+        });
+
+        if (!fallbackQuestions || fallbackQuestions.length === 0) {
+          return res
+            .status(500)
+            .json({ message: "No questions available for fallback." });
+        }
+
+        // Shuffle and select
+        const shuffled = fallbackQuestions.sort(() => 0.5 - Math.random());
+        const selected = shuffled.slice(0, numberOfQuestions);
+
+        const fallbackQuizSet = new QuizSet({
+          title: ` ${category}`,
+          description: `Some mislenious questions regarding ${category}`,
+          category: categoryId,
+          image,
+          difficulty,
+          duration: Math.ceil(numberOfQuestions * 1), // fallback: 1 sec per question
+          questions: selected.map((q) => q._id),
+          totalQuestions: selected.length,
+        });
+
+        await fallbackQuizSet.save();
+        availableQuizSet = fallbackQuizSet;
+      }
     }
 
-    // 4. Populate questions
-    const populatedQuiz = await QuizSet.findById(availableQuizSet._id).populate(
-      "questions"
-    );
+    // 5. Populate questions
+    const populatedQuiz = await QuizSet.findById(
+      availableQuizSet._id
+    ).populate("questions");
 
-    // 5. Filter and shuffle
+    // 6. Shuffle and filter by difficulty
     let selectedQuestions = populatedQuiz.questions
       .filter((q) => q.level === difficulty)
       .sort(() => 0.5 - Math.random())
       .slice(0, numberOfQuestions);
 
-    // If not enough, fill with other levels
+    // 7. If not enough, fill with other levels
     if (selectedQuestions.length < numberOfQuestions) {
       const remaining = numberOfQuestions - selectedQuestions.length;
       const fallbackQuestions = populatedQuiz.questions
@@ -135,10 +182,11 @@ exports.startQuiz = async (req, res) => {
 
       selectedQuestions = [...selectedQuestions, ...fallbackQuestions];
     }
+
     return res.status(200).json({
       quizId: populatedQuiz._id,
       questions: selectedQuestions,
-      duration: populatedQuiz.duration||10, // default to 10 minutes if not set
+      duration: populatedQuiz.duration || 10, // default to 10 mins
       difficulty,
     });
   } catch (error) {
@@ -146,27 +194,53 @@ exports.startQuiz = async (req, res) => {
     return res.status(500).json({ message: "Failed to start quiz" });
   }
 };
+
 exports.startGuestQuiz = async (req, res) => {
   try {
     const { id: categoryId } = req.params;
     const { difficulty, numberOfQuestions } = req.body;
-      let quizData = await generateQuestions(
-        categoryId,
-        difficulty,
-        numberOfQuestions
-      );
-  
-    console.log("Guest quiz started successfully.");
 
-    return res.status(200).json({
-      questions: quizData.generatedQuestions,
-      difficulty,
-    });
+    // Step 1: Try to get quiz from database
+    const quizSet = await QuizSet.findOne({
+      category: categoryId,
+      difficulty: difficulty,
+      totalQuestions: { $gte: numberOfQuestions },
+    }).populate("questions");
+
+    if (quizSet) {
+      // Randomly select `numberOfQuestions` from populated quizSet.questions
+      const shuffled = quizSet.questions.sort(() => 0.5 - Math.random());
+      const selectedQuestions = shuffled.slice(0, numberOfQuestions);
+
+      console.log("Guest quiz started successfully from DB.");
+      return res.status(200).json({
+        questions: selectedQuestions,
+        difficulty: quizSet.difficulty,
+      });
+    }
+
+    // Step 2: Fallback to AI if DB doesn't have a matching quiz
+    console.warn("No quiz found in DB, trying AI fallback...");
+
+    try {
+      const quizData = await generateQuestions(categoryId, difficulty, numberOfQuestions);
+
+      console.log("Guest quiz started successfully with AI.");
+      return res.status(200).json({
+        questions: quizData.generatedQuestions,
+        difficulty,
+      });
+    } catch (aiError) {
+      console.error("AI generation failed as well:", aiError.message);
+      return res.status(500).json({ message: "No quiz available. Both DB and AI failed." });
+    }
+
   } catch (error) {
     console.error("Error starting guest quiz:", error);
     return res.status(500).json({ message: "Failed to start guest quiz" });
   }
 };
+
 exports.getUserSavedQuizzes= async (req, res) => {
   try {
 const user = await User.findById(req.user.id)
@@ -344,7 +418,6 @@ exports.submitQuizResult = async (req, res) => {
 exports.createQuiz = async (req, res) => {
   try {
     const { quizData } = req.body;
-    console.log("Creating quiz with data:", quizData);
 
     const {
       description,
@@ -488,13 +561,34 @@ exports.quizOfTheDay= async (req, res) => {
     if (cachedQuiz && lastQuizDate === today) {
       return res.json({ quiz: cachedQuiz });
     }
+const topic=result[0]?.title || 'Computer Science'
+    const aiQuestion = await generateQuizOfTheDay(topic);
 
-    const question = await generateQuizOfTheDay(result[0].title);
-   if(!question)
-    res.status(500).json({ error: "Failed to generate quiz question." });
-    cachedQuiz = question;
+   if(aiQuestion){
+    cachedQuiz = aiQuestion;
     lastQuizDate = today;
-    res.status(200).json({ quiz:question });
+    res.status(200).json({ quiz:aiQuestion });
+   }
+  // Fallback: get random question from Question collection
+    const fallbackQuestion = await Question.aggregate([{ $sample: { size: 1 } }]);
+
+    if (!fallbackQuestion.length) {
+      return res.status(500).json({ error: "Currently No question  available." });
+    }
+ 
+    // Format to match AI output structure
+    const formatted = {
+      quizCategory: fallbackQuestion[0].category?.[0] || "General",
+      question: fallbackQuestion[0].questionText,
+      options: fallbackQuestion[0].options, 
+      answer: fallbackQuestion[0].correctAnswer,
+      explanation: fallbackQuestion[0].hint || "No explanation available."
+    };
+
+    cachedQuiz = formatted;
+    lastQuizDate = today;
+    return res.status(200).json({ quiz: formatted });
+    
   } catch (error) {
     console.error("Error generating quiz:", error);
     res.status(500).json({ error: "Failed to generate quiz question." });

@@ -37,7 +37,7 @@ export const UserContextProvider=({children})=>{
     localStorage.removeItem('userId');
     localStorage.removeItem('username');
     localStorage.removeItem('profilePicture');
-    localStorage.removeItem('role')
+localStorage.removeItem('role')
   }
 
   // Always update state to ensure re-render

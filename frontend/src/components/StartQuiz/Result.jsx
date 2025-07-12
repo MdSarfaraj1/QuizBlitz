@@ -201,14 +201,14 @@ const ResultsPage = () => {
         {userId ? (
           <div className="flex justify-center gap-4">
             <button
-              onClick={() => navigate("/runQuiz", { state: { quizData } })}
+              onClick={() => navigate("/startQuiz",{replace: true})}
               className="bg-gradient-to-r from-fuchsia-600 to-pink-500 hover:from-fuchsia-700 hover:to-pink-600 text-white font-semibold px-6 py-2.5 rounded-full shadow-md transition duration-200"
             >
               🔄 Start Again
             </button>
 
             <button
-              onClick={() => navigate("/dashboard")}
+              onClick={() => navigate("/dashboard",{replace: true})}
               className="bg-gray-800 hover:bg-gray-700 text-white font-semibold px-6 py-2.5 rounded-full shadow-md transition duration-200"
             >
               🏠 Dashboard
@@ -224,10 +224,10 @@ const ResultsPage = () => {
             </button>
           </div>
         )}
-
-        <p className="text-sm sm:text-base font-medium text-[#c2fb3c]">
+    {userId && <p className="text-sm sm:text-base font-medium text-[#c2fb3c]">
           📌 Questions you marked to learn later are saved in your dashboard.
-        </p>
+        </p> }
+        
         {/* --- Stylish Rating System --- */}
         <div className="text-center mt-8 p-6 bg-white/10 rounded-2xl shadow-xl border border-white/20">
           <h3 className="text-2xl font-extrabold text-yellow-300 mb-4 animate-pulse">

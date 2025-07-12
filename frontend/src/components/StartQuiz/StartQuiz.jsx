@@ -58,7 +58,7 @@ const StartQuiz = () => {
       }
     } catch (error) {
       setIsLoading(false);
-      localStorage.setItem('guestQuizPlayed',false);
+      localStorage.removeItem('guestQuizPlayed');
       console.error("Error starting quiz:", error);
       alert("Failed to start quiz. Please try again.");
     }

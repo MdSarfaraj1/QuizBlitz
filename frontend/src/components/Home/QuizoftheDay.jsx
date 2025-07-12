@@ -1,12 +1,14 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState ,useEffect} from 'react';
 import { useAuth } from '../../Context/UserContextProvider';
+import {useNavigate} from 'react-router-dom'
 export default function QuizoftheDay() {
     const { userId } = useAuth();
     const [quizData, setQuizData] = useState(null);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const [isQuizDataPresent,setPresent]=useState(false)
+    const navigate=useNavigate()
 
 useEffect(() => {
     const getQuizOfTheDay = async () => {
@@ -62,71 +64,87 @@ const handleSubmit = () => {
 );
 
     return (
-        <div className="relative">
-            <div className="relative z-10">
-                <div className="bg-white rounded-2xl shadow-xl p-4 border border-gray-100">
-                    <div className="p-2 flex justify-between bg-myColour/10 rounded-xl mb-3">
-                        <h3 className="text-center text-2xl font-semibold text-myColour">Quiz of The Day</h3>
-                    
-                        <p className="text-center text-sm text-gray-500 mt-1">{quizData.quizCategory}</p>
-                    </div>
+      <div className="relative">
+        <div className="relative z-10">
+          <div className="bg-white rounded-2xl shadow-xl p-4 border border-gray-100">
+            <div className="p-2 flex justify-between bg-myColour/10 rounded-xl mb-3">
+              <h3 className="text-center text-2xl font-semibold text-myColour">
+                Quiz of The Day
+              </h3>
 
-                    <div className="space-y-4 changable">
-                        {!submitted ? (
-                            <div className="p-3 border border-gray-200 rounded-lg hover:border-myColour/50 hover:bg-quiz-light/30 cursor-pointer">
-                                <p className="font-semibold text-lg text-gray-800 mb-4">{quizData.question}</p>
-                                <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
-                                    {quizData.options.map((option) => (
-                                        <div
-                                            key={option}
-                                            className={`border rounded p-2 cursor-pointer
-                                                ${selectedAnswer === option ? 'bg-myColour/10 border-myColour shadow-md': 'border-gray-200'}
-                                                 hover:bg-quizDashboard-accent/50 hover:border-orange-700`}
-                                            onClick={() => setSelectedAnswer(option)}
-                                        >
-                                            {option}
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        ) : selectedAnswer === quizData.answer ? (
-                              <div className="text-center">
-                              <h4 className="text-xl font-semibold text-green-600">🎉 Correct! Great job!</h4>
-                              <p className="mt-2 text-gray-700 italic">You’re reaching for the stars — know your true potential!</p>
-                              <div className="mt-4 flex justify-center gap-4">
-                            <button className="homepage-button">Login </button>
-                          <button className="homepage-button">Register  </button>
-
-
-                              </div>
-                          </div>
-
-                        ) : (
-                            <div className="text-center">
-                                <h4 className="text-xl font-semibold text-red-600">❌ Incorrect</h4>
-                                <p className="mt-2 text-gray-700">
-                                    The correct answer is <strong>{quizData.answer}</strong>.<br />
-                                    {quizData.explanation}
-                                </p>
-                                <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500">Explore More</button>
-                            </div>
-                        )}
-
-                        {!submitted && (
-                            <button
-                                className="w-full bg-myColour/90 text-white hover:bg-myColour/70 rounded-lg h-10"
-                                onClick={handleSubmit}
-                            >
-                                Submit Answer
-                            </button>
-                        )}
-                    </div>
-                </div>
+              <p className="text-center text-sm text-gray-500 mt-1">
+                {quizData.quizCategory}
+              </p>
             </div>
 
-            {/* Blurry background circles */}
-            <div className="absolute top-5 -right-5 w-32 h-32 bg-green-300 rounded-full blur-2xl opacity-70 -z-10"></div>
-            <div className="absolute bottom-5 -left-5 w-32 h-32 bg-blue-700 rounded-full blur-2xl opacity-70 -z-10"></div>
+            <div className="space-y-4 changable">
+              {!submitted ? (
+                <div className="p-3 border border-gray-200 rounded-lg hover:border-myColour/50 hover:bg-quiz-light/30 cursor-pointer">
+                  <p className="font-semibold text-lg text-gray-800 mb-4">
+                    {quizData.question}
+                  </p>
+                  <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
+                    {quizData.options.map((option) => (
+                      <div
+                        key={option}
+                        className={`border rounded p-2 cursor-pointer
+                                                ${
+                                                  selectedAnswer === option
+                                                    ? "bg-myColour/10 border-myColour shadow-md"
+                                                    : "border-gray-200"
+                                                }
+                                                 hover:bg-quizDashboard-accent/50 hover:border-orange-700`}
+                        onClick={() => setSelectedAnswer(option)}
+                      >
+                        {option}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : selectedAnswer === quizData.answer ? (
+                <div className="text-center">
+                  <h4 className="text-xl font-semibold text-green-600">
+                    🎉 Correct! Great job!
+                  </h4>
+                  <p className="mt-2 text-gray-700 italic">
+                    You’re reaching for the stars — know your true potential!
+                  </p>
+                  <div className="mt-4 flex justify-center gap-4">
+                    <button className="homepage-button">Login </button>
+                    <button className="homepage-button">Register </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center">
+                  <h4 className="text-xl font-semibold text-red-600">
+                    ❌ Incorrect
+                  </h4>
+                  <p className="mt-2 text-gray-700">
+                    The correct answer is <strong>{quizData.answer}</strong>.
+                    <br />
+                    {quizData.explanation}
+                  </p>
+                  <button className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-300" onClick={()=>navigate('/signup')}>
+                    Continue Learning
+                  </button>
+                </div>
+              )}
+
+              {!submitted && (
+                <button
+                  className="w-full bg-myColour/90 text-white hover:bg-myColour/70 rounded-lg h-10"
+                  onClick={handleSubmit}
+                >
+                  Submit Answer
+                </button>
+              )}
+            </div>
+          </div>
         </div>
+
+        {/* Blurry background circles */}
+        <div className="absolute top-5 -right-5 w-32 h-32 bg-green-300 rounded-full blur-2xl opacity-70 -z-10"></div>
+        <div className="absolute bottom-5 -left-5 w-32 h-32 bg-blue-700 rounded-full blur-2xl opacity-70 -z-10"></div>
+      </div>
     );
 }

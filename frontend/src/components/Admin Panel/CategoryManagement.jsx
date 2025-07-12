@@ -196,7 +196,7 @@ const CategoryManagement = ({ categories, setCategories, expanded, toggleSection
                       value={newCategory.name}
                       onChange={(e) => setNewCategory({ ...newCategory, name: e.target.value })}
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="e.g., Space Exploration"
+                      placeholder="e.g.,Machine Learning"
                     />
                   </div>
                   
@@ -207,7 +207,7 @@ const CategoryManagement = ({ categories, setCategories, expanded, toggleSection
                       value={newCategory.icon}
                       onChange={(e) => setNewCategory({ ...newCategory, icon: e.target.value })}
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="e.g., 🚀 or goto https://emojidb.org/ for help"
+                      placeholder="e.g.,🤖 ,Enter Windows Key + .(dot) "//or goto https://emojidb.org/ 
                     />
                   </div>
                   <div>
@@ -217,7 +217,7 @@ const CategoryManagement = ({ categories, setCategories, expanded, toggleSection
                       value={newCategory.description}
                       onChange={(e) => setNewCategory({ ...newCategory, description: e.target.value })}
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="e.g., Quizzes about planets, stars, and galaxies"
+                      placeholder="e.g., Question Regarding Linear and Logistic Regression"
                     />
                   </div>
                 </div>
@@ -241,7 +241,7 @@ const CategoryManagement = ({ categories, setCategories, expanded, toggleSection
           </div>
 
 
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto  max-h-[400px] overflow-y-auto ">
             <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
               <thead className="bg-gray-100">
                 <tr>

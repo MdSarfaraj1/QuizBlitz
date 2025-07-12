@@ -46,7 +46,7 @@ const CommunicationPanel = ({ expanded, toggleSection }) => {
               <textarea
                 value={announcementMessage}
                 onChange={(e) => setAnnouncementMessage(e.target.value)}
-                placeholder="Write your announcement message or provide key points for a draft..."
+                placeholder="Write your announcement message here..."
                 className="w-full border border-gray-300 p-3 rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-purple-400 text-base"
                 rows="4"
               />

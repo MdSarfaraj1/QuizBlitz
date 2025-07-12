@@ -19,6 +19,9 @@ console.log("running Quiz data",quizData)
   const [markedForRevisit, setMarkedForRevisit] = useState([]);
   const [learnLater, setLearnLater] = useState([]); // Re-introducing learnLater state
   const [showHint, setShowHint] = useState(false);
+  const [fiftyFiftyUsed, setFiftyFiftyUsed] = useState(false);
+const [hiddenOptions, setHiddenOptions] = useState([]);
+
 
 const [toast, setToast] = useState(null); 
   const showToast = (message, type = "success") => {
@@ -50,6 +53,21 @@ const handleHintUsage = (currentQuestionIndex) => {
   }
 
   setShowHint((prev) => !prev);
+};
+const handleFiftyFifty = () => {
+  if (fiftyFiftyUsed) return;
+
+  const correctAnswer = currentQuestion.correctAnswer; 
+  const incorrectOptions = currentQuestion.options.filter(
+    (opt) => opt !== correctAnswer
+  );
+
+  // Pick two incorrect options to hide
+  const shuffled = incorrectOptions.sort(() => 0.5 - Math.random());
+  const optionsToHide = shuffled.slice(0, 2);
+
+  setHiddenOptions(optionsToHide);
+  setFiftyFiftyUsed(true);
 };
 
   const handleAnswerSelect = (option) => {
@@ -233,13 +251,12 @@ const handleLearnLater = (itemIndex) => {
           )}
         </div>
 
-        <Link
-          to={userId?"/startQuiz":"/StartQuiz"}
-          onClick={handleSubmit}
+        <button
+          onClick={() => navigate(-1)}
           className="w-full mt-6 px-6 py-3 bg-red-600 text-white text-lg font-bold rounded-lg hover:bg-red-500 transition-colors duration-200 shadow-xl flex items-center justify-center"
         >
           <span className="mr-2 text-2xl">🚀</span> Quit Quiz
-        </Link>
+        </button>
       </div>
 
       {/* Right Quiz Panel - Main Content */}
@@ -263,23 +280,27 @@ const handleLearnLater = (itemIndex) => {
           </h3>
 
           <div className="grid gap-4 md:grid-cols-2">
-            {currentQuestion.options.map((option, index) => (
-              <button
-                key={index}
-                onClick={() => handleAnswerSelect(option)}
-                className={`w-full text-left px-6 py-4 rounded-lg transition-all duration-300 border-2
-                  ${
-                    selectedAnswers[currentQuestionIndex] === option
-                      ? "bg-blue-700 border-blue-500 shadow-md text-white"
-                      : "bg-gray-700 border-gray-600 hover:bg-gray-600 hover:border-blue-500 text-gray-200"
-                  } transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50`}
-              >
-                <span className="font-semibold text-lg">
-                  {String.fromCharCode(65 + index)}.{" "}
-                </span>
-                {option}
-              </button>
-            ))}
+            {currentQuestion.options.map((option, index) => {  //understand later
+              const shouldHide = hiddenOptions.includes(option);
+              return (
+                <button
+                  key={index}
+                  onClick={() => handleAnswerSelect(option)}
+                  disabled={shouldHide}
+                  className={`w-full text-left px-6 py-4 rounded-lg transition-all duration-300 border-2
+        ${shouldHide ? "opacity-30 cursor-not-allowed line-through border-red-500" : ""}
+        ${selectedAnswers[currentQuestionIndex] === option
+            ? "bg-blue-700 border-blue-500 shadow-md text-white"
+            : "bg-gray-700 border-gray-600 hover:bg-gray-600 hover:border-blue-500 text-gray-200"
+        } transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50`}
+                >
+                  <span className="font-semibold text-lg">
+                    {String.fromCharCode(65 + index)}.{" "}
+                  </span>
+                  {option}
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -306,30 +327,39 @@ const handleLearnLater = (itemIndex) => {
             <span className="mr-2 text-xl">💡</span>{" "}
             {showHint ? "Hide Hint" : "Show Hint"}
           </button>
+           <button
+            onClick={handleFiftyFifty}
+            disabled={fiftyFiftyUsed}
+            className={`runningQuiz-button bg-pink-600 hover:bg-pink-500 ${
+              fiftyFiftyUsed ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
+            <span className="mr-2 text-xl">🎯</span> 50:50
+          </button>
           <button
             onClick={handleMarkForRevisit}
             className={`runningQuiz-button bg-purple-600 hover:bg-purple-500`}
           >
             <span className="mr-2 text-xl">🚩</span> Mark for Revisit
           </button>
-           <button
-    disabled={!userId}
-    onClick={handleLearnLater}
-    className={`runningQuiz-button bg-orange-600 hover:bg-orange-500 
-      ${!userId ? 'opacity-50 cursor-not-allowed' : ''}`}
-  >
+          <button
+            disabled={!userId}
+            onClick={handleLearnLater}
+            className={`runningQuiz-button bg-orange-600 hover:bg-orange-500 
+      ${!userId ? "opacity-50 cursor-not-allowed" : ""}`}
+          >
             <span className="mr-2 text-xl">📚</span> Learn Later
           </button>
 
-        {/* show hint */}
-           {showHint && (
-          <div className="p-2 w-auto flex align-baseline bg-yellow-100 text-gray-900 rounded-lg shadow-inner text-base border border-yellow-300">
-            <h4 className="font-bold text-lg  mr-2">Hint:</h4>
-            <p className="mt-1">
-              {currentQuestion.hint || "No hint available for this question."}
-            </p>
-          </div>
-        )}
+          {/* show hint */}
+          {showHint && (
+            <div className="p-2 w-auto flex align-baseline bg-yellow-100 text-gray-900 rounded-lg shadow-inner text-base border border-yellow-300">
+              <h4 className="font-bold text-lg  mr-2">Hint:</h4>
+              <p className="mt-1">
+                {currentQuestion.hint || "No hint available for this question."}
+              </p>
+            </div>
+          )}
           {currentQuestionIndex === totalQuestions - 1 && (
             <button
               onClick={handleSubmit}
@@ -340,8 +370,6 @@ const handleLearnLater = (itemIndex) => {
           )}
          
         </div>
-
-      
       </div>
       {toast && (
         <Toast
