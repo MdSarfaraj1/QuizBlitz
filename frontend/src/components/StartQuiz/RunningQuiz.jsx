@@ -285,7 +285,7 @@ const handleLearnLater = (itemIndex) => {
           </h3>
 
           <div className="grid gap-4 md:grid-cols-2">
-            {currentQuestion.options.map((option, index) => {  //understand later
+            {currentQuestion.options.map((option, index) => {  
               const shouldHide = hiddenOptions[currentQuestionIndex]?.includes(option);
 
               return (
