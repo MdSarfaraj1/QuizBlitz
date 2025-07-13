@@ -1,11 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [ "./index.html","./src/**/*.{html,jsx,js}"],
-   safelist: [
-    {
-      pattern: /(from|to)-(yellow|orange|green|blue|purple|pink|red|teal|lime|indigo)-(400|500|600|700)/,
-    },
-  ],
+safelist: [
+  {
+    pattern: /(from|to)-(blue|green|pink|yellow|indigo|purple|teal|red|orange|cyan|lime|violet|emerald|sky|amber|slate|fuchsia|rose|gray)-(400|500|600|700)/,
+  },
+],
+
   theme: {
 		container: {
 			center: true,

@@ -146,8 +146,8 @@ exports.startQuiz = async (req, res) => {
         const selected = shuffled.slice(0, numberOfQuestions);
 
         const fallbackQuizSet = new QuizSet({
-          title: ` ${category}`,
-          description: `Some mislenious questions regarding ${category}`,
+          title: ` ${category.title}`,
+          description: `Some mislenious questions regarding ${category.title}`,
           category: categoryId,
           image,
           difficulty,

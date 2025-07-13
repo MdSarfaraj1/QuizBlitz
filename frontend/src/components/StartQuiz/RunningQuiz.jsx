@@ -20,7 +20,7 @@ console.log("running Quiz data",quizData)
   const [learnLater, setLearnLater] = useState([]); // Re-introducing learnLater state
   const [showHint, setShowHint] = useState(false);
   const [fiftyFiftyUsed, setFiftyFiftyUsed] = useState(false);
-const [hiddenOptions, setHiddenOptions] = useState([]);
+const [hiddenOptions, setHiddenOptions] = useState({});
 
 
 const [toast, setToast] = useState(null); 
@@ -57,17 +57,22 @@ const handleHintUsage = (currentQuestionIndex) => {
 const handleFiftyFifty = () => {
   if (fiftyFiftyUsed) return;
 
-  const correctAnswer = currentQuestion.correctAnswer; 
+  const correctAnswer = currentQuestion.correctAnswer;
   const incorrectOptions = currentQuestion.options.filter(
     (opt) => opt !== correctAnswer
   );
 
-  // Pick two incorrect options to hide
   const shuffled = incorrectOptions.sort(() => 0.5 - Math.random());
   const optionsToHide = shuffled.slice(0, 2);
 
-  setHiddenOptions(optionsToHide);
-  setFiftyFiftyUsed(true);
+  setHiddenOptions((prev) => ({
+    ...prev,
+    [currentQuestionIndex]: optionsToHide,
+  }));
+
+  setTimeout(() => {
+    setFiftyFiftyUsed(true);
+  }, 1000);
 };
 
   const handleAnswerSelect = (option) => {
@@ -281,7 +286,8 @@ const handleLearnLater = (itemIndex) => {
 
           <div className="grid gap-4 md:grid-cols-2">
             {currentQuestion.options.map((option, index) => {  //understand later
-              const shouldHide = hiddenOptions.includes(option);
+              const shouldHide = hiddenOptions[currentQuestionIndex]?.includes(option);
+
               return (
                 <button
                   key={index}
@@ -305,7 +311,8 @@ const handleLearnLater = (itemIndex) => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap gap-4 justify-center md:justify-end mt-auto pt-6 border-t        border-gray-700 flex-shrink-0">
+      <div className="flex flex-wrap gap-4 justify-center md:justify-end mt-auto pt-6 border-t border-gray-700 flex-shrink-0 bg-gray-800/50 rounded-lg p-4 shadow-inner backdrop-blur-md">
+
           <button
             onClick={handlePrevious}
             disabled={currentQuestionIndex === 0}
@@ -327,15 +334,18 @@ const handleLearnLater = (itemIndex) => {
             <span className="mr-2 text-xl">💡</span>{" "}
             {showHint ? "Hide Hint" : "Show Hint"}
           </button>
-           <button
+          {!fiftyFiftyUsed &&
+          <button
             onClick={handleFiftyFifty}
             disabled={fiftyFiftyUsed}
             className={`runningQuiz-button bg-pink-600 hover:bg-pink-500 ${
               fiftyFiftyUsed ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
-            <span className="mr-2 text-xl">🎯</span> 50:50
+            <span className="mr-2 text-lg md:text-xl">🎯</span> 50:50
           </button>
+          }
+           
           <button
             onClick={handleMarkForRevisit}
             className={`runningQuiz-button bg-purple-600 hover:bg-purple-500`}
