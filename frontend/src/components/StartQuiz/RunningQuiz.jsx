@@ -334,7 +334,7 @@ const handleLearnLater = (itemIndex) => {
             <span className="mr-2 text-xl">💡</span>{" "}
             {showHint ? "Hide Hint" : "Show Hint"}
           </button>
-          {!fiftyFiftyUsed &&
+          {!fiftyFiftyUsed && userId &&
           <button
             onClick={handleFiftyFifty}
             disabled={fiftyFiftyUsed}

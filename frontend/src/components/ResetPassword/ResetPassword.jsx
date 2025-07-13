@@ -247,7 +247,7 @@ function ResetPassword() {
             </div>
             <button 
               className="inline-flex items-center px-6 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-purple-200 hover:text-white font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl border border-white/10 hover:border-white/20"
-              onClick={() => alert('Navigate to login page')}
+              onClick={() => navigate('/login')}
             >
               ← Back to Login
             </button>

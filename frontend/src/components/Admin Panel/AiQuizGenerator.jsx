@@ -98,7 +98,7 @@ const selectedCategory = categorySuggestions.find(cat => cat.name === category);
     options: q.options,                        
     hint: q.explanation,
   }));
-
+console.log("it is the question:",questions)
   const quizData = {
     description: generatedQuiz.description,
     category: selectedCategory.name,

@@ -436,15 +436,21 @@ exports.createQuiz = async (req, res) => {
     const savedQuestionIds = [];
 
     for (const q of questions) {
-      const newQuestion = new Question({
-        questionText: q.questionText,
-        correctAnswer: q.correctAnswer,
-        options: [...q.options, q.correctAnswer].sort(() => Math.random() - 0.5),
-        hint: q.hint,
-        level: difficulty,
-        category: Array.isArray(category) ? category : [category], // ensure it's an array
-      });
+  const baseOptions = q.options || [];
+  
+  // Add correctAnswer only if it's not already in options(user creating quiz)
+  const finalOptions = baseOptions.includes(q.correctAnswer)
+    ? [...baseOptions] // admin generated this by ai 
+    : [...baseOptions, q.correctAnswer]; // user generetated this manually 
 
+  const newQuestion = new Question({
+    questionText: q.questionText,
+    correctAnswer: q.correctAnswer,
+    options: finalOptions.sort(() => Math.random() - 0.5),
+    hint: q.hint,
+    level: difficulty,
+    category: Array.isArray(category) ? category : [category],
+  });
       const savedQuestion = await newQuestion.save();
       savedQuestionIds.push(savedQuestion._id);
     }
