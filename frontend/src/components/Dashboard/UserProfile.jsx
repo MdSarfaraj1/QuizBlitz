@@ -1,13 +1,14 @@
 import axios from "axios";
-import { Award, TrendingUp, Medal, Lightbulb } from "lucide-react";
+import { Award, TrendingUp, Medal, Lightbulb, Bell } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../Context/UserContextProvider";
-
+import NotificationModal from "./Notification";
 const UserProfile = () => {
   const { username } = useAuth();
   const navigate = useNavigate();
   const [user, setUser] = useState({});
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -24,7 +25,7 @@ const UserProfile = () => {
     };
     fetchUserData();
   }, []);
-
+const openModal=()=>setIsModalOpen(true)
   return (
     <>
       {/* Header */}
@@ -65,12 +66,24 @@ const UserProfile = () => {
           {/* User Info & Stats Grid */}
           <div className="flex-1 text-center md:text-left">
             <div className="mb-4">
-              <h2 className="text-2xl font-bold text-gray-800 flex items-center justify-center md:justify-start space-x-1">
-                <span>{user.username}</span>
-              </h2>
+              <div className="flex items-center justify-between space-x-2">
+                <h2 className="text-2xl font-bold text-gray-800">
+                  {user.username}
+                </h2>
+                {/* Notification */}
+                <button className="relative w-9 h-9" onClick={openModal}>
+                  <div className="bg-sky-500 w-full h-full rounded-full shadow-md flex justify-center items-center  hover:bg-sky-600 transition-colors duration-300">
+                    <Bell size={18} className="text-white" />
+                  </div>
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-600 text-white text-[10px] font-semibold rounded-full flex items-center justify-center shadow-sm">
+                    3
+                  </span>
+                </button>
+                
+              </div>
               <p className="text-gray-500 text-base mt-0.5">Quiz Enthusiast</p>
             </div>
-
+              <NotificationModal  isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
             {/* Stats Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
               {/* Quizzes Taken */}
@@ -134,7 +147,7 @@ const UserProfile = () => {
                   Quizzes Created
                 </span>
                 <p className="text-2xl font-extrabold text-blue-800 mt-0.5">
-                  {user.totalCreatedQuizzes }
+                  {user.totalCreatedQuizzes}
                 </p>
               </div>
             </div>

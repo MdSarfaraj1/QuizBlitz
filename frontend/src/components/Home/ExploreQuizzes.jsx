@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../Context/UserContextProvider";
 import { Toast } from "../UI/toast";
+import MultiplayerModal from "../Multiplayer/MultiPlayer";
 
 const ExploreQuizzes = () => {
     const { userId } = useAuth();
@@ -17,7 +18,13 @@ const ExploreQuizzes = () => {
     const [initialSavedQuizzes, setInitialSavedQuizzes] = useState(new Set()); // To compare for changes
     const [showFilters, setShowFilters] = useState(false);
     const [toast, setToastMessage] = useState("");
+    const [quizId,setQuizId]=useState("")// useful in multiplayer management
+      const [showMultiplayerModal, setShowMultiplayerModal] = useState(false);
 
+  const handleStartMultiplayer = async (id) => {
+    setQuizId(id)
+    setShowMultiplayerModal(true);
+  };
     // --- Fetch Quizzes and Initial Saved State ---
     useEffect(() => {
         const getPredefinedQuizSet = async () => {
@@ -266,17 +273,6 @@ const ExploreQuizzes = () => {
                         <option value="hard">🔴 Hard</option>
                       </select>
                     </div>
-
-                    {/* Clear Filter Button
-                    <button
-                      onClick={() => {
-                        setSelectedDifficulty("all");
-                        setShowFilters(false);
-                      }}
-                      className="w-full px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl transition-all duration-300"
-                    >
-                      Clear Filter
-                    </button> */}
                   </div>
                 </div>
               )}
@@ -425,13 +421,22 @@ const ExploreQuizzes = () => {
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="space-y-3">
+                    <div className="flex space-x-3">
+                      {/* Start Quiz Button */}
                       <button
                         onClick={() => handleStartQuiz(quiz._id)}
-                        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 group-hover:shadow-lg"
+                        className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 text-sm group"
                       >
-                        Start Quiz
+                        Start
                         <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      </button>
+
+                      {/* Multiplayer Button */}
+                      <button
+                        onClick={()=>handleStartMultiplayer(quiz._id)}
+                        className="flex-1  bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-600 hover:to-teal-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 text-sm shadow"
+                      >
+                        🤝 Multiplayer
                       </button>
                     </div>
                   </div>
@@ -440,7 +445,13 @@ const ExploreQuizzes = () => {
             </div>
           )}
         </div>
-
+        {/* Multiplayer Modal */}
+        <MultiplayerModal
+          isOpen={showMultiplayerModal}
+          onClose={() => setShowMultiplayerModal(false)}
+          userId={userId}
+          quizId={quizId}
+        />
         {/* Call to Action */}
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-16">
           <div className="container mx-auto max-w-4xl px-4 text-center">

@@ -1,22 +1,23 @@
-import { useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ArrowLeft, X, Copy, Clock, Users, Share2 } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import CategorySelection from './Categories'; // Assuming this path is correct
 import axios from 'axios';
 import { useAuth } from '../../Context/UserContextProvider';
+import MultiplayerModal from '../Multiplayer/MultiPlayer';
 
+// Updated StartQuiz component with modal integration
 const StartQuiz = () => {
-  const { userId } = useAuth();
+  const { userId ,username } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const alreadySelected = location.state?.alreadySelected || null;
-  console.log("Already selected category:", alreadySelected);
   const [selectedCategory, setSelectedCategory] = useState(alreadySelected);
   const [categoryError, setCategoryError] = useState('');
   const [selectedDifficulty, setSelectedDifficulty] = useState('');
   const [numberOfQuestions, setNumberOfQuestions] = useState(10);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [showMultiplayerModal, setShowMultiplayerModal] = useState(false);
 
   const handleStartQuiz = async () => {
     // Defensive: check selectedCategory has required fields
@@ -64,6 +65,10 @@ const StartQuiz = () => {
     }
   };
 
+  const handleStartMultiplayer = async () => {
+    setShowMultiplayerModal(true);
+  };
+
   const canStartQuiz = selectedCategory && selectedDifficulty;
 
   return (
@@ -71,7 +76,7 @@ const StartQuiz = () => {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-10">
-            <button
+          <button
             onClick={() => navigate("/dashboard")}
             className="absolute top-8 left-16 flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-full shadow hover:bg-gray-100 transition duration-300 group"
           >
@@ -80,7 +85,9 @@ const StartQuiz = () => {
               Back
             </span>
           </button>
-          <h1 className="text-3xl md:text-4xl font-extrabold text-center flex-1 text-purple-700">🎯 Choose Your Challenge</h1>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-center flex-1 text-purple-700">
+            🎯 Choose Your Challenge
+          </h1>
           <div className="w-24">
             <a href="#" className="text-2xl font-bold text-purple-700">
               Quiz<span className="text-pink-500">Blitz</span>
@@ -94,19 +101,23 @@ const StartQuiz = () => {
             <CategorySelection
               selectedCategory={selectedCategory}
               setSelectedCategory={setSelectedCategory}
-              userId={userId} 
+              userId={userId}
             />
           </div>
 
           {/* Right: Settings */}
           <div>
             <div className="bg-white rounded-2xl p-6 sticky top-8 border border-purple-200 shadow-lg">
-              <h2 className="text-2xl font-bold mb-4 text-purple-700">⚙️ Quiz Settings</h2>
+              <h2 className="text-2xl font-bold mb-4 text-purple-700">
+                ⚙️ Quiz Settings
+              </h2>
 
               {/* Selected Category */}
               {selectedCategory && (
                 <div className="mb-4 p-3 bg-purple-50 rounded-lg border border-purple-200">
-                  <h3 className="font-semibold text-gray-700 mb-2">📂 Selected Topic:</h3>
+                  <h3 className="font-semibold text-gray-700 mb-2">
+                    📂 Selected Topic:
+                  </h3>
                   <div className="flex items-center gap-3 text-lg font-medium text-purple-600">
                     <span className="text-3xl">{selectedCategory.icon}</span>
                     <span>{selectedCategory.title}</span>
@@ -116,10 +127,15 @@ const StartQuiz = () => {
 
               {/* Difficulty Selection */}
               <div className="mb-5">
-                <label className="block text-lg font-semibold mb-3 text-gray-700">🎚️ Difficulty</label>
+                <label className="block text-lg font-semibold mb-3 text-gray-700">
+                  🎚️ Difficulty
+                </label>
                 <div className="grid gap-3">
-                  {['easy', 'medium', 'hard'].map((level) => (
-                    <label key={level} className="flex items-center gap-3 text-gray-600 cursor-pointer">
+                  {["easy", "medium", "hard"].map((level) => (
+                    <label
+                      key={level}
+                      className="flex items-center gap-3 text-gray-600 cursor-pointer"
+                    >
                       <input
                         type="radio"
                         value={level}
@@ -128,9 +144,9 @@ const StartQuiz = () => {
                         className="accent-purple-500 w-5 h-5"
                       />
                       <span className="text-base">
-                        {level === 'easy' && '🟢 Easy - Basic'}
-                        {level === 'medium' && '🟡 Medium - Moderate'}
-                        {level === 'hard' && '🔴 Hard - Expert'}
+                        {level === "easy" && "🟢 Easy - Basic"}
+                        {level === "medium" && "🟡 Medium - Moderate"}
+                        {level === "hard" && "🔴 Hard - Expert"}
                       </span>
                     </label>
                   ))}
@@ -139,10 +155,14 @@ const StartQuiz = () => {
 
               {/* Number of Questions */}
               <div className="mb-6">
-                <label className="text-lg font-semibold mb-2 block text-gray-700">📋 Questions</label>
+                <label className="text-lg font-semibold mb-2 block text-gray-700">
+                  📋 Questions
+                </label>
                 <select
                   value={numberOfQuestions}
-                  onChange={(e) => setNumberOfQuestions(parseInt(e.target.value))}
+                  onChange={(e) =>
+                    setNumberOfQuestions(parseInt(e.target.value))
+                  }
                   className="w-full bg-gray-50 border border-purple-300 text-gray-800 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-400 appearance-none"
                 >
                   <option value="5">5 Questions (Quick)</option>
@@ -152,28 +172,47 @@ const StartQuiz = () => {
                 </select>
               </div>
 
-
               {/* Start Button */}
-              <button
-                disabled={!canStartQuiz || isLoading}
-                onClick={handleStartQuiz}
-                className={`w-full py-3 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center gap-2 ${
-                  canStartQuiz
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 hover:scale-[1.02] shadow-lg'
-                    : 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                }`}
-              >
-                {isLoading ? (
-                  <>
-                    <div className="inline-block h-5 w-5 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
-                    Starting Quiz...
-                  </>
-                ) : (
-                  canStartQuiz ? '🚀 Start Quiz!' : '⚠️ Select Category & Difficulty'
-                )}
-              </button>
+              <div className="flex gap-3 w-full">
+                {/* Start Quiz Button */}
+                <button
+                  disabled={!canStartQuiz || isLoading}
+                  onClick={handleStartQuiz}
+                  className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2
+      ${
+        canStartQuiz
+          ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 hover:scale-105 shadow"
+          : "bg-gray-300 text-gray-600 cursor-not-allowed"
+      }`}
+                >
+                  {isLoading ? (
+                    <>
+                      <div className="inline-block h-4 w-4 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
+                      Starting...
+                    </>
+                  ) : (
+                    "🚀 Start"
+                  )}
+                </button>
+
+                {/* Multiplayer Button */}
+                <button
+                  onClick={handleStartMultiplayer}
+                  className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all duration-300 flex  shadow items-center justify-center gap-2
+      ${
+        canStartQuiz
+          ? "bg-gradient-to-r from-blue-500 to-sky-500 text-white hover:from-blue-600 hover:to-sky-600 hover:scale-105 shadow"
+          : "bg-gray-300 text-gray-600 cursor-not-allowed"
+      }`}
+                >
+                  🤝 Multiplayer
+                </button>
+              </div>
+
               {categoryError && (
-                <div className="mt-2 text-red-600 text-sm font-semibold">{categoryError}</div>
+                <div className="mt-2 text-red-600 text-sm font-semibold">
+                  {categoryError}
+                </div>
               )}
 
               {/* Quiz Info */}
@@ -186,8 +225,22 @@ const StartQuiz = () => {
           </div>
         </div>
       </div>
+
+      {/* Multiplayer Modal */}
+      {selectedCategory && (
+        <MultiplayerModal
+          isOpen={showMultiplayerModal}
+          onClose={() => setShowMultiplayerModal(false)}
+          userId={userId}
+          image={selectedCategory.icon}
+          categoryId={selectedCategory._id}
+          numberOfQuestions={numberOfQuestions}
+          difficulty={selectedDifficulty}
+          username={username}
+        />
+      )}
     </div>
   );
 };
 
-export default StartQuiz;
+export default StartQuiz

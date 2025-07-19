@@ -15,22 +15,10 @@ import NotFound from './pages/NoFoundPage';
 import { UserContextProvider } from './Context/UserContextProvider';
 import ResetPassword from './components/ResetPassword/ResetPassword';
 import ExploreQuizzes from './components/Home/ExploreQuizzes';
-import axios from "axios";
-// axios.interceptors.response.use(
-//   response => response,
-//   error => {
-//     if (
-//       error.response &&
-//       error.response.status === 401 &&
-//       !window.location.pathname.startsWith("/login")
-//     ) {
-//       alert("Session expired. Please log in again.");
-//       window.location.href = "/login";
-//     }
-//     return Promise.reject(error);
-//   }
-// );
-
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import JoinRoomPage from './components/Multiplayer/JoinRoomPage';
+import MultiplayerQuiz from './components/Multiplayer/MultiplayerRunningQuiz';
+import LiveQuiz from './components/Multiplayer/LiveRunningQuiz';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -46,6 +34,10 @@ const router = createBrowserRouter(
     <Route path='/userSettings' element={<UserSettings/>}/>
     <Route path='/forget-password' element={<ResetPassword/>}/>
     <Route path='/exploreQuizzes' element={<ExploreQuizzes/>}/>
+    <Route path="/joinRoom/:roomId" element={<JoinRoomPage />} />
+     <Route path='/runningMultiplayerQuiz' element={<MultiplayerQuiz/>}/>
+     <Route path='/liveQuiz' element={<LiveQuiz/>}/>
+
     <Route path='*' element={<NotFound/>}/>
     </>
    
@@ -53,9 +45,10 @@ const router = createBrowserRouter(
 );
 
 createRoot(document.getElementById('root')).render(
+  <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID}>
   <UserContextProvider>
     <RouterProvider router={router} />
   </UserContextProvider>
-    
+    </GoogleOAuthProvider>
   
 )

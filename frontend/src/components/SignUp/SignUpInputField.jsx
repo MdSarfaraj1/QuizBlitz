@@ -9,6 +9,7 @@ import {
   validatePasswordMatch,
   getPasswordStrength,
 } from "../../Utills/validation";
+import { GoogleLogin } from '@react-oauth/google';
 import axios from "axios";
 import { useAuth } from "../../Context/UserContextProvider";
 import { generateNewAvatar } from "../../Utills/GenerateAvatar";
@@ -102,6 +103,40 @@ const SignUpInputField = () => {
     if (strength === "medium") return "bg-yellow-500";
     return "bg-green-500";
   };
+  // Handle Google signup success
+const handleGoogleSuccess = async (credentialResponse) => {
+  try {
+    // Send the credential to your backend
+    const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/User/google-signup`, {
+      credential: credentialResponse.credential
+    }, {
+      withCredentials: true
+    });
+
+    setMessage({
+      text: response.data.message || "Signup successful",
+      type: "success",
+    });
+    
+    setUser(response.data.userId, response.data.username, response.data.avatar,response.data.role);
+    setTimeout(() => {
+      navigate(`/dashboard`);
+    }, 1000);
+  } catch (error) {
+    setMessage({
+      text: error.response?.data?.message || "Failed to signup with Google",
+      type: "error",
+    });
+  }
+};
+
+// Handle Google login failure
+const handleGoogleFailure = () => {
+  setMessage({
+    text: "Google signup failed. Please try again.",
+    type: "error",
+  });
+};
 
   return (
     <div className="w-full max-w-md mx-auto">
@@ -228,11 +263,22 @@ const SignUpInputField = () => {
         <button
           disabled={isLoading}
           type="submit"
-          className="bg-myColour  hover:bg-myColour/90 text-white size-lg rounded-full flex py-2 justify-center w-full"
+          className=" bg-blue-600 hover:bg-blue-700 hover:shadow-blue-500/60 text-white size-lg rounded-lg flex py-2 justify-center w-full shadow-lg shadow-blue-500/40  transition-all"
         >
           {isLoading ? "Creating Account..." : `Sign Up`}{" "}
           <ArrowRight className="ml-2 h-7 w-5" />
         </button>
+         {/* Sign up WITH GOOGLE  */}
+                   <div className="flex  justify-center my-3">
+                      <GoogleLogin
+                        onSuccess={handleGoogleSuccess}
+                        onError={handleGoogleFailure}
+                        useOneTap
+                        theme="filled_blue"
+                        text="continue_with"
+                        shape="square"
+                      />
+                  </div>
 
         <div className="text-center mt-6">
           <p className="text-sm text-gray-500">

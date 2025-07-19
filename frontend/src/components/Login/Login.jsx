@@ -4,6 +4,7 @@ import Logo from './Logo';
 import {useAuth} from '../../Context/UserContextProvider'
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { GoogleLogin } from '@react-oauth/google';
 
 const LoginPage = () => {
   const navigate=useNavigate();
@@ -49,6 +50,39 @@ const handleLoginSubmit = async (e) => {
     };
       setLoading(false);
   }
+// Handle Google login success
+const handleGoogleSuccess = async (credentialResponse) => {
+  try {
+    // Send the credential to your backend
+    const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/User/google-login`, {
+      credential: credentialResponse.credential
+    }, {
+      withCredentials: true
+    });
+
+    setMessage({
+      text: response.data.message || "Login successful",
+      type: "success",
+    });
+    
+    setUser(response.data.userId, response.data.username, response.data.avatar,response.data.role);
+    setTimeout(() => {
+      navigate(`/dashboard`);
+    }, 1000);
+  } catch (error) {
+    setMessage({
+      text: error.response?.data?.message || "Failed to login with Google",
+      type: "error",
+    });
+  }
+};
+// Handle Google login failure
+const handleGoogleFailure = () => {
+  setMessage({
+    text: "Google login failed. Please try again.",
+    type: "error",
+  });
+};
 
   return (
     <div className="login-background flex min-h-screen flex-col md:flex-row">
@@ -183,11 +217,22 @@ const handleLoginSubmit = async (e) => {
               <button
                 disabled={loading}
                 type="submit"
-                className="w-full h-12 text-base bg-myColour/20 rounded-full font-medium shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all"
+               className="w-full h-12 text-base bg-blue-600 text-white rounded-lg font-medium shadow-lg shadow-blue-500/40 hover:bg-blue-700 hover:shadow-blue-500/60 transition-all"
+
               >
                 {loading ? "Signing in..." : "Sign In"}
               </button>
-
+              {/* LOGIN WITH GOOGLE  */}
+                   <div className="flex  justify-center my-3">
+                      <GoogleLogin
+                        onSuccess={handleGoogleSuccess}
+                        onError={handleGoogleFailure}
+                        useOneTap
+                        theme="filled_blue"
+                        text="continue_with"
+                        shape="square"
+                      />
+                  </div>
               {/* Sign up option */}
               <p className="text-center text-sm text-gray-600 mt-4">
                 Don't have an account?{" "}

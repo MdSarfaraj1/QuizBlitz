@@ -30,6 +30,11 @@ notifications: {
   email: { type: Boolean, default: true },
   remainders: { type: Boolean, default: true }
 },
+ googleId: {
+        type: String,
+        sparse: true, // Allows null values but ensures uniqueness when values exist
+        unique: true
+      },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
 });

@@ -13,6 +13,10 @@ const upload = multer({storage});
 router.post('/register', authController.register);
 router.post('/login',authController.login);
 router.post('/logout', authController.logout);
+//google login signup
+router.post('/google-login',authController.googleLogin);
+router.post('/google-signup', authController.googleSignup);
+
 router.post('/verify-email', authController.verifyEmail);
 router.post('/resend-verification', authController.verifyEmail);
 router.get('/getProfile', isLoggedIn(), authController.getProfile);

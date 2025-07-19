@@ -110,8 +110,8 @@ const handleSubmit = () => {
                     You’re reaching for the stars — know your true potential!
                   </p>
                   <div className="mt-4 flex justify-center gap-4">
-                    <button className="homepage-button">Login </button>
-                    <button className="homepage-button">Register </button>
+                    <button onClick={()=>navigate('/login')}  className="homepage-button">Login </button>
+                    <button onClick={()=>navigate('/signup')} className="homepage-button">Register </button>
                   </div>
                 </div>
               ) : (
