@@ -7,15 +7,20 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const http = require("http"); // ✅ required for socket.io 
 const { Server } = require("socket.io");
-
+const allowedOrigins = [
+  "http://localhost:5173", 
+  "https://quiz-blitz-seven.vercel.app" 
+];
 const app = express();
 const server = http.createServer(app); // ✅ create HTTP server
 const io = new Server(server, {
   cors: {
-    origin: true,
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
     credentials: true,
   },
 });
+
 
 // Import routers
 const AdminRouter = require("./routers/Admin"); 
@@ -26,9 +31,11 @@ const Acheivement = require("./routers/Achievements");
 
 // Middleware
 app.use(express.json());
+
+
 app.use(cors({
-  credentials: true,
-  origin: true
+  origin: allowedOrigins,
+  credentials: true
 }));
 app.use(cookieParser());
 
