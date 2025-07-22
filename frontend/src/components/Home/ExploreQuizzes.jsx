@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../Context/UserContextProvider";
 import { Toast } from "../UI/toast";
-import MultiplayerModal from "../Multiplayer/MultiPlayer";
+import MultiplayerModal from "../Multiplayer/Multiplayer.jsx";
 
 const ExploreQuizzes = () => {
     const { userId } = useAuth();
