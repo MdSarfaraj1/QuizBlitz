@@ -4,11 +4,11 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import CategorySelection from './Categories'; // Assuming this path is correct
 import axios from 'axios';
 import { useAuth } from '../../Context/UserContextProvider';
-import MultiplayerModal from '../Multiplayer/MultiPlayer';
+import MultiplayerModal from '../Multiplayer/Multiplayer';
 
 // Updated StartQuiz component with modal integration
 const StartQuiz = () => {
-  const { userId ,username } = useAuth();
+  const { userId ,username ,profilePicture} = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const alreadySelected = location.state?.alreadySelected || null;
@@ -237,6 +237,7 @@ const StartQuiz = () => {
           numberOfQuestions={numberOfQuestions}
           difficulty={selectedDifficulty}
           username={username}
+          profilePicture={profilePicture}
         />
       )}
     </div>

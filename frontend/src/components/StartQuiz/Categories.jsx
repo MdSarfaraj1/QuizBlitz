@@ -10,7 +10,7 @@ const CategorySelection = ({ selectedCategory, setSelectedCategory, userId }) =>
     const [searchTerm, setSearchTerm] = useState('');
     const [categories, setCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [toast,setToast]=useState({})
+    const [toast,setToast]=useState()
     const [favoriteCategoryIds, setFavoriteCategoryIds] = useState(new Set()); 
     const [initialFavoriteCategoryIds, setInitialFavoriteCategoryIds] = useState(new Set()); 
     const[showJoinRoomModal,setShowJoinRoomModal]=useState(false)
@@ -77,7 +77,7 @@ const CategorySelection = ({ selectedCategory, setSelectedCategory, userId }) =>
             );
             setInitialFavoriteCategoryIds(new Set(favoriteCategoryIds)); // Update initial state after saving
             setHasFavoriteChanges(false); // Reset changes flag
-            setToast({message:"Fevourite Category added succesfully",type:"success"})
+            setToast({message:"Fevourite Category changes succesfully",type:"success"})
         } catch (error) {
             console.error("Error saving favorite categories:", error);
             alert('Failed to save favorite categories. Please try again.');

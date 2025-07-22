@@ -109,9 +109,13 @@ const handleSubmit = () => {
                   <p className="mt-2 text-gray-700 italic">
                     You’re reaching for the stars — know your true potential!
                   </p>
+                 
                   <div className="mt-4 flex justify-center gap-4">
-                    <button onClick={()=>navigate('/login')}  className="homepage-button">Login </button>
-                    <button onClick={()=>navigate('/signup')} className="homepage-button">Register </button>
+                     {
+                    userId?<button onClick={()=>navigate('/startQuiz')} className="homepage-button">Play More</button>:<> <button onClick={()=>navigate('/login')}  className="homepage-button">Login </button>
+                    <button onClick={()=>navigate('/signup')} className="homepage-button">Register </button></>
+                  }
+                   
                   </div>
                 </div>
               ) : (
@@ -124,8 +128,8 @@ const handleSubmit = () => {
                     <br />
                     {quizData.explanation}
                   </p>
-                  <button className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-300" onClick={()=>navigate('/signup')}>
-                    Continue Learning
+                  <button className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-300" onClick={()=>userId?navigate('/dashboard'): navigate('/signup')}>
+                    {userId?"Go to Dashboard":"Continue Learning"}
                   </button>
                 </div>
               )}

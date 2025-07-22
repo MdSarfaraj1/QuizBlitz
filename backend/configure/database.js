@@ -3,7 +3,7 @@ const mongoose=require("mongoose") ;
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.mongo_url);
+    await mongoose.connect(process.env.mongo_atlas_url);
     console.log(" Connected to  MongoDB");
 
   } catch (err) {

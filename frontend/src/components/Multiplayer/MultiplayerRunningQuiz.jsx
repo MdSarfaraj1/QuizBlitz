@@ -1,48 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Users, Crown, Clock, CheckCircle, Play, Trophy, Target, Flag, BookOpen, User, Share2, Copy } from "lucide-react";
 import { useLocation, useNavigate } from 'react-router-dom';
-
+import socket from "../Socket";
 const MultiplayerQuiz = () => {
 
-  // Mock data - replace with real data from props/context
-  const mockQuizData= {
-    questions: [
-      {
-        _id: "1",
-        questionText: "What is the time complexity of binary search?",
-        options: ["O(n)", "O(log n)", "O(n²)", "O(1)"],
-        correctAnswer: "O(log n)",
-        hint: "Think about how the search space is divided in each iteration"
-      },
-      {
-        _id: "2", 
-        questionText: "Which data structure uses LIFO principle?",
-        options: ["Queue", "Stack", "Array", "Linked List"],
-        correctAnswer: "Stack",
-        hint: "Last In, First Out - like a stack of plates"
-      },
-      {
-        _id: "3",
-        questionText: "What does HTML stand for?",
-        options: ["Hyper Text Markup Language", "High Tech Modern Language", "Home Tool Markup Language", "Hyperlink and Text Markup Language"],
-        correctAnswer: "Hyper Text Markup Language",
-        hint: "It's about marking up text for web pages"
-      }
-    ],
-    duration: 30,
-    category: "Computer Science",
-    roomCode: "QUIZ123"
-  };
   const navigate=useNavigate()
   const location = useLocation();
-  const quizData = location.state?.quizData;
-  const mockRoomPlayers = [
-    { id: 1, name: "You", isHost: true, avatar: "🧑‍💻", isCurrentUser: true, completed: false, score: 0, answers: {}, timeSpent: 0 },
-    { id: 2, name: "Alice", isHost: false, avatar: "👩‍🎓", isCurrentUser: false, completed: false, score: 0, answers: {}, timeSpent: 0 },
-    { id: 3, name: "Bob", avatar: "👨‍🔬", isCurrentUser: false, completed: true, score: 85, answers: {0: "O(log n)", 1: "Stack"}, timeSpent: 245 },
-    { id: 4, name: "Charlie", avatar: "👨‍💼", isCurrentUser: false, completed: false, score: 0, answers: {0: "O(n)"}, timeSpent: 0 }
-  ];
+  const {quizData ,players,scores,userId,roomId}= location.state;
 
+ const Players = players.map((user, index) => ({
+  id: user.id,
+  name: user.name,
+  isHost: index === 0,
+  avatar: user.avatar || "👤", 
+  isCurrentUser: user.id === userId,
+  completed: false,
+  score: scores?.[user.id] || 0,
+  answers: {},
+  timeSpent: 0,
+}));
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [timeLeft, setTimeLeft] = useState(quizData?.duration * 60 || 1800); // Total quiz time
@@ -51,14 +27,13 @@ const MultiplayerQuiz = () => {
   const [showHint, setShowHint] = useState(false);
   const [fiftyFiftyUsed, setFiftyFiftyUsed] = useState({});
   const [hiddenOptions, setHiddenOptions] = useState({});
-  const [roomPlayers, setRoomPlayers] = useState(mockRoomPlayers);
+  const [roomPlayers, setRoomPlayers] = useState(Players);
   const [gamePhase, setGamePhase] = useState('playing'); // 'waiting', 'playing', 'submitted', 'results'
   const [showRoomInfo, setShowRoomInfo] = useState(false);
   const [toast, setToast] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [startTime] = useState(Date.now());
-
   const usedHintQuestions = useRef(new Set());
   const totalQuestions = quizData.questions.length;
   const currentQuestion = quizData.questions[currentQuestionIndex];
@@ -77,6 +52,67 @@ const MultiplayerQuiz = () => {
       handleAutoSubmit();
     }
   }, [timeLeft, gamePhase, isSubmitted]);
+
+useEffect(() => {
+ socket.on('player-updated', ({ players }) => {
+  setRoomPlayers(
+    players.map((player, index) => ({
+      ...player,
+      isHost: index === 0,
+      isCurrentUser: player.id === userId,
+    }))
+  );
+});
+
+
+socket.on('all-players-submitted', ({ players }) => {
+  setGamePhase('results');
+  setRoomPlayers(
+    players.map((player, index) => ({
+      ...player,
+      isHost: index === 0,
+      isCurrentUser: player.id === userId,
+    }))
+  );
+});
+
+
+  return () => {
+    socket.off('player-updated');
+    socket.off('all-players-submitted');
+  };
+}, []);
+ const handleSubmitQuiz = () => {
+    const timeSpent = Math.floor((Date.now() - startTime) / 1000);
+    setIsSubmitted(true);
+      
+    // Calculate score
+    let score = 0;
+    Object.entries(selectedAnswers).forEach(([index, answer]) => {
+      if (answer === quizData.questions[parseInt(index)].correctAnswer) {
+        score += 10; // 10 points per correct answer
+      }
+    });
+    socket.emit('player-submitted', {
+  roomId,
+  userId,
+  score,
+  answers: selectedAnswers,
+  timeSpent
+});
+
+    setGamePhase('submitted');
+  
+
+    // Update current user's data
+    setRoomPlayers(prev => prev.map(player => 
+      player.isCurrentUser 
+        ? {...player, completed: true, score, answers: selectedAnswers, timeSpent}
+        : player
+    ));
+
+    showToast("Quiz submitted successfully! Waiting for others...", "success");
+  };
 
   const handleAutoSubmit = () => {
     handleSubmitQuiz();
@@ -163,29 +199,7 @@ const MultiplayerQuiz = () => {
     }
   };
 
-  const handleSubmitQuiz = () => {
-    const timeSpent = Math.floor((Date.now() - startTime) / 1000);
-    setIsSubmitted(true);
-    setGamePhase('submitted');
-    
-    // Calculate score
-    let score = 0;
-    Object.entries(selectedAnswers).forEach(([index, answer]) => {
-      if (answer === quizData.questions[parseInt(index)].correctAnswer) {
-        score += 10; // 10 points per correct answer
-      }
-    });
-
-    // Update current user's data
-    setRoomPlayers(prev => prev.map(player => 
-      player.isCurrentUser 
-        ? {...player, completed: true, score, answers: selectedAnswers, timeSpent}
-        : player
-    ));
-
-    showToast("Quiz submitted successfully! Waiting for others...", "success");
-  };
-
+ 
   const handleViewResults = () => {
     setShowResults(true);
     setGamePhase('results');
@@ -228,95 +242,101 @@ const MultiplayerQuiz = () => {
   );
 
   // Results Modal Component
-  const ResultsModal = () => {
-    const sortedPlayers = [...roomPlayers].sort((a, b) => b.score - a.score);
-    
-    return (
-      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div className="bg-gray-800 rounded-xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-yellow-400 flex items-center">
-              <Trophy className="mr-2" />
-              Quiz Results
-            </h2>
-            <button
-              onClick={() => setShowResults(false)}
-              className="text-gray-400 hover:text-white"
-            >
-              <X size={24} />
-            </button>
-          </div>
+if (showResults) {
+  const sortedPlayers = [...roomPlayers].sort((a, b) => b.score - a.score);
+  const completedPlayers = roomPlayers.filter(p => p.completed);
+  const averageScore = completedPlayers.length
+    ? Math.round(completedPlayers.reduce((sum, p) => sum + p.score, 0) / completedPlayers.length)
+    : 0;
 
-          <div className="space-y-4">
-            {sortedPlayers.map((player, index) => (
+  return (
+    <div className="fixed inset-0 bg-gradient-to-br from-sky-950 to-blue-600 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="bg-gray-900 rounded-2xl shadow-xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6 border-b border-gray-700 pb-3">
+          <h2 className="text-3xl font-bold text-yellow-400 flex items-center">
+            <Trophy className="mr-2" />
+            Quiz Results
+          </h2>
+          <button onClick={() =>{ setShowResults(false); setGamePhase('submitted');}} className="text-gray-400 hover:text-white">
+            <X size={26} />
+          </button>
+        </div>
+
+        {/* Player Cards */}
+        <div className="space-y-4">
+          {sortedPlayers.map((player, index) => {
+            const isWinner = index === 0;
+            const isYou = player.isCurrentUser;
+            const isHost = player.isHost;
+            console.log("Player Data:", isWinner, isYou, isHost, player);
+            return (
               <div
                 key={player.id}
-                className={`p-4 rounded-lg border-2 transition-all ${
-                  index === 0 
-                    ? 'bg-yellow-900/30 border-yellow-500' 
-                    : player.isCurrentUser
-                    ? 'bg-purple-900/30 border-purple-500'
-                    : 'bg-gray-700/50 border-gray-600'
+                className={`p-4 rounded-lg border flex items-center justify-between transition-all shadow-sm ${
+                  isWinner
+                    ? 'bg-yellow-800/20 border-yellow-500'
+                    : isYou
+                    ? 'bg-purple-800/20 border-purple-500'
+                    : 'bg-gray-800 border-gray-700'
                 }`}
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="relative">
-                      <span className="text-2xl">{player.avatar}</span>
-                      {index === 0 && <Crown className="absolute -top-1 -right-1 text-yellow-400" size={16} />}
-                      {index === 1 && <div className="absolute -top-1 -right-1 w-3 h-3 bg-gray-400 rounded-full" />}
-                      {index === 2 && <div className="absolute -top-1 -right-1 w-3 h-3 bg-orange-600 rounded-full" />}
-                    </div>
-                    <div>
-                      <div className="font-bold text-lg">
-                        #{index + 1} {player.name}
-                        {player.isCurrentUser && <span className="text-purple-300 ml-2">(You)</span>}
-                        {player.isHost && <span className="text-blue-300 ml-2">(Host)</span>}
-                      </div>
-                      <div className="text-sm text-gray-400">
-                        {player.completed ? (
-                          <>
-                            Score: {player.score} | 
-                            Answered: {Object.keys(player.answers).length}/{totalQuestions} | 
-                            Time: {formatTimeSpent(player.timeSpent)}
-                          </>
-                        ) : (
-                          <span className="text-orange-400">Still playing...</span>
-                        )}
-                      </div>
-                    </div>
+                {/* Left - Avatar and Name */}
+                <div className="flex items-center space-x-4">
+                  <div className="relative">
+                    <img className="w-12 h-12 rounded-full object-cover" src={player.avatar} alt={player.name} />
+                    {isWinner && <Crown size={16} className="absolute -top-1 -right-1 text-yellow-400" />}
+                    {index === 1 && <div className="absolute -top-1 -right-1 w-3 h-3 bg-gray-400 rounded-full" />}
+                    {index === 2 && <div className="absolute -top-1 -right-1 w-3 h-3 bg-orange-600 rounded-full" />}
                   </div>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-yellow-400">{player.score}</div>
-                    {player.completed && (
-                      <CheckCircle className="text-green-400 ml-auto" size={20} />
-                    )}
+                  <div>
+                    <div className="font-semibold text-lg text-white">
+                      #{index + 1} {player.name}
+                      {isYou && <span className="ml-2 text-purple-300">(You)</span>}
+                      {isHost && <span className="ml-2 text-blue-300">(Host)</span>}
+                    </div>
+                    <div className="text-sm text-gray-400">
+                      {player.completed ? (
+                        <>
+                          Score: {player.score} | Answered: {Object.keys(player.answers).length}/{totalQuestions} | Time: {formatTimeSpent(player.timeSpent)}
+                        </>
+                      ) : (
+                        <span className="text-orange-400">Still playing...</span>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
 
-          <div className="mt-6 pt-4 border-t border-gray-700">
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <div className="bg-gray-700/50 p-3 rounded">
-                <div className="text-gray-400">Players Completed</div>
-                <div className="text-xl font-bold text-green-400">
-                  {roomPlayers.filter(p => p.completed).length}/{roomPlayers.length}
+                {/* Right - Score */}
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-yellow-300">{player.score}</div>
+                  {player.completed && <CheckCircle size={20} className="text-green-400 mx-auto mt-1" />}
                 </div>
               </div>
-              <div className="bg-gray-700/50 p-3 rounded">
-                <div className="text-gray-400">Average Score</div>
-                <div className="text-xl font-bold text-blue-400">
-                  {Math.round(roomPlayers.filter(p => p.completed).reduce((sum, p) => sum + p.score, 0) / roomPlayers.filter(p => p.completed).length) || 0}
-                </div>
-              </div>
+            );
+          })}
+        </div>
+
+        {/* Summary Stats */}
+        <div className="mt-8 border-t border-gray-700 pt-5 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+          <div className="bg-gray-800 p-4 rounded-lg shadow-inner">
+            <div className="text-gray-400 mb-1">Players Completed</div>
+            <div className="text-xl font-bold text-green-400">
+              {completedPlayers.length}/{roomPlayers.length}
+            </div>
+          </div>
+          <div className="bg-gray-800 p-4 rounded-lg shadow-inner">
+            <div className="text-gray-400 mb-1">Average Score</div>
+            <div className="text-xl font-bold text-blue-400">
+              {averageScore}
             </div>
           </div>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
+}
+
 
   if (gamePhase === 'submitted' && !showResults) {
     return (
@@ -348,8 +368,8 @@ const MultiplayerQuiz = () => {
               {roomPlayers.map(player => (
                 <div key={player.id} className="flex items-center justify-between text-sm">
                   <span className="flex items-center">
-                    <span className="mr-2">{player.avatar}</span>
-                    {player.name}
+                    <img className="w-10 h-10 rounded-full" src={player.avatar} alt={player.name} />
+                      &nbsp;{player.name}
                   </span>
                   {player.completed ? (
                     <CheckCircle className="text-green-400" size={16} />
@@ -405,7 +425,7 @@ const MultiplayerQuiz = () => {
               >
                 <div className="flex items-center space-x-3">
                   <div className="relative">
-                    <span className="text-xl">{player.avatar}</span>
+                    <img className="w-10 h-10 rounded-full" src={player.avatar} alt={player.name} />
                     {player.isHost && <Crown className="absolute -top-1 -right-1 text-yellow-400" size={12} />}
                   </div>
                   <div>
@@ -541,10 +561,10 @@ const MultiplayerQuiz = () => {
           <div className="flex items-center justify-between text-sm text-gray-400 border-t border-gray-700 pt-3">
             <div className="flex items-center space-x-4">
               <span>Room Quiz Mode</span>
-              <span>{roomPlayers.filter(p => p.completed).length}/{roomPlayers.length} completed</span>
+              <span>{roomPlayers.filter(p => p.completed).length}/{roomPlayers.length} players completed</span>
             </div>
             <div className="hidden sm:block">
-              Progress: {getCompletionPercentage()}%
+             Your Progress: {getCompletionPercentage()}%
             </div>
           </div>
         </div>
@@ -644,21 +664,12 @@ const MultiplayerQuiz = () => {
             </div>
   
             <div>
-              {!isSubmitted ? (
                 <button
                   onClick={handleSubmitQuiz}
                   className="px-5 py-2 bg-green-600 hover:bg-green-500 text-white rounded-lg font-bold text-sm lg:text-base transition-colors duration-200"
                 >
                   Submit Quiz
                 </button>
-              ) : (
-                <button
-                  onClick={handleViewResults}
-                  className="px-5 py-2 bg-yellow-600 hover:bg-yellow-500 text-white rounded-lg font-bold text-sm lg:text-base transition-colors duration-200"
-                >
-                  View Results
-                </button>
-              )}
             </div>
           </div>
         </div>
@@ -666,8 +677,7 @@ const MultiplayerQuiz = () => {
         {/* Toast Notification */}
         {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
   
-        {/* Results Modal */}
-        {showResults && <ResultsModal />}
+  
       </div>
     );
   };

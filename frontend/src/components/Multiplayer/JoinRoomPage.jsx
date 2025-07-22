@@ -6,27 +6,18 @@ import { useAuth } from '../../Context/UserContextProvider';
 const JoinRoomModal = ({ isOpen = false, onClose = () => {} }) => {
   const { roomId } = useParams();
   const navigate = useNavigate();
-const {userId,username}=useAuth()
+const {userId,username,profilePicture}=useAuth()
   const isStandalone = !!roomId && !isOpen; // !! converts anything to boolean
 
   const [roomIdInput, setRoomIdInput] = useState(roomId || '');
   const [joining, setJoining] = useState(false);
-
-  const handleJoin = () => {
-    if (!roomIdInput.trim()) {
-      alert('Please enter a Room ID');
-      return;
-    }
-
-    setJoining(true);
-    socket.emit('join-room', { roomId: roomIdInput.trim(), userId ,username});
-  };
-
   useEffect(() => {
-    if (!isOpen && !isStandalone) return;
+    // if (!isOpen && !isStandalone) return;
 
-    socket.on('start-game', (quizData) => {
-      navigate('/runningMultiplayerQuiz', { state: { quizData } });
+    socket.on('start-game', ({ quizData, players, scores }) => {
+      console.log("start-game , nvigating to quiz page")
+      navigate('/runningMultiplayerQuiz', { state: { quizData, players, scores ,userId,roomId:roomIdInput} });
+
     });
 
     socket.on('room-error', ({ message }) => {
@@ -38,7 +29,26 @@ const {userId,username}=useAuth()
       socket.off('start-game');
       socket.off('room-error');
     };
-  }, [navigate, isOpen, isStandalone]);
+  }, [navigate, isOpen, isStandalone,roomIdInput]);
+
+  const handleJoin = () => {
+    try{
+   if (!roomIdInput.trim()) {
+      alert('Please enter a Room ID');
+      return;
+    }
+
+    setJoining(true);
+    socket.emit('join-room', { roomId: roomIdInput.trim(), userId ,username,profilePicture});
+    }catch(e){
+      console.error("Error joining room:", e);
+      alert("An error occurred while trying to join the room. Please try again.");
+     
+    }
+ 
+  };
+
+
 
   // Only show when either modal is open or used standalone
   if (!isOpen && !isStandalone) return null;

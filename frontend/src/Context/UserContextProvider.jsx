@@ -77,7 +77,7 @@ const clearAuth = () => {
   }, []);
       
     return(
-        <UserContext.Provider value={{userId,role,username,setUser:updateUserId,flashMessage,setFlashMessage,profilePicture}}>
+        <UserContext.Provider value={{userId,role,username,profilePicture, setUser:updateUserId,flashMessage,setFlashMessage,profilePicture}}>
             {children}
         </UserContext.Provider>
     )

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import {  X, Copy, Clock, Users, Share2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import socket from "../Socket";
-const MultiplayerModal = ({ isOpen, onClose, userId ,image,categoryId,numberOfQuestions,difficulty,quizId="",username}) => {
+const MultiplayerModal = ({ isOpen, onClose, userId ,image,categoryId,numberOfQuestions,difficulty,quizId="",username,profilePicture}) => {
   const [roomId, setRoomId] = useState('');
   const [isWaiting, setIsWaiting] = useState(false);
   const [timeLeft, setTimeLeft] = useState(120);
@@ -23,7 +23,8 @@ const navigate=useNavigate()
       image: image,
       numberOfQuestions,
       quizId,
-      username
+      username,
+      profilePicture
     });
     
   }
@@ -43,19 +44,24 @@ useEffect(() => {
   };
 }, []);
 //listinging for tart game 
- useEffect(() => {
-    const handleStartGame = (quizData) => {
-      console.log("Host received start-game event, navigating to quiz.");
-      navigate("/runningMultiplayerQuiz", { state: { quizData } });
-      handleClose(); // Close the modal once game starts
-    };
+useEffect(() => {
+  const handleStartGame = ({ quizData, players, scores }) => {
+    console.log("Received full game start data", { quizData, players, scores ,userId});
+ console.log("Navigating with roomId:", roomId);
+    navigate("/runningMultiplayerQuiz", {
+      state: { quizData,players, scores,userId,roomId }
+    });
 
-    socket.on("start-game", handleStartGame);
+    handleClose();
+  };
 
-    return () => {
-      socket.off("start-game", handleStartGame);
-    };
-  }, [navigate]);
+  socket.on("start-game", handleStartGame);
+
+  return () => {
+    socket.off("start-game", handleStartGame);
+  };
+}, [navigate,roomId]);
+
   // Timer countdown
   useEffect(() => {
     let timer;
